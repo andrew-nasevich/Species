@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Species.Database.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Species.Database
 {
@@ -13,7 +9,9 @@ namespace Species.Database
         private readonly IConfiguration _configuration;
 
         public DbSet<Account> Accounts { get; set; }
-
+        public DbSet<SpeciesType> SpeciesTypes { get; set; }
+        public DbSet<Entities.Species> Species { get; set; }
+        public DbSet<Observation> Observations { get; set; }
 
         public SpeaciesContext(IConfiguration configuration)
         {
