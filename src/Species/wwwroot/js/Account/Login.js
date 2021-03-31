@@ -10,7 +10,7 @@ LoginModule.controller('LoginController', ['$http', '$window',
 
         self.onLogin = function () {
             $http.post('/API/Account/Login', self.account).then(
-                s => { $window.location.href = '/Home/Index' },
+                s => { $window.location.href = '/Species/Index' },
                 e => { console.log(e); alert(""); });
         }
     }

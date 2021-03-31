@@ -64,7 +64,7 @@ namespace Species
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Species}/{action=Index}/{id?}");
             });
         }
     }

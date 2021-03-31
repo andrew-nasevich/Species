@@ -8,5 +8,7 @@
         public string Description { get; set; }
         public int SpeciesId { get; set; }
         public Species Speacies { get; set; }
+        public int AccountId { get; set; }
+        public Account Account { get; set; }
     }
 }

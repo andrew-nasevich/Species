@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Class { get; set; }
-        public string RussingName { get; set; }
+        public string RussianName { get; set; }
         public string LatinName { get; set; }
         public string BelarusianName { get; set; }
         public string Category { get; set; }

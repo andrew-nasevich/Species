@@ -1,27 +1,27 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Species.Database;
+using Species.Database.Entities;
 
 namespace Species.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SpeciesController : ControllerBase
+    public class SpeciesTypeController : ControllerBase
     {
         public readonly SpeaciesContext _context;
 
 
-        public SpeciesController(SpeaciesContext context)
+        public SpeciesTypeController(SpeaciesContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        [Route("Species")]
-        public Database.Entities.Species[] Species()
+        [Route("SpeciesTypes")]
+        public SpeciesType[] SpeciesTypes()
         {
-            return _context.Species.Include(s => s.SpeciesType).ToArray();
+            return _context.SpeciesTypes.ToArray();
         }
     }
 }

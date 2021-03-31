@@ -33,5 +33,5 @@ CREATE TABLE "Observations"
 	"Longitude" FLOAT NOT NULL,
 	"Description" NVARCHAR(1000) NOT NULL,
 	"SpeciesId" INT FOREIGN KEY REFERENCES "Species"("Id") NOT NULL,
-	"UserId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL
+	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL
 )

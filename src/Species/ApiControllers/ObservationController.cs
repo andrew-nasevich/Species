@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Species.Database;
 using Species.Database.Entities;
 
@@ -24,7 +25,7 @@ namespace Species.ApiControllers
 
         [HttpPost]
         [Route("AddObservation")]
-        public IActionResult AddObservation(float latitude, float longitude, string description, int speciesId)
+        public IActionResult AddObservation(float latitude, float longitude, string description, int speciesId, int accountId)
         {
             if(longitude > 180)
             {
@@ -40,7 +41,8 @@ namespace Species.ApiControllers
                 Description = description,
                 Latitude = latitude,
                 Longitude = longitude,
-                SpeciesId = speciesId
+                SpeciesId = speciesId,
+                AccountId = accountId
             };
 
             _context.Observations.Add(observation);
@@ -48,6 +50,13 @@ namespace Species.ApiControllers
             _context.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("Observations")]
+        public Observation[] Observations()
+        {
+            return _context.Observations/*.Include(o => o.Speacies).*/Include(o => o.Account).ToArray();
         }
     }
 }
