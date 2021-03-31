@@ -56,7 +56,7 @@ namespace Species.ApiControllers
         [Route("Observations")]
         public Observation[] Observations()
         {
-            return _context.Observations/*.Include(o => o.Speacies).*/Include(o => o.Account).ToArray();
+            return _context.Observations/*.Include(o => o.Speacies)*/.Include(o => o.Account).ToArray();
         }
     }
 }

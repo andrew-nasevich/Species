@@ -5,9 +5,9 @@ var mapHelper = angular.module('mapHelper', []);
 mapHelper.factory('mapHelper', function ($http, $window, $q) {
 
     var mymap = L.map('mapid').setView([53.505, 28.09], 7);
+    var markers = [];
 
     return {
-
         init: function () {
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -20,6 +20,17 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
         },
         registerOnClick: function (func) {
             mymap.on('click', func);
+        }, 
+        addMarker: function (latitude, longitude, text) {
+            var marker = L.marker([latitude, longitude])
+                .addTo(mymap)
+                .bindPopup(text)
+                .openPopup();
+
+            markers.push(marker);
+        },
+        clearMap: function () {
+
         }
     }
 });

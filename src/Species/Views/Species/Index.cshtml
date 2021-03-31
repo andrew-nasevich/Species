@@ -8,6 +8,14 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 
+
+
+<link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.9/angular.js" data-semver="1.4.9"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
+
+<script src="~/js/third-party/angularjs-dropdown-multiselect.min.js"></script>
+
 <script src="~/js/Services/observation-factory.js"></script>
 <script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/species-type-factory.js"></script>
@@ -20,6 +28,8 @@
     <div ng-controller="speciesIndexController as vm">
 
         <a href="/Account/Register">Регистрация</a>
+
+
         <div>
             <div class="form-group">
                 <label>Введите Email</label>
@@ -34,7 +44,17 @@
             </div>
         </div>
 
+        <div ng-dropdown-multiselect="" options="vm.speciesTypesNames" selected-model="vm.speciesTypes" checkboxes="true" extra-settings="setting1"></div>
+
+        <div ng-dropdown-multiselect="" options="vm.speciesTypesNames" selected-model="vm.speciesTypes" extra-settings="setting2"></div>
+
         <div id="mapid" style="height: 580px;"></div>
+
+
+
+        @* <select multiple ng-model="vm.speciesTypes" ng-options="tt for tt in vm.speciesTypesNames" ng-change="vm.onSpeciesTypesChage()" />*@
+
+
     </div>
 </div>
 
