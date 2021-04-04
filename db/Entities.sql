@@ -31,6 +31,7 @@ CREATE TABLE "Observations"
 	"Id" INT IDENTITY PRIMARY KEY NOT NULL,
 	"Latitude" FLOAT NOT NULL,
 	"Longitude" FLOAT NOT NULL,
+	"Date" DATE NOT NULL,
 	"Description" NVARCHAR(1000) NOT NULL,
 	"SpeciesId" INT FOREIGN KEY REFERENCES "Species"("Id") NOT NULL,
 	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL

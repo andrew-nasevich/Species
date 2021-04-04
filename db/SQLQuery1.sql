@@ -18,3 +18,8 @@ INSERT INTO Species VALUES('Семейство Баранцовые - Huperziaceae', 'Баранец обыкн
 INSERT INTO Species VALUES('Семейство Полушниковые - Isoёtaceae', 'Полушник озёрный', 'Isoёtes lacustris L.', 'Палушнiк азёрны', 'II', 2)
 INSERT INTO Species VALUES('Отдел Хвощеобразные - Equisetophyta (семейство Хвощевые - Equisetaceae)', 'Хвощ большой', 'Equisetum telmateia Ehrh.', 'Хвошч вялiкi', 'I', 2)
  
+ /*Тестовые данные*/
+
+ INSERT INTO Accounts VALUES('Андрей', 'Насевич', 'nasevichandrey@mail.ru', '123')
+ select * from Accounts
+ INSERT INTO Observations VALUES(54.199362, 27.846251, GETDATE(), 'Здесь живет одно жывотное', 1, 1)
