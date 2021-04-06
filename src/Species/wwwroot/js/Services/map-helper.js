@@ -21,16 +21,29 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
         registerOnClick: function (func) {
             mymap.on('click', func);
         }, 
-        addMarker: function (latitude, longitude, text) {
+        addMarker: function (latitude, longitude, text, id) {
             var marker = L.marker([latitude, longitude])
                 .addTo(mymap)
-                .bindPopup(text)
-                .openPopup();
+                .bindTooltip(text, { permanent: true})
+                .openTooltip();
 
+            marker.id = id;
+            marker.shown = true;
             markers.push(marker);
         },
-        clearMap: function () {
-
+        hideMarker: (id) => {
+            var marker = markers.find(m => m.id == id);
+            if (marker && marker.shown) {
+                marker.shown = false;
+                marker.remove();
+            }
+        },
+        showMarker:  (id) => {
+            var marker = markers.find(m => m.id == id);
+            if (marker && !marker.shown) {
+                marker.shown = true;
+                marker.addTo(mymap);
+            }
         }
     }
 });

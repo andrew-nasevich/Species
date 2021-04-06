@@ -3,13 +3,9 @@
 }
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
-
-
-
 <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
@@ -19,16 +15,16 @@
 <script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/species-type-factory.js"></script>
 <script src="~/js/Services/map-helper.js"></script>
-<script src="~/js/Species/Index.js"></script>
+<script src="~/js/Observation/Index.js"></script>
 
-<div ng-app="speciesIndex">
-    <div ng-controller="speciesIndexController as vm">
+<div ng-app="observationIndex">
+    <div ng-controller="observationIndexController as vm">
         <table class="search-container">
             <tr>
                 <td>
                     <div>
                         Параметры поиска
-                    </div>                    
+                    </div>
                 </td>
                 <td>
                     <div>
@@ -41,8 +37,7 @@
                              checkboxes="true"
                              extra-settings="vm.config.multiselectSettings"
                              translation-texts="vm.config.multiselectTranslation"
-                             events="{onSelectionChanged: vm.onSpeciesTypesChage}"
-                             >
+                             events="{onSelectionChanged: vm.onSpeciesTypesChage}">
                         </div>
                     </div>
                 </td>
@@ -60,13 +55,25 @@
                 </td>
                 <td>
                     <div>
-                        Промежуток наблюдения   
+                        Промежуток наблюдения
                     </div>
                     <div class="date-range">
                         <span>От:</span>
                         <input type="date" ng-model="vm.search.fromDate" max="{{vm.today}}" />
                         <span>До:</span>
                         <input type="date" ng-model="vm.search.toDate" max="{{vm.today}}" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        Категории
+                    </div>
+                    <div ng-dropdown-multiselect=""
+                         options="vm.search.categories"
+                         selected-model="vm.search.selectedCategories"
+                         checkboxes="true"
+                         extra-settings="vm.config.multiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation">
                     </div>
                 </td>
                 <td>

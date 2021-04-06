@@ -61,9 +61,9 @@ namespace Species.ApiControllers
 
                 _context.SaveChanges();
 
-                await Authenticate(acc.Email);
+                await Authenticate(acc);
             }
-            catch(Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -88,7 +88,7 @@ namespace Species.ApiControllers
             {
                 return BadRequest("There is no account with such credentials.");
             }
-            await Authenticate(account.Email); // аутентификация
+            await Authenticate(acc);
 
             return RedirectToAction("Index", "Home");
         }
@@ -103,12 +103,13 @@ namespace Species.ApiControllers
         }
 
 
-        private async Task Authenticate(string email)
+        private async Task Authenticate(Account account)
         {
-            // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, email)
+                new Claim("email", account.Email),
+                new Claim("name", $"{account.Name} {account.Surname}"),
+                new Claim("id", account.Id.ToString())
             };
             // создаем объект ClaimsIdentity
             var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);

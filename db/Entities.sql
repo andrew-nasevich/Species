@@ -22,9 +22,12 @@ CREATE  TABLE "Species"
 	"RussianName" NVARCHAR(100) NOT NULL,
 	"LatinName" NVARCHAR(100),
 	"BelarusianName" NVARCHAR(100),
-	"Category" NVARCHAR(100) NOT NULL,
+	"Category" INT NOT NULL,
 	"SpeciesTypeId" INT FOREIGN KEY REFERENCES "SpeciesTypes"("Id") NOT NULL
 )
+
+alter table Species
+add "Category" INT NOT NULL DEFAULT(1),
 
 CREATE TABLE "Observations"
 (

@@ -7,7 +7,7 @@
         public string RussianName { get; set; }
         public string LatinName { get; set; }
         public string BelarusianName { get; set; }
-        public string Category { get; set; }
+        public int Category { get; set; }
         public int SpeciesTypeId { get; set; }
         public SpeciesType SpeciesType { get; set; }
     }

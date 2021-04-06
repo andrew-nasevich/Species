@@ -60,11 +60,25 @@ namespace Species
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.Use(async (context, next) =>
+            {
+                var claims = context.User.Claims.ToArray();
+                var id = claims.FirstOrDefault(c => c.Type == "id");
+                var email = claims.FirstOrDefault(c => c.Type == "email");
+                if (id != null && email != null)
+                {
+                    context.Response.Cookies.Append("userId", id.Value);
+                    context.Response.Cookies.Append("email", email.Value);
+                }
+
+                await next.Invoke();
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Species}/{action=Index}/{id?}");
+                    pattern: "{controller=Observation}/{action=Index}/{id?}");
             });
         }
     }

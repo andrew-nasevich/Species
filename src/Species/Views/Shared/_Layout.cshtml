@@ -10,6 +10,7 @@
     <script src="~/lib/Angularjs/angular.js"></script>
     <script src="~/lib/Angularjs/angular-route.js"></script>
     <script src="~/lib/Angularjs/angular-resource.js"></script>
+    <script src="~/lib/Angularjs/angular-cookies.js"></script>
 </head>
 <body>
     <header>
@@ -23,13 +24,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" href="/Observation/">Карта</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" href="/Observation/Add">Добавить наблюдение</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/API/Account/Logout">Log out</a>
+                            <a class="nav-link text-dark" href="/API/Account/Logout">Выход</a>
                         </li>
                     </ul>
                 </div>
