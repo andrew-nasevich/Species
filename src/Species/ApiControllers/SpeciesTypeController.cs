@@ -21,6 +21,7 @@ namespace Species.ApiControllers
         [Route("SpeciesTypes")]
         public SpeciesType[] SpeciesTypes()
         {
+            var a = _context.SpeciesTypes.ToArray();
             return _context.SpeciesTypes.ToArray();
         }
     }

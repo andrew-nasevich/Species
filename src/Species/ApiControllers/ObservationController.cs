@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Species.Database;
 using Species.Database.Entities;
+using Species.Models;
 
 namespace Species.ApiControllers
 {
@@ -25,23 +26,30 @@ namespace Species.ApiControllers
 
         [HttpPost]
         [Route("AddObservation")]
-        public IActionResult AddObservation(float latitude, float longitude, string description, int speciesId, int accountId)
+        public IActionResult AddObservation([FromBody]ObservationModel model)
         {
-            if(longitude > 180)
+            if (!ModelState.IsValid)
             {
-                longitude = (longitude + 180) % 360 - 180;
+                return BadRequest();
             }
-            else if(longitude < -180)
+
+            if (model.Longitude > 180)
             {
-                longitude = (longitude - 180) % 360 + 180;
+                model.Longitude = (model.Longitude + 180) % 360 - 180;
             }
+            else if(model.Longitude < -180)
+            {
+                model.Longitude = (model.Longitude - 180) % 360 + 180;
+            }
+
+            var accountId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id").Value);
 
             var observation = new Observation
             {
-                Description = description,
-                Latitude = latitude,
-                Longitude = longitude,
-                SpeciesId = speciesId,
+                Description = model.Description,
+                Latitude = model.Latitude,
+                Longitude = model.Longitude,
+                SpeciesId = model.SpeciesId,
                 AccountId = accountId
             };
 

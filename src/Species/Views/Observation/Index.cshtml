@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Карта наблюдений";
 }
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
@@ -8,8 +8,6 @@
         crossorigin=""></script>
 <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
-
-<script src="~/js/third-party/angularjs-dropdown-multiselect.min.js"></script>
 
 <script src="~/js/Services/observation-factory.js"></script>
 <script src="~/js/Services/species-factory.js"></script>
@@ -21,12 +19,12 @@
     <div ng-controller="observationIndexController as vm">
         <table class="search-container">
             <tr>
-                <td>
+                <td valign="top">
                     <div>
                         Параметры поиска
                     </div>
                 </td>
-                <td>
+                <td valign="top">
                     <div>
                         <div>
                             Типы видов
@@ -35,13 +33,13 @@
                              options="vm.search.speciesTypes"
                              selected-model="vm.search.selectedSpeciesTypes"
                              checkboxes="true"
-                             extra-settings="vm.config.multiselectSettings"
+                             extra-settings="vm.config.speciesTypesMultiselectSettings"
                              translation-texts="vm.config.multiselectTranslation"
                              events="{onSelectionChanged: vm.onSpeciesTypesChage}">
                         </div>
                     </div>
                 </td>
-                <td>
+                <td valign="top">
                     <div>
                         Виды
                     </div>
@@ -53,7 +51,7 @@
                          translation-texts="vm.config.multiselectTranslation">
                     </div>
                 </td>
-                <td>
+                <td valign="top">
                     <div>
                         Промежуток наблюдения
                     </div>
@@ -64,7 +62,7 @@
                         <input type="date" ng-model="vm.search.toDate" max="{{vm.today}}" />
                     </div>
                 </td>
-                <td>
+                <td valign="top">
                     <div>
                         Категории
                     </div>
@@ -76,14 +74,14 @@
                          translation-texts="vm.config.multiselectTranslation">
                     </div>
                 </td>
-                <td>
+                <td valign="top">
                     <div>
                         Отмеченные мной
                     </div>
                     <input type="checkbox" ng-model="vm.search.showMine" />
                 </td>
 
-                <td>
+                <td valign="top">
                     <input type="button" value="Поиcк" ng-click="vm.onSearch()" />
                 </td>
             </tr>

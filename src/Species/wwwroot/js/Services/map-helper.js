@@ -20,16 +20,49 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
         },
         registerOnClick: function (func) {
             mymap.on('click', func);
-        }, 
-        addMarker: function (latitude, longitude, text, id) {
-            var marker = L.marker([latitude, longitude])
-                .addTo(mymap)
-                .bindTooltip(text, { permanent: true})
-                .openTooltip();
-
+        },
+        unregisterOnClick: function (func) {
+            mymap.off('click', func);
+        },
+        addMarker: function (latitude, longitude, text, id, options) {
+            var marker = L.marker([latitude, longitude], options);
+                
+            if (text) {
+                marker.bindTooltip(text, { permanent: true })
+                    .openTooltip();
+            }
+            marker.addTo(mymap);
+                
             marker.id = id;
             marker.shown = true;
             markers.push(marker);
+        },
+        getMarkerlatlng: (id) => {
+            var marker = markers.find(m => m.id == id);
+            if (marker) {
+                return marker.getLatLng();
+            }
+        },
+        setMarkerlatlng: (id, lat, lng) => {
+            var marker = markers.find(m => m.id == id);
+            marker.setLatLng([lat, lng]);
+        },
+        setMarkerTooltipText(id, text) {
+            var marker = markers.find(m => m.id == id);
+
+            var tooltip = marker.getTooltip();
+
+            if (tooltip) {
+                tooltip.setContent(text);
+                marker.openTooltip();
+            } else {
+                marker.bindTooltip(text, { permanent: true })
+                    .openTooltip();
+            }
+        },
+        closeMakersToolTip(id) {
+            markers.find(m => m.id == id)
+            .closeTooltip();
         },
         hideMarker: (id) => {
             var marker = markers.find(m => m.id == id);

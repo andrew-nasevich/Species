@@ -10,7 +10,7 @@ var observationIndex = angular.module('observationIndex', [
 ]);
 
 observationIndex.controller('observationIndexController',
-    function observationIndexController($http, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper, $q) {
+    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper) {
         let self = this;
 
         self.search = {};
@@ -26,7 +26,7 @@ observationIndex.controller('observationIndexController',
 
             var speciesPromise = $q.defer();
             speciesFactory.get().then(result => {
-                self.allSpecies = angular.copy(result.map(o => { return { label: o.russianName, ...o } }));
+                self.allSpecies = angular.copy(result.map(o => { return { label: o.russianName + ' - ' + self.convertCategory(o.category), ...o } }));
                 self.search.species = angular.copy(self.allSpecies);
                 self.search.selectedSpecies = [...self.search.species];
 
@@ -61,7 +61,7 @@ observationIndex.controller('observationIndexController',
                     o.species = self.allSpecies.find(s => s.id == o.speciesId);
                 });
 
-                self.search.allObservations.forEach(o => mapHelper.addMarker(o.latitude, o.longitude, o.species.russianName, o.id));
+                self.search.allObservations.forEach(o => mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id));
             });
 
             var today = new Date();
@@ -120,6 +120,9 @@ observationIndex.controller('observationIndexController',
                 dynamicButtonTextSuffix: 'выбрано',
             };
 
+            self.config.speciesTypesMultiselectSettings = {
+                scrollableHeight: '200px',
+            };
             self.config.multiselectSettings = {
                 scrollableHeight: '300px',
                 scrollable: true,

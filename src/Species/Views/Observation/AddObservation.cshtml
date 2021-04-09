@@ -1,7 +1,84 @@
 ﻿
 @{
-    ViewData["Title"] = "AddObservation";
+    ViewData["Title"] = "Добавление";
 }
 
-<h1>AddObservation</h1>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+<link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
+<link rel="stylesheet" href="~/css/Observation/AddObservation.css" />
+
+<script src="~/js/Services/observation-factory.js"></script>
+<script src="~/js/Services/species-factory.js"></script>
+<script src="~/js/Services/species-type-factory.js"></script>
+<script src="~/js/Services/map-helper.js"></script>
+<script src="~/js/Observation/AddObservation.js"></script>
+
+<div ng-app="addObservation">
+    <div ng-controller="addObservationController as vm">
+        <table class="search-container">
+            <tr>
+                <td valign="top">
+                    <div>
+                        Параметры поиска
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        <div>
+                            Типы видов
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.observation.speciesTypes"
+                             selected-model="vm.observation.selectedSpeciesTypes"
+                             checkboxes="true"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                        </div>
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        Виды
+                    </div>
+                    <div ng-dropdown-multiselect=""
+                         options="vm.observation.species"
+                         selected-model="vm.observation.selectedSpecies"
+                         extra-settings="vm.config.speciesMultiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation"
+                         events="{onSelectionChanged: vm.onSelectedSpeciesChange}">
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        Дата наблюдения
+                    </div>
+                    <div class="date-range">
+                        <input type="date" ng-model="vm.observation.date" max="{{vm.today}}" />
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        Описание
+                    </div>
+
+                    <div>
+                        <textarea class="observation-description" type="" ng-model="vm.observation.description"></textarea>
+                    </div>
+                </td>
+
+                <td valign="top">
+                    <input type="button" value="Добавить" ng-click="vm.onAddObservation()" />
+                </td>
+            </tr>
+        </table>
+
+        <div id="mapid" style="height: 560px;"></div>
+
+    </div>
+</div>

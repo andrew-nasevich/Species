@@ -90,7 +90,7 @@ namespace Species.ApiControllers
             }
             await Authenticate(acc);
 
-            return RedirectToAction("Index", "Home");
+            return Ok();
         }
 
         [HttpGet]

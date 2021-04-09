@@ -15,15 +15,15 @@ observationFactoryModule.factory('observationFactory', function ($http, $window,
 
             return deferred.promise;
         },
-        add: function (latitude, longitude, description, speciesId, accountId) {
+        add: function (latitude, longitude, description, date, speciesId) {
             var deferred = $q.defer();
 
             $http.post(`/api/Observation/AddObservation/`, {
                 latitude: latitude,
                 longitude: longitude,
                 description: description,
-                speciesId: speciesId,
-                accountId: accountId
+                date: date,
+                speciesId: speciesId
             }).then(responce => {
                 deferred.resolve();
             }, error => {

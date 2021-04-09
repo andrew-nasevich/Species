@@ -26,9 +26,6 @@ CREATE  TABLE "Species"
 	"SpeciesTypeId" INT FOREIGN KEY REFERENCES "SpeciesTypes"("Id") NOT NULL
 )
 
-alter table Species
-add "Category" INT NOT NULL DEFAULT(1),
-
 CREATE TABLE "Observations"
 (
 	"Id" INT IDENTITY PRIMARY KEY NOT NULL,

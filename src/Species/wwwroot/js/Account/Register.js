@@ -10,7 +10,7 @@ RegisterModule.controller('RegisterController', ['$http', '$window',
 
         self.onRegister = function (dateStr) {
             $http.post('/API/Account/Register', self.account).then(
-                s => { $window.location.href = '/Home/Index' },
+                s => { $window.location.href = '/Observation/Index' },
                 e => { console.log(e); alert(""); });
         }
     }
