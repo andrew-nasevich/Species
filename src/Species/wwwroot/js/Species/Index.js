@@ -4,11 +4,39 @@ var speciesIndex = angular.module('speciesIndex', [
     'angularjs-dropdown-multiselect',
     'speciesFactoryModule',
     'speciesTypeFactoryModule',
-    'ngCookies'
+    'ngCookies',
+    'ui.bootstrap',
+    'pleasewait'
 ]);
 
+speciesIndex.component('speciesInfo', {
+    bindings: {
+        species: '=',
+        allSpecies: '=',
+        $close: '&',
+        $dismiss: '&'
+    },
+    templateUrl: '/templates/Species/info.html',
+    controllerAs: 'vm',
+    controller() {
+        const vm = this;
+        vm.close = () =>{
+            vm.$dismiss({
+                reason: 'cancel',
+            });
+        };
+
+        vm.save = () => {
+            vm.$close({
+                species: vm.species,
+            });
+        };
+    }
+});
+
 speciesIndex.controller('speciesIndexController',
-    function speciesIndexController($q, $cookies, speciesFactory, speciesTypeFactory) {
+    function speciesIndexController($q, $cookies, speciesFactory, speciesTypeFactory, $pleasewait, $uibModal) {
+        $pleasewait.show();
         let self = this;
 
         self.search = {};
@@ -17,21 +45,8 @@ speciesIndex.controller('speciesIndexController',
 
             var speciesPromise = $q.defer();
             speciesFactory.get().then(result => {
-                self.allSpecies = angular.copy(result.map(o => { return { label: o.russianName, convertedCategory: self.convertCategory(o.category), ...o } }));
+                self.allSpecies = angular.copy(result.map(o => { return { convertedCategory: self.convertCategory(o.category), ...o } }));
                 self.search.species = angular.copy(self.allSpecies);
-
-                self.search.categories = self.allSpecies
-                    .map(s => s.category)
-                    .filter((value, index, self) => {
-                        return self.indexOf(value) === index;
-                    })
-                    .sort()
-                    .map(s => {
-                        return {
-                            label: self.convertCategory(s),
-                            category: s
-                        };
-                    });
 
                 speciesPromise.resolve();
             });
@@ -45,6 +60,10 @@ speciesIndex.controller('speciesIndexController',
                 speciesTypesPromise.resolve();
             });
 
+            Promise.all([speciesTypesPromise.promise, speciesPromise.promise]).then(() => {
+                $pleasewait.hide();
+            });
+
             self.configMultiselect();
         };
 
@@ -52,6 +71,49 @@ speciesIndex.controller('speciesIndexController',
             self.search.species = self.allSpecies.filter(s => self.search.selectedSpeciesTypes.some(st => st.id == s.speciesType.id));
         };
 
+        self.onOpenInfo = (entity) => {
+
+            const dialog = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                keyboard: false,
+                size: 'lg',
+                template: `<species-info 
+                            species="$ctrl.species"
+                            all-species="$ctrl.allSpecies"
+                            $close=$close(species)
+                            $dismiss="$dismiss(reason)"/>`,
+                controllerAs: '$ctrl',
+                controller: ['species', 'allSpecies', function (species, allSpecies) {
+                    const $ctrl = this;
+                    $ctrl.species = species;
+                    $ctrl.allSpecies = allSpecies;
+                }],
+                resolve: {
+                    species: () => {
+                        return angular.copy(entity);
+                    },
+                    allSpecies: () => {
+                        return self.allSpecies;
+                    }
+                }
+            });
+
+            dialog.result.then((species) => {
+                $pleasewait.show();
+                var index = self.allSpecies.indexOf(self.allSpecies.find(s => s.id == species.id));
+                if (index >= 0) {
+                    speciesFactory.update(species).then(() => {
+                        species.convertedCategory = self.convertCategory(species.category)
+                        self.allSpecies[index] = angular.copy(species);
+                        self.search.species = angular.copy(self.allSpecies);
+                        self.search.selectedSpeciesTypes = [...self.search.speciesTypes];
+
+                        $pleasewait.hide();
+                    });
+                }
+            });
+        };
 
         self.configMultiselect = () => {
 

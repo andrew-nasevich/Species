@@ -39,7 +39,7 @@
                     <div>
                         Поиск
                     </div>
-                    <div>
+                    <div class="search-name">
                         <input type="text" ng-model="vm.search.searchInput" />
                     </div>
                 </td>
@@ -54,7 +54,8 @@
                     <p><b>Имя</b>: {{species.russianName}}</p>
                     <p><b>Латинское имя</b>: {{species.latinName}}</p>
                     <p><b>Категория</b>: {{species.convertedCategory}}</p>
-                    <input type="button"ng-click="alert('Congats!')" value="Побробная информация">
+
+                    <button class="btn btn-success btn-sm" type="button" ng-click="vm.onOpenInfo(species)">Подробная информация</button>
                 </div>
             </div>
         </div>

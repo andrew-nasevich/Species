@@ -1,3 +1,13 @@
 ﻿.observation-description{
    width: 400px;
 }
+
+#mapid {
+    padding: 10px;
+    border: 4px solid #505050;
+    border-radius: 10px;
+}
+
+#add-button-container{
+    padding-top:20px;
+}

@@ -29,3 +29,41 @@
 .species-description p{
     height: 31px;
 }
+
+.species-description button{
+    height: 27px;
+    padding-top: 3px;
+}
+
+.modal-header{
+    background-color: #c6f0b3
+}
+
+.param{
+    padding: 10px 15px 10px 15px;
+}
+
+.param-description {
+    display: inline-block;
+    width: 20%;
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+.param-value {
+    display: inline-block;
+    width: 80%;
+    float:right;
+}
+
+.param-value  textarea{
+    height: 200px;
+}
+
+.search-name input{
+    height: 32px;
+}
+
+.modal-title{
+    padding-left: 20px;
+}

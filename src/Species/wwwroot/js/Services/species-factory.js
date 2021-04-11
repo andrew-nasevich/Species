@@ -14,6 +14,17 @@ speciesFactoryModule.factory('speciesFactory', function ($http, $window, $q) {
             });
 
             return deferred.promise;
+        },
+        update: function (species) {
+            var deferred = $q.defer();
+
+            $http.post(`/api/species/update/`, species).then(responce => {
+                deferred.resolve();
+            }, error => {
+                deferred.reject(`Error: ${error.code}`);
+            });
+
+            return deferred.promise;
         }
     }
 });

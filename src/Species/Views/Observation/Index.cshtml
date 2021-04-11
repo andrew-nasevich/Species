@@ -9,6 +9,8 @@
 <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
+<link rel="stylesheet" href="~/css/Observation/Index.css" />
+
 <script src="~/js/Services/observation-factory.js"></script>
 <script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/species-type-factory.js"></script>
@@ -81,8 +83,8 @@
                     <input type="checkbox" ng-model="vm.search.showMine" />
                 </td>
 
-                <td valign="top">
-                    <input type="button" value="Поиcк" ng-click="vm.onSearch()" />
+                <td valign="bottom">
+                    <button class="btn btn-primary" type="button" ng-click="vm.onSearch()">Поиcк</button>
                 </td>
             </tr>
         </table>

@@ -68,12 +68,12 @@
                     </div>
 
                     <div>
-                        <textarea class="observation-description" type="" ng-model="vm.observation.description"></textarea>
+                        <textarea class="observation-description" ng-model="vm.observation.description"></textarea>
                     </div>
                 </td>
 
-                <td valign="top">
-                    <input type="button" value="Добавить" ng-click="vm.onAddObservation()" />
+                <td id="add-button-container" valign="top">
+                    <button class="btn btn-primary"  type="button" ng-click="vm.onAddObservation()">Добавить</button>
                 </td>
             </tr>
         </table>

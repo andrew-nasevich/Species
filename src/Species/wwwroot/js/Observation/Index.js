@@ -6,11 +6,13 @@ var observationIndex = angular.module('observationIndex', [
     'speciesFactoryModule',
     'speciesTypeFactoryModule',
     'mapHelper',
-    'ngCookies'
+    'ngCookies',
+    'pleasewait'
 ]);
 
 observationIndex.controller('observationIndexController',
-    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper) {
+    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper, $pleasewait) {
+        $pleasewait.show();
         let self = this;
 
         self.search = {};
@@ -62,6 +64,7 @@ observationIndex.controller('observationIndexController',
                 });
 
                 self.search.allObservations.forEach(o => mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id));
+                $pleasewait.hide();
             });
 
             var today = new Date();
