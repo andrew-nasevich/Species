@@ -23,6 +23,8 @@ CREATE  TABLE "Species"
 	"LatinName" NVARCHAR(100),
 	"BelarusianName" NVARCHAR(100),
 	"Category" INT NOT NULL,
+	"Description" NVARCHAR(MAX) NOT NULL,
+	"Image" NVARCHAR(100) NOT NULL,
 	"SpeciesTypeId" INT FOREIGN KEY REFERENCES "SpeciesTypes"("Id") NOT NULL
 )
 

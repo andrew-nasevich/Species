@@ -8,6 +8,8 @@
         public string LatinName { get; set; }
         public string BelarusianName { get; set; }
         public int Category { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
         public int SpeciesTypeId { get; set; }
         public SpeciesType SpeciesType { get; set; }
     }

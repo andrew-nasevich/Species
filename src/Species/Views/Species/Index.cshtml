@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Виды";
+}
+<link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
+
+<link rel="stylesheet" href="~/css/Species/species.css" />
+
+<script src="~/js/Services/species-factory.js"></script>
+<script src="~/js/Services/species-type-factory.js"></script>
+<script src="~/js/Services/map-helper.js"></script>
+<script src="~/js/Species/Index.js"></script>
+
+<div ng-app="speciesIndex">
+    <div ng-controller="speciesIndexController as vm">
+        <table class="search-container">
+            <tr>
+                <td valign="top">
+                    <div>
+                        Параметры поиска
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        <div>
+                            Типы видов
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.speciesTypes"
+                             selected-model="vm.search.selectedSpeciesTypes"
+                             checkboxes="true"
+                             extra-settings="vm.config.speciesTypesMultiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                        </div>
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        Поиск
+                    </div>
+                    <div>
+                        <input type="text" ng-model="vm.search.searchInput" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="species-container">
+            <div class="species" ng-repeat="species in vm.search.species | filter:vm.search.searchInput">
+                <div class="species-image">
+                    <img src="~/images/{{species.image}}"/>
+                </div>
+                <div class="species-description">
+                    <p><b>Имя</b>: {{species.russianName}}</p>
+                    <p><b>Латинское имя</b>: {{species.latinName}}</p>
+                    <p><b>Категория</b>: {{species.convertedCategory}}</p>
+                    <input type="button"ng-click="alert('Congats!')" value="Побробная информация">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
