@@ -99,7 +99,7 @@ namespace Species.ApiControllers
                 return BadRequest();
             }
 
-            var accountId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+            var accountId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id").Value);
             
             if(accountId != observation.AccountId)
             {

@@ -38,3 +38,16 @@ CREATE TABLE "Observations"
 	"SpeciesId" INT FOREIGN KEY REFERENCES "Species"("Id") NOT NULL,
 	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL
 )
+
+CREATE TABLE "Roles"
+(
+	"Id" INT IDENTITY PRIMARY KEY NOT NULL,
+	"Name" NVARCHAR(100) NOT NULL,
+)
+
+CREATE TABLE "AccountRoles"
+(
+	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL,
+	"RoleId" INT FOREIGN KEY REFERENCES "Roles"("Id") NOT NULL,
+	CONSTRAINT m2m_constraint PRIMARY KEY ("AccountId", "RoleId"),
+)

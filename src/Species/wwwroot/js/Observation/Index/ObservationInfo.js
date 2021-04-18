@@ -21,7 +21,7 @@
             accountFactory.getById(vm.observation.accountId).then(r => {
                 vm.account = r;
 
-                vm.editable = vm.account.id == vm.currentAccount.id || vm.currentAccount.roles.find(r => r == 'admin');
+                vm.editable = !!(vm.account.id == vm.currentAccount.id || vm.currentAccount.roles.find(r => r == 'Admin'));
             });
 
             //if (vm.account) {

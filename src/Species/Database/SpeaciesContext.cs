@@ -12,6 +12,14 @@ namespace Species.Database
         public DbSet<SpeciesType> SpeciesTypes { get; set; }
         public DbSet<Entities.Species> Species { get; set; }
         public DbSet<Observation> Observations { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<AccountRole> AccountRoles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountRole>()
+                .HasKey(r => new { r.RoleId, r.AccountId });
+        }
 
         public SpeaciesContext(IConfiguration configuration)
         {

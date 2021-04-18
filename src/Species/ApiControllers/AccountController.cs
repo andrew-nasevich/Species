@@ -37,13 +37,17 @@ namespace Species.ApiControllers
                 return BadRequest();
             }
 
+            var accountRoles = _context.AccountRoles.Where(r => r.AccountId == id).Select(r => r.RoleId).ToArray();
+
+            var roles = _context.Roles.Where(r => accountRoles.Contains(r.Id)).Select(r => r.Name).ToArray();
+
             return new
             {
                 id = account.Id,
                 name = account.Name,
                 surname = account.Surname,
                 email = account.Email,
-                roles = Array.Empty<object>()
+                roles
             };
         }
 

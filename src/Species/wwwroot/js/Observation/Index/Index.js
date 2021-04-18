@@ -77,7 +77,9 @@ observationIndex.controller('observationIndexController',
             self.search.toDate = today;
 
             var id = $cookies.getObject('userId');
-            self.account = accountFactory.getById(id);
+            accountFactory.getById(id).then((r) => {
+                self.account = r;
+            });
 
             self.search.showMine = false;
 

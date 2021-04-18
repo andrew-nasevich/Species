@@ -4,19 +4,21 @@ var speciesIndex = angular.module('speciesIndex', [
     'angularjs-dropdown-multiselect',
     'speciesFactoryModule',
     'speciesTypeFactoryModule',
+    'accountFactoryModule',
     'ngCookies',
     'ui.bootstrap',
-    'pleasewait'
+    'pleasewait',
 ]);
 
 speciesIndex.component('speciesInfo', {
     bindings: {
         species: '=',
         allSpecies: '=',
+        isAdmin: '=',
         $close: '&',
         $dismiss: '&'
     },
-    templateUrl: '/templates/Species/info.html',
+    templateUrl: '/templates/Species/info.html?v='+new Date().getTime(),
     controllerAs: 'vm',
     controller() {
         const vm = this;
@@ -35,13 +37,19 @@ speciesIndex.component('speciesInfo', {
 });
 
 speciesIndex.controller('speciesIndexController',
-    function speciesIndexController($q, $cookies, speciesFactory, speciesTypeFactory, $pleasewait, $uibModal) {
+    function speciesIndexController($q, $cookies, speciesFactory, speciesTypeFactory, accountFactory, $pleasewait, $uibModal) {
         $pleasewait.show();
         let self = this;
 
         self.search = {};
 
         self.$onInit = () => {
+
+            var id = $cookies.getObject('userId');
+            accountFactory.getById(id).then((r) => {
+                self.account = r;
+                self.isAdmin = !!self.account.roles.find(r => r == 'Admin');
+            });
 
             var speciesPromise = $q.defer();
             speciesFactory.get().then(result => {
@@ -81,13 +89,15 @@ speciesIndex.controller('speciesIndexController',
                 template: `<species-info 
                             species="$ctrl.species"
                             all-species="$ctrl.allSpecies"
+                            is-admin="$ctrl.isAdmin"
                             $close=$close(species)
                             $dismiss="$dismiss(reason)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['species', 'allSpecies', function (species, allSpecies) {
+                controller: ['species', 'allSpecies', 'isAdmin', function (species, allSpecies, isAdmin) {
                     const $ctrl = this;
                     $ctrl.species = species;
                     $ctrl.allSpecies = allSpecies;
+                    $ctrl.isAdmin = isAdmin;
                 }],
                 resolve: {
                     species: () => {
@@ -95,6 +105,9 @@ speciesIndex.controller('speciesIndexController',
                     },
                     allSpecies: () => {
                         return self.allSpecies;
+                    },
+                    isAdmin: () => {
+                        return self.isAdmin;
                     }
                 }
             });
