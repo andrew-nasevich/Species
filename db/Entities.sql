@@ -25,7 +25,7 @@ CREATE  TABLE "Species"
 	"Category" INT NOT NULL,
 	"Description" NVARCHAR(MAX) NOT NULL,
 	"Image" NVARCHAR(100) NOT NULL,
-	"SpeciesTypeId" INT FOREIGN KEY REFERENCES "SpeciesTypes"("Id") NOT NULL
+	"SpeciesTypeId" INT FOREIGN KEY REFERENCES "SpeciesTypes"("Id") ON DELETE CASCADE  NOT NULL
 )
 
 CREATE TABLE "Observations"
@@ -35,8 +35,8 @@ CREATE TABLE "Observations"
 	"Longitude" FLOAT NOT NULL,
 	"Date" DATE NOT NULL,
 	"Description" NVARCHAR(1000) NOT NULL,
-	"SpeciesId" INT FOREIGN KEY REFERENCES "Species"("Id") NOT NULL,
-	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL
+	"SpeciesId" INT FOREIGN KEY  REFERENCES "Species"("Id") ON DELETE CASCADE  NOT NULL ,
+	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") ON DELETE CASCADE  NOT NULL
 )
 
 CREATE TABLE "Roles"
@@ -47,7 +47,7 @@ CREATE TABLE "Roles"
 
 CREATE TABLE "AccountRoles"
 (
-	"AccountId" INT FOREIGN KEY REFERENCES "Accounts"("Id") NOT NULL,
-	"RoleId" INT FOREIGN KEY REFERENCES "Roles"("Id") NOT NULL,
+	"AccountId" INT FOREIGN KEY REFERENCES  "Accounts"("Id") ON DELETE CASCADE  NOT NULL,
+	"RoleId" INT FOREIGN KEY REFERENCES "Roles"("Id")  NOT NULL,
 	CONSTRAINT m2m_constraint PRIMARY KEY ("AccountId", "RoleId"),
 )

@@ -16,6 +16,7 @@
 
         vm.$onInit = () => {
             vm.selectedSpecies = [vm.species.find(s => s.id == vm.observation.speciesId)];
+            vm.selectedSpecies.forEach(s => s.label = s.russianName);
             vm.selectedSpeciesTypes = [vm.speciesTypes.find(st => st.id == vm.selectedSpecies[0].speciesTypeId)];
 
             accountFactory.getById(vm.observation.accountId).then(r => {
@@ -24,12 +25,6 @@
                 vm.editable = !!(vm.account.id == vm.currentAccount.id || vm.currentAccount.roles.find(r => r == 'Admin'));
             });
 
-            //if (vm.account) {
-            //    vm.account.isAdmin = vm.account.roles.find('administrator');
-            //}
-            //else {
-            //    vm.account = {};
-            //}
 
             vm.today = new Date();
             vm.maxDate = vm.today.toISOString().substring(0, 10);

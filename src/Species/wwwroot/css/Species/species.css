@@ -57,7 +57,7 @@
 }
 
 .param-value  textarea{
-    height: 200px;
+    height: 180px;
 }
 
 .search-name input{
@@ -66,4 +66,14 @@
 
 .modal-title{
     padding-left: 20px;
+}
+
+.search-container {
+    position: relative;
+}
+
+#add-new-button {
+    position: absolute;
+    right: 50px;
+    bottom: 0px;
 }

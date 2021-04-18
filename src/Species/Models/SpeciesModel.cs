@@ -5,7 +5,6 @@ namespace Species.Models
 {
     public class SpeciesModel
     {
-        [BindRequired]
         public int Id { get; set; }
 
         [NotNull]

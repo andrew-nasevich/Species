@@ -26,6 +26,34 @@ namespace Species.ApiControllers
         }
 
         [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody]SpeciesModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var species = new Database.Entities.Species()
+            {
+                RussianName = model.RussianName,
+                LatinName = model.RussianName,
+                SpeciesTypeId = model.SpeciesTypeId,
+                BelarusianName = model.BelarusianName,
+                Category = model.Category,
+                Class = model.Class,
+                Description = model.Description,
+                Image = model.Image,
+            };
+
+            _context.Species.Add(species);
+            _context.SaveChanges();
+
+            species.SpeciesType = _context.SpeciesTypes.FirstOrDefault(t => t.Id == species.Id);
+            return new JsonResult(species);
+        }
+
+        [HttpPut]
         [Route("Update")]
         public IActionResult Update([FromBody]SpeciesModel model)
         {
@@ -50,6 +78,22 @@ namespace Species.ApiControllers
             species.Image = model.Image;
 
             _context.Entry(species).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult Delete(int id)
+        {
+            var species = _context.Species.FirstOrDefault(s => s.Id == id);
+            if (species == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(species).State = EntityState.Deleted;
             _context.SaveChanges();
 
             return Ok();

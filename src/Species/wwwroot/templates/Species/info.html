@@ -3,16 +3,25 @@
         <button type="button" class="close" ng-click="vm.close()">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">{{vm.species.russianName}}</h4>
+        <h4 class="modal-title">{{vm.isNew ? "Добавление нового вида" : "Изменение существующего вида"}}</h4>
     </div>
 
     <div class="modal-body">
         <div class="row param">
             <div class="param-description">
-                <b>Имя:</b>
+                <b>Тип вида:</b>
+            </div>
+            <div class="param-value" ng-hide="!(vm.isAdmin||vm.isNew)">
+                <div ng-dropdown-multiselect=""
+                     options="vm.speciesTypes"
+                     selected-model="vm.selectedSpeciesType"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation">
+                </div>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!vm.isAdmin" ng-model="vm.species.russianName">
+                <input class="form-control" type="text" ng-hide="vm.isAdmin" ng-disabled="true" ng-model="vm.selectedSpeciesType[0].label">
             </div>
         </div>
         <div class="row param">
@@ -20,7 +29,15 @@
                 <b>Класс:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!vm.isAdmin" ng-model="vm.species.class">
+                <input class="form-control" type="text" ng-disabled="!(vm.isAdmin||vm.isNew)" ng-model="vm.species.class">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Вид:</b>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-disabled="!(vm.isAdmin||vm.isNew)" ng-model="vm.species.russianName">
             </div>
         </div>
         <div class="row param">
@@ -28,7 +45,7 @@
                 <b>Латинское имя:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!vm.isAdmin" ng-model="vm.species.latinName">
+                <input class="form-control" type="text" ng-disabled="!(vm.isAdmin||vm.isNew)" ng-model="vm.species.latinName">
             </div>
         </div>
         <div class="row param">
@@ -36,7 +53,7 @@
                 <b>Белорусское название:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!vm.isAdmin" ng-model="vm.species.belarusianName">
+                <input class="form-control" type="text" ng-disabled="!(vm.isAdmin||vm.isNew)" ng-model="vm.species.belarusianName">
             </div>
         </div>
         <div class="row param">
@@ -44,7 +61,7 @@
                 <b>Категория:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="number" ng-disabled="!vm.isAdmin" max="5" min="1" ng-model="vm.species.category">
+                <input class="form-control" type="number" ng-disabled="!(vm.isAdmin||vm.isNew)" max="5" min="1" ng-model="vm.species.category">
             </div>
         </div>
         <div class="row param">
@@ -52,13 +69,14 @@
                 <b>Описание:</b>
             </div>
             <div class="param-value">
-                <textarea class="form-control" ng-disabled="!vm.isAdmin" ng-model="vm.species.description"></textarea>
+                <textarea class="form-control" ng-disabled="!(vm.isAdmin||vm.isNew)" ng-model="vm.species.description"></textarea>
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.save()">Сохранить изменения</button>
+        <button class="btn btn-success" type="button" ng-hide="!(vm.isAdmin||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
+        <button class="btn btn-danger" type="button" ng-hide="!vm.isAdmin||vm.isNew" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>
 </div>
