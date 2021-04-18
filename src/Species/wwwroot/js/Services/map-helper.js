@@ -26,7 +26,8 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
         },
         addMarker: function (latitude, longitude, text, id, options) {
             var marker = L.marker([latitude, longitude], options);
-                
+            marker.onClick = [];
+
             if (text) {
                 marker.bindTooltip(text, { permanent: true })
                     .openTooltip();
@@ -37,13 +38,21 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
             marker.shown = true;
             markers.push(marker);
         },
+        removeMarker: (id) => {
+            var marker = markers.find(m => m.id == id);
+            markers.splice(markers.indexOf(marker), 1);
+            marker.remove();
+        },
         registerOnClickMarker: (id, func) => {
             var marker = markers.find(m => m.id == id);
+            marker.onClick.push(func);
+
             marker.on('click', func);
         },
-        unregisterOnClickMarker: (id, func) => {
+        unregisterAllOnClickMarker: (id) => {
             var marker = markers.find(m => m.id == id);
-            marker.off('click', func);
+            marker.onClick.forEach(f => marker.off('click', f));
+            marker.onClick = [];
         },
         getMarkerlatlng: (id) => {
             var marker = markers.find(m => m.id == id);

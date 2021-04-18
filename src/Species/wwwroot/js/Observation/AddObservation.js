@@ -53,30 +53,6 @@ addObservationModule.controller('addObservationController',
             self.observation.selectedSpecies = [...species.filter(ss => self.observation.selectedSpecies.some(s => s.id == ss.id))];
         };
 
-       
-        self.configMultiselect = () => {
-
-            self.config = {}
-            self.config.multiselectTranslation = {
-                checkAll: 'Выбрать все',
-                uncheckAll: 'Сбросить',
-                buttonDefaultText: 'Выбрать',
-                selectionCount: 'выбрано',
-                searchPlaceholder: 'Искать...',
-                dynamicButtonTextSuffix: 'выбрано',
-            };
-
-            self.config.speciesTypesMultiselectSettings = {
-                scrollableHeight: '200px',
-            };
-            self.config.speciesMultiselectSettings = {
-                scrollableHeight: '300px',
-                scrollable: true,
-                enableSearch: true,
-                selectionLimit: 1
-            };
-        };
-
         self.onMapClick = (params) => {
             if (!self.observation.markerIsSet) {
                 mapHelper.addMarker(params.latlng.lat, params.latlng.lng, undefined, 1, { draggable: true });
@@ -122,6 +98,29 @@ addObservationModule.controller('addObservationController',
             } else {
                 mapHelper.closeMakersToolTip(1);
             }      
+        };
+
+        self.configMultiselect = () => {
+
+            self.config = {}
+            self.config.multiselectTranslation = {
+                checkAll: 'Выбрать все',
+                uncheckAll: 'Сбросить',
+                buttonDefaultText: 'Выбрать',
+                selectionCount: 'выбрано',
+                searchPlaceholder: 'Искать...',
+                dynamicButtonTextSuffix: 'выбрано',
+            };
+
+            self.config.speciesTypesMultiselectSettings = {
+                scrollableHeight: '200px',
+            };
+            self.config.speciesMultiselectSettings = {
+                scrollableHeight: '300px',
+                scrollable: true,
+                enableSearch: true,
+                selectionLimit: 1
+            };
         };
 
         self.convertCategory = (category) => {

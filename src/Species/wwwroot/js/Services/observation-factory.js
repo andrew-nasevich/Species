@@ -18,7 +18,7 @@ observationFactoryModule.factory('observationFactory', function ($http, $window,
         add: function (latitude, longitude, description, date, speciesId) {
             var deferred = $q.defer();
 
-            $http.post(`/api/Observation/AddObservation/`, {
+            $http.post(`/api/Observation/Add/`, {
                 latitude: latitude,
                 longitude: longitude,
                 description: description,
@@ -31,6 +31,28 @@ observationFactoryModule.factory('observationFactory', function ($http, $window,
             });
 
             return deferred.promise;
-        }
+        },
+        update: function (observation) {
+            var deferred = $q.defer();
+
+            $http.put(`/api/observation/update/`, observation).then(responce => {
+                deferred.resolve(responce.data);
+            }, error => {
+                deferred.reject(`An error occurred: ${error.message}`);
+            });
+
+            return deferred.promise;
+        },
+        remove: function (id) {
+            var deferred = $q.defer();
+
+            $http.delete(`/api/observation/delete/?id=${id}`).then(responce => {
+                deferred.resolve(responce.data);
+            }, error => {
+                deferred.reject(`An error occurred: ${error.message}`);
+            });
+
+            return deferred.promise;
+        },
     }
 });

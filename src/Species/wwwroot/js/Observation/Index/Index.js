@@ -5,13 +5,14 @@ var observationIndex = angular.module('observationIndex', [
     'observationFactoryModule',
     'speciesFactoryModule',
     'speciesTypeFactoryModule',
+    'accountFactoryModule',
     'mapHelper',
     'ngCookies',
     'pleasewait'
 ]);
 
 observationIndex.controller('observationIndexController',
-    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper, $pleasewait, $uibModal) {
+    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, accountFactory, mapHelper, $pleasewait, $uibModal) {
         $pleasewait.show();
         let self = this;
 
@@ -75,8 +76,8 @@ observationIndex.controller('observationIndexController',
             self.today = today.toISOString().substring(0, 10);
             self.search.toDate = today;
 
-            self.account = {};
-            self.account.id = $cookies.getObject('userId');
+            var id = $cookies.getObject('userId');
+            self.account = accountFactory.getById(id);
 
             self.search.showMine = false;
 
@@ -117,6 +118,18 @@ observationIndex.controller('observationIndexController',
             });
         };
 
+        self.deleteObservation = (observation) => {
+            $pleasewait.show();
+            var index = self.search.allObservations.indexOf(self.search.allObservations.find(o => o.id == observation.id));
+            self.search.allObservations.splice(index, 1);
+
+            observationFactory.remove(observation.id).then(() => {
+                mapHelper.removeMarker(observation.id);
+                $pleasewait.hide();
+            });
+            
+        };
+
         self.onOpenInfo = (entity) => {
 
             const dialog = $uibModal.open({
@@ -126,27 +139,29 @@ observationIndex.controller('observationIndexController',
                 size: 'lg',
                 template: `<observation-info 
                             observation = "$ctrl.observation"
-                            account = "$ctrl.account"
+                            current-account = "$ctrl.currentAccount"
                             species="$ctrl.species"
                             species-types="$ctrl.speciesTypes"
+                            delete-observation = "$ctrl.deleteObservation(observation)"
                             on-species-types-chage = "$ctrl.onSpeciesTypesChage"
-                            $close=$close(species)
+                            $close="$close(observation)"
                             $dismiss="$dismiss(reason)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['observation', 'account', 'species', 'speciesTypes', 'onSpeciesTypesChage',
-                    function (observation, account, species, speciesTypes, onSpeciesTypesChage) {
+                controller: ['observation', 'currentAccount', 'species', 'speciesTypes', 'deleteObservation', 'onSpeciesTypesChage',
+                    function (observation, currentAccount, species, speciesTypes, deleteObservation, onSpeciesTypesChage) {
                         const $ctrl = this;
                         $ctrl.observation = observation;
-                        $ctrl.account = account;
+                        $ctrl.currentAccount = currentAccount;
                         $ctrl.species = species;
                         $ctrl.speciesTypes = speciesTypes;
+                        $ctrl.deleteObservation = deleteObservation;
                         $ctrl.onSpeciesTypesChage = onSpeciesTypesChage;
                 }],
                 resolve: {
                     observation: () => {
                         return angular.copy(entity);
                     },
-                    account: () => {
+                    currentAccount: () => {
                         return angular.copy(self.account);
                     },
                     species: () => {
@@ -155,25 +170,29 @@ observationIndex.controller('observationIndexController',
                     speciesTypes: () => {
                         return angular.copy(self.allSpeciesTypes);
                     },
+                    deleteObservation: () => {
+                        return self.deleteObservation;
+                    },
                     onSpeciesTypesChage: () => {
                         return self.onSpeciesTypesChage;
                     }
                 }
             });
 
-            dialog.result.then((species) => {
+            dialog.result.then((observation) => {
                 $pleasewait.show();
-                var index = self.allSpecies.indexOf(self.allSpecies.find(s => s.id == species.id));
-                if (index >= 0) {
-                    speciesFactory.update(species).then(() => {
-                        species.convertedCategory = self.convertCategory(species.category)
-                        self.allSpecies[index] = angular.copy(species);
-                        self.search.species = angular.copy(self.allSpecies);
-                        self.search.selectedSpeciesTypes = [...self.search.speciesTypes];
 
-                        $pleasewait.hide();
-                    });
-                }
+                observationFactory.update(observation).then(r => {
+                    var index = self.search.allObservations.indexOf(self.search.allObservations.find(o => o.id == observation.id));
+
+                    observation.species = self.allSpecies.find(s => s.id == observation.speciesId);
+                    self.search.allObservations[index] = observation;
+
+                    mapHelper.setMarkerTooltipText(observation.id, observation.species.label);
+                    mapHelper.unregisterAllOnClickMarker(observation.id);
+                    mapHelper.registerOnClickMarker(observation.id, () => self.onOpenInfo(observation));
+                })
+                    .finally(() => $pleasewait.hide());
             });
         };
 

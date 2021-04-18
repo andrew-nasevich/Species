@@ -25,7 +25,7 @@ namespace Species.ApiControllers
 
 
         [HttpPost]
-        [Route("AddObservation")]
+        [Route("Add")]
         public IActionResult AddObservation([FromBody]ObservationModel model)
         {
             if (!ModelState.IsValid)
@@ -56,6 +56,57 @@ namespace Species.ApiControllers
 
             _context.Observations.Add(observation);
 
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public IActionResult UpdateObservation([FromBody]ObservationModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var accountId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id").Value);
+
+            var observation = new Observation
+            {
+                Id = model.Id,
+                Description = model.Description,
+                Latitude = model.Latitude,
+                Longitude = model.Longitude,
+                SpeciesId = model.SpeciesId,
+                Date = model.Date,
+                AccountId = model.AccountId
+            };
+
+            _context.Entry(observation).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteObservation(int id)
+        {
+            var observation = _context.Observations.FirstOrDefault(o => o.Id == id);
+            if(observation == null)
+            {
+                return BadRequest();
+            }
+
+            var accountId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "Id").Value);
+            
+            if(accountId != observation.AccountId)
+            {
+                return BadRequest("This account cannot delete this observation.");
+            }
+
+            _context.Entry(observation).State = EntityState.Deleted;
             _context.SaveChanges();
 
             return Ok();

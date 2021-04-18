@@ -5,6 +5,7 @@ namespace Species.Models
 {
     public class ObservationModel
     {
+        public int Id { get; set; }
         [BindRequired]
         public double Latitude { get; set; }
         

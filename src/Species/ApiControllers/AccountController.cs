@@ -27,6 +27,27 @@ namespace Species.ApiControllers
             _context = context;
         }
 
+        [HttpGet]
+        [Route("GetById")]
+        public object GetById(int id)
+        {
+            var account = _context.Accounts.FirstOrDefault(a => a.Id == id);
+            if(account == null)
+            {
+                return BadRequest();
+            }
+
+            return new
+            {
+                id = account.Id,
+                name = account.Name,
+                surname = account.Surname,
+                email = account.Email,
+                roles = Array.Empty<object>()
+            };
+        }
+
+
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody]RegisterModel account)

@@ -9,9 +9,9 @@
     <div class="modal-body">
         <div class="row param">
             <div class="param-description">
-                <b>Тип видов:</b>
+                <b>Тип вида:</b>
             </div>
-            <div class="param-value">
+            <div class="param-value" ng-hide="!vm.editable">
                 <div ng-dropdown-multiselect=""
                      options="vm.speciesTypes"
                      selected-model="vm.selectedSpeciesTypes"
@@ -21,18 +21,24 @@
                      events="{onSelectionChanged: vm.onSpeciesTypesChage}">
                 </div>
             </div>
+            <div class="param-value" ng-hide="vm.editable">
+                {{vm.selectedSpeciesTypes[0].label}}
+            </div>
         </div>
         <div class="row param">
             <div class="param-description">
-                <b>Виды:</b>
+                <b>Вид:</b>
             </div>
-            <div class="param-value">
+            <div class="param-value" ng-hide="!vm.editable">
                 <div ng-dropdown-multiselect=""
                      options="vm.species"
                      selected-model="vm.selectedSpecies"
                      extra-settings="vm.config.multiselectSettings"
                      translation-texts="vm.config.multiselectTranslation">
                 </div>
+            </div>
+            <div class="param-value" ng-hide="vm.editable">
+                {{vm.selectedSpecies[0].label}}
             </div>
         </div>
         <div class="row param">
@@ -41,7 +47,7 @@
             </div>
             <div class="param-value">
                 <div class="date-range">
-                    <input type="date" ng-model="vm.observation.date" max="{{vm.maxDate}}" />
+                    <input type="date" ng-disabled="!vm.editable" ng-model="vm.date" max="{{vm.maxDate}}" />
                 </div>
             </div>
         </div>
@@ -51,14 +57,23 @@
             </div>
             <div class="param-value">
                 <div>
-                    <textarea class="observation-description" ng-model="vm.observation.description"></textarea>
+                    <textarea class="observation-description" ng-disabled="!vm.editable" ng-model="vm.observation.description"></textarea>
                 </div>
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Создатель:</b>
+            </div>
+            <div class="param-value">
+                {{vm.account.name + " " + vm.account.surname}}
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-click="vm.save()">Сохранить изменения</button>
+        <button class="btn btn-success" ng-hide="!vm.editable" type="button" ng-click="vm.save()">Сохранить изменения</button>
+        <button class="btn btn-danger" ng-hide="!vm.editable" type="button" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>
 </div>
