@@ -11,7 +11,7 @@ var observationIndex = angular.module('observationIndex', [
 ]);
 
 observationIndex.controller('observationIndexController',
-    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper, $pleasewait) {
+    function observationIndexController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper, $pleasewait, $uibModal) {
         $pleasewait.show();
         let self = this;
 
@@ -63,13 +63,20 @@ observationIndex.controller('observationIndexController',
                     o.species = self.allSpecies.find(s => s.id == o.speciesId);
                 });
 
-                self.search.allObservations.forEach(o => mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id));
+                self.search.allObservations.forEach(o => {
+                    mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id);
+                    mapHelper.registerOnClickMarker(o.id, () => self.onOpenInfo(o));
+                });
+                
                 $pleasewait.hide();
             });
 
             var today = new Date();
             self.today = today.toISOString().substring(0, 10);
             self.search.toDate = today;
+
+            self.account = {};
+            self.account.id = $cookies.getObject('userId');
 
             self.search.showMine = false;
 
@@ -96,9 +103,8 @@ observationIndex.controller('observationIndexController',
             observations = observations.filter(o => categories.some(c => c.category == o.species.category));
 
             if (self.search.showMine) {
-                var id = $cookies.getObject('userId');
-                if (id) {
-                    observations = observations.filter(o => o.accountId == id);   
+                if (self.account.id) {
+                    observations = observations.filter(o => o.accountId == self.account.id);   
                 }
             }
 
@@ -110,6 +116,67 @@ observationIndex.controller('observationIndexController',
                 }
             });
         };
+
+        self.onOpenInfo = (entity) => {
+
+            const dialog = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                keyboard: false,
+                size: 'lg',
+                template: `<observation-info 
+                            observation = "$ctrl.observation"
+                            account = "$ctrl.account"
+                            species="$ctrl.species"
+                            species-types="$ctrl.speciesTypes"
+                            on-species-types-chage = "$ctrl.onSpeciesTypesChage"
+                            $close=$close(species)
+                            $dismiss="$dismiss(reason)"/>`,
+                controllerAs: '$ctrl',
+                controller: ['observation', 'account', 'species', 'speciesTypes', 'onSpeciesTypesChage',
+                    function (observation, account, species, speciesTypes, onSpeciesTypesChage) {
+                        const $ctrl = this;
+                        $ctrl.observation = observation;
+                        $ctrl.account = account;
+                        $ctrl.species = species;
+                        $ctrl.speciesTypes = speciesTypes;
+                        $ctrl.onSpeciesTypesChage = onSpeciesTypesChage;
+                }],
+                resolve: {
+                    observation: () => {
+                        return angular.copy(entity);
+                    },
+                    account: () => {
+                        return angular.copy(self.account);
+                    },
+                    species: () => {
+                        return angular.copy(self.allSpecies);
+                    },
+                    speciesTypes: () => {
+                        return angular.copy(self.allSpeciesTypes);
+                    },
+                    onSpeciesTypesChage: () => {
+                        return self.onSpeciesTypesChage;
+                    }
+                }
+            });
+
+            dialog.result.then((species) => {
+                $pleasewait.show();
+                var index = self.allSpecies.indexOf(self.allSpecies.find(s => s.id == species.id));
+                if (index >= 0) {
+                    speciesFactory.update(species).then(() => {
+                        species.convertedCategory = self.convertCategory(species.category)
+                        self.allSpecies[index] = angular.copy(species);
+                        self.search.species = angular.copy(self.allSpecies);
+                        self.search.selectedSpeciesTypes = [...self.search.speciesTypes];
+
+                        $pleasewait.hide();
+                    });
+                }
+            });
+        };
+
 
         self.configMultiselect = () => {
 

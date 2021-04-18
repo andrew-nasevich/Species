@@ -50,6 +50,7 @@ namespace Species.ApiControllers
                 Latitude = model.Latitude,
                 Longitude = model.Longitude,
                 SpeciesId = model.SpeciesId,
+                Date = model.Date,
                 AccountId = accountId
             };
 

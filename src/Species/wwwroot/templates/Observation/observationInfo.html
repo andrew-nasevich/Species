@@ -1,0 +1,64 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="vm.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Подробности наблюдения</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row param">
+            <div class="param-description">
+                <b>Тип видов:</b>
+            </div>
+            <div class="param-value">
+                <div ng-dropdown-multiselect=""
+                     options="vm.speciesTypes"
+                     selected-model="vm.selectedSpeciesTypes"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                </div>
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Виды:</b>
+            </div>
+            <div class="param-value">
+                <div ng-dropdown-multiselect=""
+                     options="vm.species"
+                     selected-model="vm.selectedSpecies"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation">
+                </div>
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Дата наблюдения:</b>
+            </div>
+            <div class="param-value">
+                <div class="date-range">
+                    <input type="date" ng-model="vm.observation.date" max="{{vm.maxDate}}" />
+                </div>
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b> Описание:</b>
+            </div>
+            <div class="param-value">
+                <div>
+                    <textarea class="observation-description" ng-model="vm.observation.description"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="vm.save()">Сохранить изменения</button>
+        <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
+    </div>
+</div>

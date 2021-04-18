@@ -37,6 +37,14 @@ mapHelper.factory('mapHelper', function ($http, $window, $q) {
             marker.shown = true;
             markers.push(marker);
         },
+        registerOnClickMarker: (id, func) => {
+            var marker = markers.find(m => m.id == id);
+            marker.on('click', func);
+        },
+        unregisterOnClickMarker: (id, func) => {
+            var marker = markers.find(m => m.id == id);
+            marker.off('click', func);
+        },
         getMarkerlatlng: (id) => {
             var marker = markers.find(m => m.id == id);
             if (marker) {
