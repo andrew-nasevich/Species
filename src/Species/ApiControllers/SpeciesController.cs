@@ -49,7 +49,7 @@ namespace Species.ApiControllers
             _context.Species.Add(species);
             _context.SaveChanges();
 
-            species.SpeciesType = _context.SpeciesTypes.FirstOrDefault(t => t.Id == species.Id);
+            species.SpeciesType = _context.SpeciesTypes.FirstOrDefault(t => t.Id == species.SpeciesTypeId);
             return new JsonResult(species);
         }
 
