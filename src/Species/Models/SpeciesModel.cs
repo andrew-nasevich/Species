@@ -35,6 +35,6 @@ namespace Species.Models
         public string Image { get; set; }
 
         [BindRequired]
-        public int SpeciesTypeId { get; set; }
+        public int OrderId { get; set; }
     }
 }

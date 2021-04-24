@@ -10,6 +10,8 @@ namespace Species.Database
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<SpeciesType> SpeciesTypes { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Entities.Species> Species { get; set; }
         public DbSet<Observation> Observations { get; set; }
         public DbSet<Role> Roles { get; set; }

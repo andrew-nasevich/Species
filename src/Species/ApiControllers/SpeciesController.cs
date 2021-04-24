@@ -22,7 +22,7 @@ namespace Species.ApiControllers
         [Route("Species")]
         public Database.Entities.Species[] Species()
         {
-            return _context.Species.Include(s => s.SpeciesType).ToArray();
+            return _context.Species.ToArray();
         }
 
         [HttpPost]
@@ -38,10 +38,9 @@ namespace Species.ApiControllers
             {
                 RussianName = model.RussianName,
                 LatinName = model.RussianName,
-                SpeciesTypeId = model.SpeciesTypeId,
+                OrderId = model.OrderId,
                 BelarusianName = model.BelarusianName,
                 Category = model.Category,
-                Class = model.Class,
                 Description = model.Description,
                 Image = model.Image,
             };
@@ -49,7 +48,7 @@ namespace Species.ApiControllers
             _context.Species.Add(species);
             _context.SaveChanges();
 
-            species.SpeciesType = _context.SpeciesTypes.FirstOrDefault(t => t.Id == species.SpeciesTypeId);
+            species.Order = _context.Orders.FirstOrDefault(t => t.Id == species.OrderId);
             return new JsonResult(species);
         }
 
@@ -70,10 +69,9 @@ namespace Species.ApiControllers
 
             species.RussianName = model.RussianName;
             species.LatinName = model.RussianName;
-            species.SpeciesTypeId = model.SpeciesTypeId;
+            species.OrderId = model.OrderId;
             species.BelarusianName = model.BelarusianName;
             species.Category = model.Category;
-            species.Class = model.Class;
             species.Description = model.Description;
             species.Image = model.Image;
 

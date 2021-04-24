@@ -1,17 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Виды";
+    ViewData["Title"] = "Иерархия видов";
 }
 <link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 
-<link rel="stylesheet" href="~/css/Species/species.css" />
+<link rel="stylesheet" href="~/css/SpeciesHierarchy/speciesHierarchy.css" />
 
-<script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/species-type-factory.js"></script>
+<script src="~/js/Services/class-factory.js"></script>
+<script src="~/js/Services/order-factory.js"></script>
+<script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/account-factory.js"></script>
 <script src="~/js/Services/map-helper.js"></script>
-<script src="~/js/Species/Index/Index.js"></script>
-<script src="~/js/Species/Index/speciesInfo.js"></script>
+<script src="~/js/SpeciesHierarchy/Species/index.js"></script>
+<script src="~/js/SpeciesHierarchy/Species/speciesInfo.js"></script>
 
 <div ng-app="speciesIndex">
     <div ng-controller="speciesIndexController as vm">
@@ -34,7 +36,37 @@
                              checkboxes="true"
                              extra-settings="vm.config.speciesTypesMultiselectSettings"
                              translation-texts="vm.config.multiselectTranslation"
-                             events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                             events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
+                        </div>
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        <div>
+                            Классы
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.classes"
+                             selected-model="vm.search.selectedClasses"
+                             checkboxes="true"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedClassesChange}">
+                        </div>
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        <div>
+                            Отряды
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.orders"
+                             selected-model="vm.search.selectedOrders"
+                             checkboxes="true"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedOrdersChange}">
                         </div>
                     </div>
                 </td>
@@ -46,9 +78,6 @@
                         <input type="text" ng-model="vm.search.searchInput" />
                     </div>
                 </td>
-                @*<td valign="bottom">
-                    <button class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>
-                </td>*@
             </tr>
         </table>
         <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>

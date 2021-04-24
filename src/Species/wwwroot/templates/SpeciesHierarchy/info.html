@@ -1,0 +1,110 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="vm.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{vm.isNew ? "Добавление нового вида" : "Изменение существующего вида"}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row param">
+            <div class="param-description">
+                <b>Тип вида:</b>
+            </div>
+            <div class="param-value" ng-hide="!(vm.isEditable||vm.isNew)">
+                <div ng-dropdown-multiselect=""
+                     options="vm.speciesTypes"
+                     selected-model="vm.selectedSpeciesType"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedSpeciesTypeChange}">
+                </div>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-hide="vm.isEditable" ng-disabled="true" ng-model="vm.selectedSpeciesType[0].label">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Класс:</b>
+            </div>
+            <div class="param-value" ng-hide="!(vm.isEditable||vm.isNew)">
+                <div ng-dropdown-multiselect=""
+                     options="vm.classes"
+                     selected-model="vm.selectedClass"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedClassChange}">
+                </div>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-hide="vm.isEditable" ng-disabled="true" ng-model="vm.selectedClass[0].label">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Отряд:</b>
+            </div>
+            <div class="param-value" ng-hide="!(vm.isEditable||vm.isNew)">
+                <div ng-dropdown-multiselect=""
+                     options="vm.orders"
+                     selected-model="vm.selectedOrder"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation">
+                </div>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-hide="vm.isEditable" ng-disabled="true" ng-model="vm.selectedOrder[0].label">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Вид:</b>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.species.russianName">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Латинское имя:</b>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.species.latinName">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Белорусское название:</b>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.species.belarusianName">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Категория:</b>
+            </div>
+            <div class="param-value">
+                <input class="form-control" type="number" ng-disabled="!(vm.isEditable||vm.isNew)" max="4" min="1" ng-model="vm.species.category">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Описание:</b>
+            </div>
+            <div class="param-value">
+                <textarea class="form-control" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.species.description"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-hide="!(vm.isEditable||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
+        <button class="btn btn-danger" type="button" ng-hide="!vm.isEditable||vm.isNew" ng-click="vm.delete()">Удалить</button>
+        <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
+    </div>
+</div>
