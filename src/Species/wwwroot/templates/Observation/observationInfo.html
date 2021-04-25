@@ -11,25 +11,61 @@
             <div class="param-description">
                 <b>Тип вида:</b>
             </div>
-            <div class="param-value" ng-hide="!vm.editable">
+            <div class="param-value" ng-if="vm.isEditable">
                 <div ng-dropdown-multiselect=""
                      options="vm.speciesTypes"
-                     selected-model="vm.selectedSpeciesTypes"
+                     selected-model="vm.selectedSpeciesType"
                      checkboxes="true"
                      extra-settings="vm.config.multiselectSettings"
                      translation-texts="vm.config.multiselectTranslation"
-                     events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                     events="{onSelectionChanged: vm.onSelectedSpeciesTypeChange}">
                 </div>
             </div>
-            <div class="param-value" ng-hide="vm.editable">
-                {{vm.selectedSpeciesTypes[0].label}}
+            <div class="param-value" ng-if="!vm.isEditable">
+                <input class="form-control" type="text" ng-disabled="true" ng-model="vm.selectedSpeciesType[0].label">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Класс:</b>
+            </div>
+            <div class="param-value" ng-if="vm.isEditable">
+                <div ng-dropdown-multiselect=""
+                     options="vm.classes"
+                     selected-model="vm.selectedClass"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedClassChange}">
+                </div>
+            </div>
+            <div class="param-value" ng-if="!vm.isEditable">
+                <input class="form-control" type="text"  ng-disabled="true" ng-model="vm.selectedClass[0].label">
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b>Отряд:</b>
+            </div>
+            <div class="param-value" ng-if="vm.isEditable">
+                <div ng-dropdown-multiselect=""
+                     options="vm.orders"
+                     selected-model="vm.selectedOrder"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedOrderChange}">>
+                </div>
+            </div>
+            <div class="param-value" ng-if="!vm.isEditable">
+                <input class="form-control" type="text"  ng-disabled="true" ng-model="vm.selectedOrder[0].label">
             </div>
         </div>
         <div class="row param">
             <div class="param-description">
                 <b>Вид:</b>
             </div>
-            <div class="param-value" ng-hide="!vm.editable">
+            <div class="param-value" ng-if="vm.isEditable">
                 <div ng-dropdown-multiselect=""
                      options="vm.species"
                      selected-model="vm.selectedSpecies"
@@ -37,8 +73,8 @@
                      translation-texts="vm.config.multiselectTranslation">
                 </div>
             </div>
-            <div class="param-value" ng-hide="vm.editable">
-                {{vm.selectedSpecies[0].label}}
+            <div class="param-value" ng-if="!vm.isEditable">
+                <input class="form-control" type="text" ng-disabled="true" ng-model="vm.selectedSpecies[0].label">
             </div>
         </div>
         <div class="row param">
@@ -47,7 +83,7 @@
             </div>
             <div class="param-value">
                 <div class="date-range">
-                    <input type="date" ng-disabled="!vm.editable" ng-model="vm.date" max="{{vm.maxDate}}" />
+                    <input type="date" ng-disabled="!vm.isEditable" ng-model="vm.date" max="{{vm.maxDate}}" />
                 </div>
             </div>
         </div>
@@ -57,7 +93,7 @@
             </div>
             <div class="param-value">
                 <div>
-                    <textarea class="observation-description" ng-disabled="!vm.editable" ng-model="vm.observation.description"></textarea>
+                    <textarea class="observation-description" ng-disabled="!vm.isEditable" ng-model="vm.observation.description"></textarea>
                 </div>
             </div>
         </div>
@@ -72,8 +108,8 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" ng-hide="!vm.editable" type="button" ng-click="vm.save()">Сохранить изменения</button>
-        <button class="btn btn-danger" ng-hide="!vm.editable" type="button" ng-click="vm.delete()">Удалить</button>
+        <button class="btn btn-success" ng-hide="!vm.isEditable" type="button" ng-click="vm.save()">Сохранить изменения</button>
+        <button class="btn btn-danger" ng-hide="!vm.isEditable" type="button" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>
 </div>

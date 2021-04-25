@@ -13,8 +13,10 @@
 <link rel="stylesheet" href="~/css/Observation/AddObservation.css" />
 
 <script src="~/js/Services/observation-factory.js"></script>
-<script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/species-type-factory.js"></script>
+<script src="~/js/Services/class-factory.js"></script>
+<script src="~/js/Services/order-factory.js"></script>
+<script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/map-helper.js"></script>
 <script src="~/js/Observation/AddObservation.js"></script>
 
@@ -24,21 +26,44 @@
             <tr>
                 <td valign="top">
                     <div>
-                        Добавление наблюдения
-                    </div>
-                </td>
-                <td valign="top">
-                    <div>
                         <div>
                             Типы видов
                         </div>
                         <div ng-dropdown-multiselect=""
                              options="vm.observation.speciesTypes"
-                             selected-model="vm.observation.selectedSpeciesTypes"
-                             checkboxes="true"
+                             selected-model="vm.observation.selectedSpeciesType"
                              extra-settings="vm.config.multiselectSettings"
                              translation-texts="vm.config.multiselectTranslation"
-                             events="{onSelectionChanged: vm.onSpeciesTypesChage}">
+                             events="{onSelectionChanged: vm.onSelectedSpeciesTypeChange}">
+                        </div>
+                    </div>
+                </td>
+
+                <td valign="top">
+                    <div>
+                        <div>
+                            Классы
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.observation.classes"
+                             selected-model="vm.observation.selectedClass"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedClassChange}">
+                        </div>
+                    </div>
+                </td>
+                <td valign="top">
+                    <div>
+                        <div>
+                            Отряды
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.observation.orders"
+                             selected-model="vm.observation.selectedOrder"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedOrderChange}">
                         </div>
                     </div>
                 </td>
@@ -49,9 +74,8 @@
                     <div ng-dropdown-multiselect=""
                          options="vm.observation.species"
                          selected-model="vm.observation.selectedSpecies"
-                         extra-settings="vm.config.speciesMultiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation"
-                         events="{onSelectionChanged: vm.onSelectedSpeciesChange}">
+                         extra-settings="vm.config.multiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation">
                     </div>
                 </td>
                 <td valign="top">
@@ -73,7 +97,7 @@
                 </td>
 
                 <td id="add-button-container" valign="top">
-                    <button class="btn btn-primary"  type="button" ng-click="vm.onAddObservation()">Добавить</button>
+                    <button class="btn btn-primary" type="button" ng-click="vm.onAddObservation()">Добавить</button>
                 </td>
             </tr>
         </table>

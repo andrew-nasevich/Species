@@ -4,7 +4,7 @@ var mapHelper = angular.module('mapHelper', []);
 
 mapHelper.factory('mapHelper', function ($http, $window, $q) {
 
-    var mymap = L.map('mapid').setView([53.505, 28.09], 7);
+    var mymap = L.map('mapid', { zoomControl: false }).setView([53.505, 28.09], 7);
     var markers = [];
 
     return {

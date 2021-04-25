@@ -36,7 +36,6 @@ speciesIndex.controller('speciesIndexController',
                 classes: classFactory.get(),
                 orders: orderFactory.get(),
                 species: speciesFactory.get(),
-                
             };
 
             $q.all(promises).then(data => {

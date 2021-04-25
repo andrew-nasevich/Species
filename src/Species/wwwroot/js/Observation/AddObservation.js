@@ -3,71 +3,97 @@
 var addObservationModule = angular.module('addObservation', [
     'angularjs-dropdown-multiselect',
     'observationFactoryModule',
-    'speciesFactoryModule',
     'speciesTypeFactoryModule',
+    'classFactoryModule',
+    'orderFactoryModule',
+    'speciesFactoryModule',
     'mapHelper',
-    'ngCookies'
+    'pleasewait',
 ]);
 
 addObservationModule.controller('addObservationController',
-    function addObservationController($q, $cookies, observationFactory, speciesFactory, speciesTypeFactory, mapHelper) {
-        let self = this;
+    function addObservationController($q, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, mapHelper, $pleasewait) {
+        let vm = this;
 
-        self.observation = {};
+        $pleasewait.show();
 
-        self.$onInit = () => {
-
-            var speciesPromise = $q.defer();
-            speciesFactory.get().then(result => {
-                self.allSpecies = angular.copy(result.map(o => { return { label: o.russianName + ' - ' + self.convertCategory(o.category), ...o } }));
-                self.observation.species = angular.copy(self.allSpecies);
-                self.observation.selectedSpecies = [];
-
-                speciesPromise.resolve();
-            });
-
-            var speciesTypesPromise = $q.defer();
-            speciesTypeFactory.get().then(result => {
-                self.allSpeciesTypes = angular.copy(result.map(o => { return { label: o.type, ...o } }));
-                self.observation.speciesTypes = angular.copy(self.allSpeciesTypes);
-                self.observation.selectedSpeciesTypes = [...self.observation.speciesTypes];
-
-                speciesTypesPromise.resolve();
-            });
+        vm.$onInit = () => {
 
             var today = new Date();
-            self.today = today.toISOString().substring(0, 10);
-            self.observation.date = today;
+            vm.today = vm.getTodayDateString();
+            vm.observation = {
+                description: '',
+                date: today,
+            };
 
-            self.observation.description = '';
+            var promises = {
+                speciesTypes: speciesTypeFactory.get(),
+                classes: classFactory.get(),
+                orders: orderFactory.get(),
+                species: speciesFactory.get(),
+            };
+
+            $q.all(promises).then(data => {
+                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.type, ...o } }));
+                vm.observation.speciesTypes = angular.copy(vm.allSpeciesTypes);
+                vm.observation.selectedSpeciesType = [];
+
+                vm.allClasses = angular.copy(data.classes.map(c => { return { label: c.name, ...c } }));
+                vm.observation.classes = [];
+                vm.observation.selectedClass = [];
+
+                vm.allOrders = angular.copy(data.orders.map(o => { return { label: o.name, ...o } }));
+                vm.observation.orders = [];
+                vm.observation.selectedOrder = [];
+
+                vm.allSpecies = angular.copy(data.species.map(o => { return { convertedCategory: vm.convertCategory(o.category), label: o.russianName, ...o } }));
+                vm.observation.species = [];
+                vm.observation.selectedSpecies = [];
+
+                $pleasewait.hide();
+            });
 
             mapHelper.init();
-            mapHelper.registerOnClick(self.onMapClick);
+            mapHelper.registerOnClick(vm.onMapClick);
 
-            self.configMultiselect();
+            vm.configMultiselect();
         };
 
-        self.onSpeciesTypesChage = () => {
-            var species = self.allSpecies.filter(s => self.observation.selectedSpeciesTypes.some(st => st.id == s.speciesType.id));
-            self.observation.species = species;
-            self.observation.selectedSpecies = [...species.filter(ss => self.observation.selectedSpecies.some(s => s.id == ss.id))];
+        vm.onSelectedSpeciesTypeChange = () => {
+            vm.observation.classes = vm.allClasses.filter(c => vm.observation.selectedSpeciesType.some(st => st.id == c.speciesTypeId));
+            vm.observation.selectedClass = [...vm.observation.classes.filter(c => vm.observation.selectedClass.some(sc => sc.id == c.id))];
+
+            vm.onSelectedClassChange();
         };
 
-        self.onMapClick = (params) => {
-            if (!self.observation.markerIsSet) {
+        vm.onSelectedClassChange = () => {
+            vm.observation.orders = vm.allOrders.filter(o => vm.observation.selectedClass.some(c => c.id == o.classId));
+            vm.observation.selectedOrder = vm.observation.orders.length == 1 ? [...vm.observation.orders] : [...vm.observation.orders.filter(o => vm.observation.selectedOrder.some(so => so.id == o.id))];
+
+            vm.onSelectedOrderChange();
+        };
+
+        vm.onSelectedOrderChange = () => {
+            vm.observation.species = vm.allSpecies.filter(s => vm.observation.selectedOrder.some(o => o.id == s.orderId));
+            vm.observation.selectedSpecies = vm.observation.species.length == 1 ? [...vm.observation.species] : [...vm.observation.species.filter(s => vm.observation.selectedSpecies.some(ss => ss.id == s.id))];
+
+        };
+
+        vm.onMapClick = (params) => {
+            if (!vm.observation.markerIsSet) {
                 mapHelper.addMarker(params.latlng.lat, params.latlng.lng, undefined, 1, { draggable: true });
-                self.observation.markerIsSet = true;
+                vm.observation.markerIsSet = true;
             } else {
                 mapHelper.setMarkerlatlng(1, params.latlng.lat, params.latlng.lng);
             }
 
-            if (self.observation.selectedSpecies.length > 0) {
-                mapHelper.setMarkerTooltipText(1, self.observation.selectedSpecies[0].label);
+            if (vm.observation.selectedSpecies.length > 0) {
+                mapHelper.setMarkerTooltipText(1, vm.observation.selectedSpecies[0].label);
             }
         };
 
-        self.onAddObservation = () => {
-            var species = self.observation.selectedSpecies[0];
+        vm.onAddObservation = () => {
+            var species = vm.observation.selectedSpecies[0];
             var latLng = mapHelper.getMarkerlatlng(1);
 
             var errorText = '';
@@ -83,27 +109,27 @@ addObservationModule.controller('addObservationController',
                 return;
             }
 
-            observationFactory.add(latLng.lat, latLng.lng, self.observation.description, self.observation.date,  species.id)
+            observationFactory.add(latLng.lat, latLng.lng, vm.observation.description, vm.observation.date,  species.id)
                 .then(r => {
                     alert(species.label + ' был добавлен.');
                 });
         }
 
-        self.onSelectedSpeciesChange = () => {
-            if (!self.observation.markerIsSet) {
+        vm.onSelectedSpeciesChange = () => {
+            if (!vm.observation.markerIsSet) {
                 return
             }
-            if (self.observation.selectedSpecies.length > 0) {
-                mapHelper.setMarkerTooltipText(1, self.observation.selectedSpecies[0].label);
+            if (vm.observation.selectedSpecies.length > 0) {
+                mapHelper.setMarkerTooltipText(1, vm.observation.selectedSpecies[0].label);
             } else {
                 mapHelper.closeMakersToolTip(1);
             }      
         };
 
-        self.configMultiselect = () => {
+        vm.configMultiselect = () => {
 
-            self.config = {}
-            self.config.multiselectTranslation = {
+            vm.config = {}
+            vm.config.multiselectTranslation = {
                 checkAll: 'Выбрать все',
                 uncheckAll: 'Сбросить',
                 buttonDefaultText: 'Выбрать',
@@ -112,18 +138,13 @@ addObservationModule.controller('addObservationController',
                 dynamicButtonTextSuffix: 'выбрано',
             };
 
-            self.config.speciesTypesMultiselectSettings = {
-                scrollableHeight: '200px',
-            };
-            self.config.speciesMultiselectSettings = {
-                scrollableHeight: '300px',
-                scrollable: true,
-                enableSearch: true,
+            vm.config.multiselectSettings = {
+                scrollableHeight: '400px',
                 selectionLimit: 1
             };
         };
 
-        self.convertCategory = (category) => {
+        vm.convertCategory = (category) => {
             switch (category) {
                 case 1:
                     return 'I';
@@ -136,6 +157,13 @@ addObservationModule.controller('addObservationController',
                 case 5:
                     return 'V';
             }
+        };
+
+        vm.getTodayDateString = () => {
+            var today = new Date();
+            today.setHours(today.getHours() + 3);
+
+            return today.toISOString().substring(0, 10);
         };
     }
 );

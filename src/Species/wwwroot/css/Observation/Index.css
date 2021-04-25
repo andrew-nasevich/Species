@@ -4,8 +4,6 @@
     margin-bottom: 10px;
 }
 
-
-
 .species {
     width: 540px;
     height: 176px;
@@ -23,25 +21,25 @@
     display: inline-block;
 }
 
-    .species-image img {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-    }
+.species-image img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
 
 .species-description {
     width: 340px;
     display: inline-block;
 }
 
-    .species-description p {
-        height: 31px;
-    }
+.species-description p {
+    height: 31px;
+}
 
-    .species-description button {
-        height: 27px;
-        padding-top: 3px;
-    }
+.species-description button {
+    height: 27px;
+    padding-top: 3px;
+}
 
 .modal-header {
     background-color: #c6f0b3
@@ -65,7 +63,7 @@
 }
 
 .param-value textarea {
-    height: 200px;
+    height: 170px;
     width: 100%;
 }
 
