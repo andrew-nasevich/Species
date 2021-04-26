@@ -1,19 +1,9 @@
 ﻿'use strict'
 
-var speciesIndex = angular.module('speciesIndex', [
-    'angularjs-dropdown-multiselect',
-    'speciesTypeFactoryModule',
-    'classFactoryModule',
-    'orderFactoryModule',
-    'speciesFactoryModule',
-    'accountFactoryModule',
-    'ngCookies',
-    'ui.bootstrap',
-    'pleasewait',
-]);
-
-speciesIndex.controller('speciesIndexController',
-    function speciesIndexController($q, $cookies, $uibModal, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, $pleasewait, ) {
+speciesHierarchy.component('species', {
+    templateUrl: '/templates/SpeciesHierarchy/species.html?v=' + new Date().getTime(),
+    controllerAs: 'vm',
+    controller($q, $cookies, $uibModal, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, $pleasewait, ) {
         $pleasewait.show();
         let vm = this;
 
@@ -150,7 +140,7 @@ speciesIndex.controller('speciesIndexController',
                         $ctrl.allSpecies = allSpecies;
                         $ctrl.species = species;
                         $ctrl.isEditable = isEditable;
-                }],
+                    }],
                 resolve: {
                     allSpeciesTypes: () => {
                         return angular.copy(vm.allSpeciesTypes);
@@ -225,5 +215,5 @@ speciesIndex.controller('speciesIndexController',
                     return 'IV';
             }
         };
-    }
-);
+    },
+});

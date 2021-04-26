@@ -77,6 +77,18 @@ addObservationModule.controller('addObservationController',
             vm.observation.species = vm.allSpecies.filter(s => vm.observation.selectedOrder.some(o => o.id == s.orderId));
             vm.observation.selectedSpecies = vm.observation.species.length == 1 ? [...vm.observation.species] : [...vm.observation.species.filter(s => vm.observation.selectedSpecies.some(ss => ss.id == s.id))];
 
+            vm.onSelectedSpeciesChange();
+        };
+
+        vm.onSelectedSpeciesChange = () => {
+            if (!vm.observation.markerIsSet) {
+                return
+            }
+            if (vm.observation.selectedSpecies.length > 0) {
+                mapHelper.setMarkerTooltipText(1, vm.observation.selectedSpecies[0].label);
+            } else {
+                mapHelper.closeMakersToolTip(1);
+            }
         };
 
         vm.onMapClick = (params) => {
@@ -114,17 +126,6 @@ addObservationModule.controller('addObservationController',
                     alert(species.label + ' был добавлен.');
                 });
         }
-
-        vm.onSelectedSpeciesChange = () => {
-            if (!vm.observation.markerIsSet) {
-                return
-            }
-            if (vm.observation.selectedSpecies.length > 0) {
-                mapHelper.setMarkerTooltipText(1, vm.observation.selectedSpecies[0].label);
-            } else {
-                mapHelper.closeMakersToolTip(1);
-            }      
-        };
 
         vm.configMultiselect = () => {
 

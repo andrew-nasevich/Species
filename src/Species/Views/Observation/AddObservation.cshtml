@@ -18,7 +18,7 @@
 <script src="~/js/Services/order-factory.js"></script>
 <script src="~/js/Services/species-factory.js"></script>
 <script src="~/js/Services/map-helper.js"></script>
-<script src="~/js/Observation/AddObservation.js"></script>
+<script src="~/js/Observation//AddObservation/AddObservation.js"></script>
 
 <div ng-app="addObservation">
     <div ng-controller="addObservationController as vm">
@@ -75,7 +75,8 @@
                          options="vm.observation.species"
                          selected-model="vm.observation.selectedSpecies"
                          extra-settings="vm.config.multiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation">
+                         translation-texts="vm.config.multiselectTranslation"
+                         events="{onSelectionChanged: vm.onSelectedSpeciesChange}">
                     </div>
                 </td>
                 <td valign="top">

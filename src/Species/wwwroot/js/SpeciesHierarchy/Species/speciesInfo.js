@@ -1,4 +1,4 @@
-﻿speciesIndex.component('speciesInfo', {
+﻿speciesHierarchy.component('speciesInfo', {
     bindings: {
         allSpeciesTypes: '=',
         allClasses: '=',

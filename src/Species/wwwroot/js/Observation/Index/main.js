@@ -9,12 +9,13 @@ var observationMain = angular.module('observationMain', [
     'speciesFactoryModule',
     'accountFactoryModule',
     'mapHelper',
+    'iconFactoryModule',
     'ngCookies',
-    'pleasewait'
+    'pleasewait',
 ]);
 
 observationMain.controller('observationMainController',
-    function observationMainController($q, $cookies, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, mapHelper, $pleasewait, $uibModal) {
+    function observationMainController($q, $cookies, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, mapHelper, iconFactory, $pleasewait, $uibModal) {
         let vm = this;
 
         $pleasewait.show();
@@ -78,7 +79,8 @@ observationMain.controller('observationMainController',
                     o.species = vm.allSpecies.find(s => s.id == o.speciesId);
                 });
                 vm.search.allObservations.forEach(o => {
-                    mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id);
+                    var icon = iconFactory.getMarkerIcon(o.species.category);
+                    mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id, { icon: icon });
                     mapHelper.registerOnClickMarker(o.id, () => vm.onOpenInfo(o));
                 });
 

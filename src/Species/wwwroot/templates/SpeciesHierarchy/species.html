@@ -1,0 +1,79 @@
+﻿<div class="search-container">
+    <table>
+        <tr>
+            <td valign="top">
+                <div>
+                    Параметры поиска
+                </div>
+            </td>
+            <td valign="top">
+                <div>
+                    <div>
+                        Типы видов
+                    </div>
+                    <div ng-dropdown-multiselect=""
+                         options="vm.search.speciesTypes"
+                         selected-model="vm.search.selectedSpeciesTypes"
+                         checkboxes="true"
+                         extra-settings="vm.config.speciesTypesMultiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation"
+                         events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
+                    </div>
+                </div>
+            </td>
+            <td valign="top">
+                <div>
+                    <div>
+                        Классы
+                    </div>
+                    <div ng-dropdown-multiselect=""
+                         options="vm.search.classes"
+                         selected-model="vm.search.selectedClasses"
+                         checkboxes="true"
+                         extra-settings="vm.config.multiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation"
+                         events="{onSelectionChanged: vm.onSelectedClassesChange}">
+                    </div>
+                </div>
+            </td>
+            <td valign="top">
+                <div>
+                    <div>
+                        Отряды
+                    </div>
+                    <div ng-dropdown-multiselect=""
+                         options="vm.search.orders"
+                         selected-model="vm.search.selectedOrders"
+                         checkboxes="true"
+                         extra-settings="vm.config.multiselectSettings"
+                         translation-texts="vm.config.multiselectTranslation"
+                         events="{onSelectionChanged: vm.onSelectedOrdersChange}">
+                    </div>
+                </div>
+            </td>
+            <td valign="top">
+                <div>
+                    Поиск
+                </div>
+                <div class="search-name">
+                    <input type="text" ng-model="vm.search.searchInput" />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>
+</div>
+<div class="species-container">
+    <div class="species" ng-repeat="species in vm.search.species | filter:vm.search.searchInput">
+        <div class="species-image">
+            <img ng-src="/images/{{species.image}}" />
+        </div>
+        <div class="species-description">
+            <p><b>Имя</b>: {{species.russianName}}</p>
+            <p><b>Латинское имя</b>: {{species.latinName}}</p>
+            <p><b>Категория</b>: {{species.convertedCategory}}</p>
+
+            <button class="btn btn-success btn-sm" type="button" ng-click="vm.onOpenInfo(species)">Подробная информация</button>
+        </div>
+    </div>
+</div>
