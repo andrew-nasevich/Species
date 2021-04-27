@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Species.Database;
 using Species.Database.Entities;
+using Species.Models;
 
 namespace Species.ApiControllers
 {
@@ -23,6 +25,64 @@ namespace Species.ApiControllers
         {
             var a = _context.SpeciesTypes.ToArray();
             return _context.SpeciesTypes.ToArray();
+        }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody]SpeciesTypeModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var speciesType = new SpeciesType()
+            {
+                Type = model.Name,
+            };
+
+            _context.SpeciesTypes.Add(speciesType);
+            _context.SaveChanges();
+
+            return new JsonResult(speciesType);
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public IActionResult Update([FromBody]SpeciesTypeModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var speciesType = _context.SpeciesTypes.FirstOrDefault(s => s.Id == model.Id);
+            if (speciesType == null)
+            {
+                return BadRequest();
+            }
+
+            speciesType.Type = model.Name;
+            _context.Entry(speciesType).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult Delete(int id)
+        {
+            var speciesType = _context.SpeciesTypes.FirstOrDefault(s => s.Id == id);
+            if (speciesType == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(speciesType).State = EntityState.Deleted;
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

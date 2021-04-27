@@ -1,27 +1,24 @@
-﻿speciesHierarchy.component('speciesInfo', {
+﻿speciesHierarchy.component('orderInfo', {
     bindings: {
         allSpeciesTypes: '=',
         allClasses: '=',
         allOrders: '=',
-        allSpecies: '=',
-        species: '=',
+        order: '=',
         isEditable: '=',
         $close: '&',
         $dismiss: '&'
     },
-    templateUrl: '/templates/SpeciesHierarchy/Species/speciesInfo.html?v=' + new Date().getTime(),
+    templateUrl: '/templates/SpeciesHierarchy/Orders/orderInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
     controller() {
         const vm = this;
 
         vm.$onInit = () => {
-            vm.isNew = vm.species.id == 0;
+            vm.isNew = vm.order.id == 0;
 
-            vm.selectedOrder = vm.isNew ? [] : [vm.allOrders.find(o => o.id == vm.species.orderId)];
-            vm.selectedClass = vm.isNew ? [] : [vm.allClasses.find(c => c.id == vm.selectedOrder[0].classId)];
+            vm.selectedClass = vm.isNew ? [] : [vm.allClasses.find(c => c.id == vm.order.classId)];
             vm.selectedSpeciesType = vm.isNew ? [] : [vm.allSpeciesTypes.find(t => t.id == vm.selectedClass[0].speciesTypeId)];
 
-            vm.orders = vm.isNew ? [] : [...vm.allOrders.filter(o => o.classId == vm.selectedClass[0].id)];
             vm.classes = vm.isNew ? [] : [...vm.allClasses.filter(c => c.speciesTypeId == vm.selectedSpeciesType[0].id)];
             vm.speciesTypes = vm.allSpeciesTypes;
 
@@ -40,44 +37,32 @@
             vm.$dismiss({
                 result: {
                     reason: 'delete',
-                    entity: vm.species
+                    entity: vm.order
                 }
             });
         };
 
         vm.save = () => {
 
-            if (!vm.selectedOrder[0]) {
-                alert('Пожалуйста, выберите тип, класс и отряд для данного вида.');
+            if (!vm.selectedClass[0]) {
+                alert('Пожалуйста, выберите тип и класс для данного отряда.');
                 return;
             }
 
-            if (!vm.species.russianName) {
-                alert('Пожалуйста, заполните поле вида.');
+            if (!vm.order.name) {
+                alert('Пожалуйста, запоните поле названия.');
                 return;
             }
 
-            if (!vm.species.category || vm.species.category > 4 || vm.species.category < 1) {
-                alert('Пожалуйста, укажите категорию в диапазоне [1..4].');
-                return;
-            }
-
-            vm.species.orderId = vm.selectedOrder[0].id;
+            vm.order.classId = vm.selectedClass[0].id;
             vm.$close({
-                species: vm.species,
+                order: vm.order,
             });
         };
 
         vm.onSelectedSpeciesTypeChange = () => {
             vm.classes = vm.allClasses.filter(c => vm.selectedSpeciesType.some(st => st.id == c.speciesTypeId));
             vm.selectedClass = [...vm.classes.filter(c => vm.selectedClass.some(sc => sc.id == c.id))];
-            
-            vm.onSelectedClassChange();
-        };
-
-        vm.onSelectedClassChange = () => {
-            vm.orders = vm.allOrders.filter(o => vm.selectedClass.some(c => c.id == o.classId));
-            vm.selectedOrder = vm.orders.length == 1 ? [...vm.orders] : [...vm.orders.filter(o => vm.selectedOrder.some(so => so.id == o.id))];
         };
 
 

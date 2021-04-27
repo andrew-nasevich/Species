@@ -18,7 +18,19 @@ speciesHierarchy.config(($stateProvider, $urlServiceProvider) => {
 
     $stateProvider
         .state('species', {
-            url: 'species',
+            url: '/species',
             component: 'species'
+        })
+        .state('orders', {
+            url: '/orders',
+            component: 'orders'
+        })
+        .state('classes', {
+            url: '/classes',
+            component: 'classes'
+        })
+        .state('speciesTypes', {
+            url: '/speciesTypes',
+            component: 'speciesTypes'
         });
 });

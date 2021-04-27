@@ -1,20 +1,17 @@
 ﻿'use strict'
 
-speciesHierarchy.component('species', {
-    templateUrl: '/templates/SpeciesHierarchy/Species/species.html?v=' + new Date().getTime(),
+speciesHierarchy.component('orders', {
+    templateUrl: '/templates/SpeciesHierarchy/Orders/orders.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($q, $cookies, $uibModal, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, $pleasewait, ) {
+    controller($q, $cookies, $uibModal, speciesTypeFactory, classFactory, orderFactory, accountFactory, $pleasewait, ) {
         $pleasewait.show();
         let vm = this;
 
         vm.search = {};
 
-        vm.rawSpecies = {
+        vm.rawOrder = {
             id: 0,
-            image: 'default.jfif',
-            category: 1,
-            description: '',
-            latinName: ''
+            latinName: '',
         };
 
         vm.$onInit = () => {
@@ -26,7 +23,6 @@ speciesHierarchy.component('species', {
                 speciesTypes: speciesTypeFactory.get(),
                 classes: classFactory.get(),
                 orders: orderFactory.get(),
-                species: speciesFactory.get(),
             };
 
             $q.all(promises).then(data => {
@@ -42,11 +38,12 @@ speciesHierarchy.component('species', {
                 vm.search.selectedClasses = [...vm.search.classes];
 
                 vm.allOrders = angular.copy(data.orders.map(o => { return { label: o.name, ...o } }));
-                vm.search.orders = angular.copy(vm.allOrders);
-                vm.search.selectedOrders = [...vm.search.orders];
+                vm.allOrders.forEach(o => {
+                    o.class = vm.allClasses.find(c => c.id == o.classId);
+                    o.type = vm.allSpeciesTypes.find(t => t.id == o.class.speciesTypeId);
+                });
 
-                vm.allSpecies = angular.copy(data.species.map(o => { return { convertedCategory: vm.convertCategory(o.category), ...o } }));
-                vm.search.species = angular.copy(vm.allSpecies);
+                vm.search.orders = angular.copy(vm.allOrders);
 
                 $pleasewait.hide();
             });
@@ -63,83 +60,78 @@ speciesHierarchy.component('species', {
 
         vm.onSelectedClassesChange = () => {
             vm.search.orders = vm.allOrders.filter(o => vm.search.selectedClasses.some(c => c.id == o.classId));
-            vm.search.selectedOrders = [...vm.search.orders.filter(o => vm.search.selectedOrders.some(so => so.id == o.id))];
 
-            vm.onSelectedOrdersChange();
-        };
-
-        vm.onSelectedOrdersChange = () => {
-            vm.search.species = vm.allSpecies.filter(s => vm.search.selectedOrders.some(o => o.id == s.orderId));
         };
 
         vm.onOpenInfo = (entity) => {
-            var result = vm.openSpeciesInfo(angular.copy(entity), false);
+            var result = vm.openOrderInfo(angular.copy(entity), false);
 
-            result.then((species) => {
+            result.then((order) => {
                 $pleasewait.show();
-                var index = vm.allSpecies.indexOf(vm.allSpecies.find(s => s.id == species.id));
+                var index = vm.allOrders.indexOf(vm.allOrders.find(s => s.id == order.id));
                 if (index >= 0) {
-                    speciesFactory.update(species).then(() => {
-                        species.convertedCategory = vm.convertCategory(species.category)
-                        vm.allSpecies[index] = angular.copy(species);
+                    orderFactory.update(order).then(() => {
+                        vm.allOrders[index] = angular.copy(order);
 
-                        var speciesIndex = vm.search.species.indexOf(vm.search.species.find(s => s.id == species.id));
-                        vm.search.species[speciesIndex] = species;
+                        var orderIndex = vm.search.orders.indexOf(vm.search.orders.find(s => s.id == order.id));
+                        vm.search.orders[orderIndex] = order;
 
                         $pleasewait.hide();
                     });
                 }
             }, (result) => {
                 if (result.reason == 'delete') {
-                    vm.deleteSpecies(result.entity);
+                    vm.deleteOrder(result.entity);
                 }
             });
         };
 
         vm.addNew = () => {
-            var species = angular.copy(vm.rawSpecies);
-            var result = vm.openSpeciesInfo(species, true);
+            var order = angular.copy(vm.rawOrder);
+            var result = vm.openOrderInfo(order, true);
 
-            result.then((species) => {
+            result.then((order) => {
                 $pleasewait.show();
-                speciesFactory.create(species).then((species) => {
-                    species = { convertedCategory: vm.convertCategory(species.category), ...species };
+                orderFactory.create(order).then((order) => {
+                    order = {
+                        ...order,
+                        class: vm.allClasses.find(c => c.id == order.classId),
+                        type: vm.allSpeciesTypes.find(t => t.id == order.class.speciesTypeId),
+                    };
 
-                    if (vm.search.selectedOrders.some(o => o.id == species.orderId)) {
-                        vm.search.species.push(species);
+                    if (vm.search.selectedClasses.some(sc => sc.id == order.classId)) {
+                        vm.search.orders.push(order);
                     }
 
-                    vm.allSpecies.push(species);
+                    vm.allOrders.push(order);
                     $pleasewait.hide();
                 });
             });
         };
 
-        vm.openSpeciesInfo = (entity) => {
+        vm.openOrderInfo = (entity) => {
 
             const dialog = $uibModal.open({
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 keyboard: false,
-                size: 'lg',
-                template: `<species-info 
+                size: 'bg',
+                template: `<order-info 
                             all-species-types="$ctrl.allSpeciesTypes"                            
                             all-classes="$ctrl.allClasses"
                             all-orders="$ctrl.allOrders"
-                            all-species="$ctrl.allSpecies"
-                            species="$ctrl.species"                            
+                            order="$ctrl.order"                            
                             is-editable="$ctrl.isEditable"
-                            $close=$close(species)
+                            $close=$close(order)
                             $dismiss="$dismiss(result)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['allSpeciesTypes', 'allClasses', 'allOrders', 'allSpecies', 'species', 'isEditable',
-                    function (allSpeciesTypes, allClasses, allOrders, allSpecies, species, isEditable) {
+                controller: ['allSpeciesTypes', 'allClasses', 'allOrders', 'order', 'isEditable',
+                    function (allSpeciesTypes, allClasses, allOrders, order, isEditable) {
                         const $ctrl = this;
                         $ctrl.allSpeciesTypes = allSpeciesTypes;
                         $ctrl.allClasses = allClasses;
                         $ctrl.allOrders = allOrders;
-                        $ctrl.allSpecies = allSpecies;
-                        $ctrl.species = species;
+                        $ctrl.order = order;
                         $ctrl.isEditable = isEditable;
                     }],
                 resolve: {
@@ -152,10 +144,7 @@ speciesHierarchy.component('species', {
                     allOrders: () => {
                         return angular.copy(vm.allOrders);
                     },
-                    allSpecies: () => {
-                        return angular.copy(vm.allSpecies);
-                    },
-                    species: () => {
+                    order: () => {
                         return angular.copy(entity);
                     },
                     isEditable: () => {
@@ -167,15 +156,15 @@ speciesHierarchy.component('species', {
             return dialog.result;
         };
 
-        vm.deleteSpecies = (species) => {
+        vm.deleteOrder = (order) => {
             $pleasewait.show();
-            speciesFactory.delete(species.id).then(() => {
-                var index = vm.allSpecies.indexOf(vm.allSpecies.find(s => s.id == species.id));
-                vm.allSpecies.splice(index, 1);
+            orderFactory.delete(order.id).then(() => {
+                var index = vm.allOrders.indexOf(vm.allOrders.find(s => s.id == order.id));
+                vm.allOrders.splice(index, 1);
 
-                var selectedIndex = vm.search.species.indexOf(vm.search.species.find(s => s.id == species.id));
+                var selectedIndex = vm.search.orders.indexOf(vm.search.orders.find(s => s.id == order.id));
                 if (selectedIndex > 0) {
-                    vm.search.species.splice(selectedIndex, 1);
+                    vm.search.orders.splice(selectedIndex, 1);
                 }
                 $pleasewait.hide();
             });
@@ -202,19 +191,6 @@ speciesHierarchy.component('species', {
                 scrollable: true,
                 enableSearch: true
             };
-        };
-
-        vm.convertCategory = (category) => {
-            switch (category) {
-                case 1:
-                    return 'I';
-                case 2:
-                    return 'II';
-                case 3:
-                    return 'III';
-                case 4:
-                    return 'IV';
-            }
         };
     },
 });

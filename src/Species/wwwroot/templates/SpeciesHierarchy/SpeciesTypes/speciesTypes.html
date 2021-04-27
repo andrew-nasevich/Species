@@ -1,0 +1,27 @@
+﻿<div class="search-container">
+    <table>
+        <tr>
+            <td valign="top">
+                <div>
+                    Параметры поиска
+                </div>
+            </td>
+            <td valign="top">
+                <div>
+                    Поиск
+                </div>
+                <div class="search-name">
+                    <input type="text" ng-model="vm.search.searchInput" />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <button id="add-new-button" class="btn btn-success" type="button" ng-if="vm.isAdmin" ng-click="vm.addNew()">Добавить новый тип</button>
+</div>
+<div>
+    <div class="orders" ng-repeat="speciesType in vm.search.speciesTypes | filter:vm.search.searchInput">
+        <p><b>Имя типа</b>: {{speciesType.name}}</p>
+
+        <button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(speciesType)">Редактировать тип</button>
+    </div>
+</div>

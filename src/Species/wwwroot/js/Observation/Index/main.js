@@ -80,7 +80,7 @@ observationMain.controller('observationMainController',
                 });
                 vm.search.allObservations.forEach(o => {
                     var icon = iconFactory.getMarkerIcon(o.species.category);
-                    mapHelper.addMarker(o.latitude, o.longitude, o.species.label, o.id, { icon: icon });
+                    mapHelper.addMarker(o.latitude, o.longitude, o.species.russianName, o.id, { icon: icon });
                     mapHelper.registerOnClickMarker(o.id, () => vm.onOpenInfo(o));
                 });
 

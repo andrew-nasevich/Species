@@ -14,6 +14,39 @@ classFactoryModule.factory('classFactory', function ($http, $q) {
             });
 
             return deferred.promise;
-        }
+        },
+        update: function (classParam) {
+            var deferred = $q.defer();
+
+            $http.put(`/api/Class/update/`, classParam).then(responce => {
+                deferred.resolve(responce.data);
+            }, error => {
+                deferred.reject(`Error: ${error.code}`);
+            });
+
+            return deferred.promise;
+        },
+        delete: function (id) {
+            var deferred = $q.defer();
+
+            $http.delete(`/api/Class/delete/?id=${id}`).then(responce => {
+                deferred.resolve(responce.data);
+            }, error => {
+                deferred.reject(`Error: ${error.code}`);
+            });
+
+            return deferred.promise;
+        },
+        create: function (classParam) {
+            var deferred = $q.defer();
+
+            $http.post(`/api/Class/create/`, classParam).then(responce => {
+                deferred.resolve(responce.data);
+            }, error => {
+                deferred.reject(`Error: ${error.code}`);
+            });
+
+            return deferred.promise;
+        },
     }
 });

@@ -38,21 +38,6 @@
             </td>
             <td valign="top">
                 <div>
-                    <div>
-                        Отряды
-                    </div>
-                    <div ng-dropdown-multiselect=""
-                         options="vm.search.orders"
-                         selected-model="vm.search.selectedOrders"
-                         checkboxes="true"
-                         extra-settings="vm.config.multiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation"
-                         events="{onSelectionChanged: vm.onSelectedOrdersChange}">
-                    </div>
-                </div>
-            </td>
-            <td valign="top">
-                <div>
                     Поиск
                 </div>
                 <div class="search-name">
@@ -61,19 +46,15 @@
             </td>
         </tr>
     </table>
-    <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>
+    <button id="add-new-button" class="btn btn-success" type="button" ng-if="vm.isAdmin" ng-click="vm.addNew()">Добавить новый отряд</button>
 </div>
-<div class="species-container">
-    <div class="species" ng-repeat="species in vm.search.species | filter:vm.search.searchInput">
-        <div class="species-image">
-            <img ng-src="/images/{{species.image}}" />
-        </div>
-        <div class="species-description">
-            <p><b>Имя</b>: {{species.russianName}}</p>
-            <p><b>Латинское имя</b>: {{species.latinName}}</p>
-            <p><b>Категория</b>: {{species.convertedCategory}}</p>
+<div>
+    <div class="orders" ng-repeat="order in vm.search.orders | filter:vm.search.searchInput">
+        <p><b>Тип</b>: {{order.type.type}}</p>
+        <p><b>Класс</b>: {{order.class.name}}</p>
+        <p><b>Имя отряда</b>: {{order.name}}</p>
+        <p><b>Латинское имя</b>: {{order.latinName}}</p>
 
-            <button class="btn btn-success btn-sm" type="button" ng-click="vm.onOpenInfo(species)">Подробная информация</button>
-        </div>
+        <button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(order)">Редактировать отряд</button>
     </div>
 </div>

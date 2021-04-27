@@ -68,7 +68,7 @@ namespace Species.ApiControllers
             }
 
             species.RussianName = model.RussianName;
-            species.LatinName = model.RussianName;
+            species.LatinName = model.LatinName;
             species.OrderId = model.OrderId;
             species.BelarusianName = model.BelarusianName;
             species.Category = model.Category;
