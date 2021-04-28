@@ -1,28 +1,28 @@
 ﻿/*SpeciesType*/
 
-Insert into SpeciesTypes Values('Животные')
-Insert into SpeciesTypes Values('Растения')
+Insert into SpeciesTypes Values('Животные','')
+Insert into SpeciesTypes Values('Растения','')
 
 /*Classes*/
 
-Insert into Classes Values('Пиявки','HIRUDINEA', 1)
-Insert into Classes Values('Максилопода', 'MAXILOPODA', 1)
-Insert into Classes Values('Высшие ракообразные', 'CRUSTACEA', 1)
+Insert into Classes Values('Пиявки','HIRUDINEA','', 1)
+Insert into Classes Values('Максилопода', 'MAXILOPODA','', 1)
+Insert into Classes Values('Высшие ракообразные', 'CRUSTACEA','', 1)
 
-Insert into Classes Values('Плауновидные', 'LYCOPODIOPSIDA', 2)
-Insert into Classes Values('Полушниковидные', 'ISOЁTOPSIDA', 2)
-Insert into Classes Values('Хвощевидные', 'EQUISETOPSIDA', 2)
+Insert into Classes Values('Плауновидные', 'LYCOPODIOPSIDA','', 2)
+Insert into Classes Values('Полушниковидные', 'ISOЁTOPSIDA','', 2)
+Insert into Classes Values('Хвощевидные', 'EQUISETOPSIDA','', 2)
 
 select * from Classes
 
 /*Orders*/
 
-Insert into Orders Values('Бесхоботные пиявки', 'ARHYNCHOBDELLIDA', 1)
-Insert into Orders Values('Веслоногие', 'COPEPODA', 2)
-Insert into Orders Values('Мизиды', 'MYSIDACEA', 3)
-Insert into Orders Values('Плауны', 'LYCOPODIALES', 4)
-Insert into Orders Values('Полушники', 'ISOЁTALES', 5)
-Insert into Orders Values('Хвощи', 'EQUISETALES', 6)
+Insert into Orders Values('Бесхоботные пиявки', 'ARHYNCHOBDELLIDA','', 1)
+Insert into Orders Values('Веслоногие', 'COPEPODA','', 2)
+Insert into Orders Values('Мизиды', 'MYSIDACEA','', 3)
+Insert into Orders Values('Плауны', 'LYCOPODIALES','', 4)
+Insert into Orders Values('Полушники', 'ISOЁTALES','', 5)
+Insert into Orders Values('Хвощи', 'EQUISETALES','', 6)
 
 select * from Orders
 
