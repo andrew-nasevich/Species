@@ -13,6 +13,19 @@ var speciesHierarchy = angular.module('speciesHierarchy', [
     'ui.router',
 ]);
 
+speciesHierarchy.controller('speciesHierarchyController', function ($location, $state) {
+    const vm = this;
+
+    vm.$onInit = () => {
+        vm.state = $location.url().slice(1);
+    };
+    
+    vm.goToState = (state) => {
+        vm.state = state;
+        $state.go(state);
+    };
+});
+
 speciesHierarchy.config(($stateProvider, $urlServiceProvider) => {
     $urlServiceProvider.rules.otherwise({ state: 'species' });
 

@@ -34,7 +34,7 @@ addObservationModule.controller('addObservationController',
             };
 
             $q.all(promises).then(data => {
-                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.type, ...o } }));
+                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.observation.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.observation.selectedSpeciesType = [];
 
@@ -46,7 +46,7 @@ addObservationModule.controller('addObservationController',
                 vm.observation.orders = [];
                 vm.observation.selectedOrder = [];
 
-                vm.allSpecies = angular.copy(data.species.map(o => { return { convertedCategory: vm.convertCategory(o.category), label: o.russianName, ...o } }));
+                vm.allSpecies = angular.copy(data.species.map(o => { return { label: `${o.russianName} - ${vm.convertCategory(o.category)}`, ...o } }));
                 vm.observation.species = [];
                 vm.observation.selectedSpecies = [];
 

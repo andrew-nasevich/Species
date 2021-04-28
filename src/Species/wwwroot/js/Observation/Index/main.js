@@ -44,7 +44,7 @@ observationMain.controller('observationMainController',
             $q.all(promises).then(data => {
                 vm.account = data.account;
 
-                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.type, ...o } }));
+                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.search.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.search.selectedSpeciesTypes = [...vm.search.speciesTypes];
 

@@ -38,7 +38,9 @@ namespace Species.ApiControllers
 
             var speciesType = new SpeciesType()
             {
-                Type = model.Name,
+                Name = model.Name,
+                Description = model.Description
+                
             };
 
             _context.SpeciesTypes.Add(speciesType);
@@ -62,7 +64,8 @@ namespace Species.ApiControllers
                 return BadRequest();
             }
 
-            speciesType.Type = model.Name;
+            speciesType.Name = model.Name;
+            speciesType.Description = model.Description;
             _context.Entry(speciesType).State = EntityState.Modified;
             _context.SaveChanges();
 

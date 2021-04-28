@@ -15,6 +15,8 @@ namespace Species.Models
         [BindRequired]
         public string LatinName { get; set; }
 
+        public string Description { get; set; }
+
 
         [BindRequired]
         public int ClassId { get; set; }

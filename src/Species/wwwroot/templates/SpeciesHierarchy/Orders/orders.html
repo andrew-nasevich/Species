@@ -3,11 +3,6 @@
         <tr>
             <td valign="top">
                 <div>
-                    Параметры поиска
-                </div>
-            </td>
-            <td valign="top">
-                <div>
                     <div>
                         Типы видов
                     </div>
@@ -50,11 +45,10 @@
 </div>
 <div>
     <div class="orders" ng-repeat="order in vm.search.orders | filter:vm.search.searchInput">
-        <p><b>Тип</b>: {{order.type.type}}</p>
+        <p><b>Тип</b>: {{order.type.name}}</p>
         <p><b>Класс</b>: {{order.class.name}}</p>
         <p><b>Имя отряда</b>: {{order.name}}</p>
         <p><b>Латинское имя</b>: {{order.latinName}}</p>
-
-        <button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(order)">Редактировать отряд</button>
+        <p><button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(order)">Редактировать отряд</button></p>
     </div>
 </div>

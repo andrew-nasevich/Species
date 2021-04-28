@@ -74,3 +74,14 @@
 .modal-title {
     padding-left: 20px;
 }
+
+#search-button {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+#check-by-me{
+    text-align:center;
+    padding: 5px;
+}

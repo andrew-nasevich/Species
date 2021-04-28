@@ -10,7 +10,8 @@ speciesHierarchy.component('speciesTypes', {
         vm.search = {};
 
         vm.rawSpeciesType = {
-            id: 0
+            id: 0,
+            description: '',
         };
 
         vm.$onInit = () => {
@@ -26,7 +27,7 @@ speciesHierarchy.component('speciesTypes', {
                 vm.account = data.account;
                 vm.isAdmin = !!vm.account.roles.find(r => r == 'Admin');
 
-                vm.search.speciesTypes = angular.copy(data.speciesTypes.map(o => { return { name: o.type, ...o } }));
+                vm.search.speciesTypes = angular.copy(data.speciesTypes.map(o => { return { name: o.name, ...o } }));
 
                 $pleasewait.hide();
             });
@@ -61,8 +62,7 @@ speciesHierarchy.component('speciesTypes', {
                 $pleasewait.show();
                 speciesTypeFactory.create(speciesType).then((speciesType) => {
                     speciesType = {
-                        ...speciesType,
-                        name: speciesType.type
+                        ...speciesType
                     };
 
                     vm.search.speciesTypes.push(speciesType);

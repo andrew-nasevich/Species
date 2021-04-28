@@ -1,10 +1,14 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.navbar {
+    background-color: rgba(151, 247, 131, 0.26);/*rgba(171, 218, 238, 0.46)*/
+}
+
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 .navigation-list {
@@ -78,7 +82,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  padding-bottom: 80px;
 }
 .footer {
   bottom: 0;
@@ -88,7 +92,8 @@ body {
 }
 
 .search-container {
-    margin-bottom: 5px
+    margin-bottom: 5px;
+    position: relative;
 }
 
 .search-container td:not(:first-child) {
@@ -102,4 +107,14 @@ body {
 
 .date-range input{
     height: 34px;
+}
+
+#footer {
+    position:absolute; 
+    left: 0;
+    bottom: 0; 
+    padding: 10px;
+    background: rgba(151, 247, 131, 0.26);
+    color: #000;
+    width: 100%; 
 }

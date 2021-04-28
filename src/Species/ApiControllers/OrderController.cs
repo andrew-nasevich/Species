@@ -39,6 +39,7 @@ namespace Species.ApiControllers
             {
                 Name = model.Name,
                 LatinName = model.LatinName,
+                Description = model.Description,
                 ClassId = model.ClassId,
             };
 
@@ -67,6 +68,7 @@ namespace Species.ApiControllers
 
             order.Name = model.Name;
             order.LatinName = model.LatinName;
+            order.Description = model.Description;
             order.ClassId = model.ClassId;
 
             _context.Entry(order).State = EntityState.Modified;

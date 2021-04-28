@@ -12,6 +12,7 @@ speciesHierarchy.component('orders', {
         vm.rawOrder = {
             id: 0,
             latinName: '',
+            description: '',
         };
 
         vm.$onInit = () => {
@@ -29,7 +30,7 @@ speciesHierarchy.component('orders', {
                 vm.account = data.account;
                 vm.isAdmin = !!vm.account.roles.find(r => r == 'Admin');
 
-                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.type, ...o } }));
+                vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.search.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.search.selectedSpeciesTypes = [...vm.search.speciesTypes];
 

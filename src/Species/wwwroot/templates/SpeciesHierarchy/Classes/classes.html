@@ -3,11 +3,6 @@
         <tr>
             <td valign="top">
                 <div>
-                    Параметры поиска
-                </div>
-            </td>
-            <td valign="top">
-                <div>
                     <div>
                         Типы видов
                     </div>
@@ -35,10 +30,9 @@
 </div>
 <div>
     <div class="orders" ng-repeat="class in vm.search.classes | filter:vm.search.searchInput">
-        <p><b>Тип</b>: {{class.type.type}}</p>
+        <p><b>Тип</b>: {{class.type.name}}</p>
         <p><b>Имя класса</b>: {{class.name}}</p>
         <p><b>Латинское имя</b>: {{class.latinName}}</p>
-
-        <button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(class)">Редактировать класс</button>
+        <p><button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(class)">Редактировать класс</button></p>
     </div>
 </div>
