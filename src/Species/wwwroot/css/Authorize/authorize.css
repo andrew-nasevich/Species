@@ -1,0 +1,41 @@
+﻿.auth-button {
+    width: 225px;
+    height: 30px;
+    display: inline-block;
+    border: 2px solid #a0c4cf /*#c7e5ee*/;
+    border-radius: 10px;
+    padding-top: 3px;
+    text-align: center;
+    margin: 0 10px 10px 0;
+}
+
+.active {
+    background-color: rgba(190, 241, 241, 0.33);
+}
+
+#login-button {
+    margin-left: 40px;
+}
+
+#registration-button {
+    float: right;
+    margin-right: 40px;
+}
+
+#auth-modal-header{
+    background-color: rgba(149, 219, 220, 0.41);
+    text-align: center;
+}
+
+#auth-modal-body {
+    height: 300px;
+    position: relative;
+}
+
+.auth-line{
+    height: 40px;
+}
+
+.form-horizontal{
+    padding-top: 10px;
+}
