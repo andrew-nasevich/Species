@@ -5,13 +5,12 @@
         allOrders: '=',
         allSpecies: '=',
         species: '=',
-        isEditable: '=',
         $close: '&',
         $dismiss: '&'
     },
     templateUrl: '/templates/SpeciesHierarchy/Species/speciesInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller() {
+    controller($rootScope) {
         const vm = this;
 
         vm.$onInit = () => {

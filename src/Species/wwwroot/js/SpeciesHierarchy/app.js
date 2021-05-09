@@ -1,6 +1,6 @@
 ﻿'use strict'
 
-var speciesHierarchy = angular.module('speciesHierarchy', [
+var speciesHierarchy = angular.module('appBody', [
     'angularjs-dropdown-multiselect',
     'speciesTypeFactoryModule',
     'classFactoryModule',

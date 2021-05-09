@@ -16,13 +16,15 @@
     <script src="~/lib/Angularjs/angular-resource.js"></script>
     <script src="~/lib/Angularjs/angular-cookies.js"></script>
     <script src="~/lib/Angularjs/angular-sanitize.js"></script>
+    <script src="~/js/root/app.js"></script>
     <script src="~/js/third-party/ui-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="~/js/third-party/angularjs-dropdown-multiselect.min.js"></script>
     <script src="~/js/Authorization/Authorization.js"></script>
+    <script src="~/js/Services/auth.js"></script>
 
     <script src="~/js/Services/pleasewait.js"></script>
 </head>
-<body>
+<body ng-app="app" ng-controller="appController as vm">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -35,8 +37,11 @@
                         <li class="navbar-brand">
                             <a class="nav-link text-dark" href="/SpeciesHierarchy#!species">Иерархия видов</a>
                         </li>
-                        <li class="navbar-brand">
-                            <a class="nav-link text-dark" href="/API/Account/Logout">Выход</a>
+                        <li class="navbar-brand" ng-if="isAuthenticated">
+                            <a class="nav-link text-dark" ng-click="vm.onLogout()">Выход</a>
+                        </li>
+                        <li class="navbar-brand" ng-if="!isAuthenticated">
+                            <a class="nav-link text-dark" ng-click="vm.onAuthorization()">Вход</a>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +56,7 @@
 
     <footer id="footer"class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Species - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Species
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -3,7 +3,7 @@
 speciesHierarchy.component('speciesTypes', {
     templateUrl: '/templates/SpeciesHierarchy/SpeciesTypes/SpeciesTypes.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($q, $cookies, $uibModal, speciesTypeFactory, accountFactory, $pleasewait,) {
+    controller($q, $uibModal, speciesTypeFactory, $pleasewait,) {
         $pleasewait.show();
         let vm = this;
 
@@ -15,18 +15,11 @@ speciesHierarchy.component('speciesTypes', {
         };
 
         vm.$onInit = () => {
-
-            var id = $cookies.getObject('userId');
-
             var promises = {
-                account: accountFactory.getById(id),
                 speciesTypes: speciesTypeFactory.get()
             };
 
             $q.all(promises).then(data => {
-                vm.account = data.account;
-                vm.isAdmin = !!vm.account.roles.find(r => r == 'Admin');
-
                 vm.search.speciesTypes = angular.copy(data.speciesTypes.map(o => { return { name: o.name, ...o } }));
 
                 $pleasewait.hide();
@@ -80,22 +73,17 @@ speciesHierarchy.component('speciesTypes', {
                 size: 'bg',
                 template: `<species-type-info 
                             species-type="$ctrl.speciesType"                            
-                            is-editable="$ctrl.isEditable"
                             $close=$close(result)
                             $dismiss="$dismiss(result)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['speciesType', 'isEditable',
-                    function (speciesType, isEditable) {
+                controller: ['speciesType',
+                    function (speciesType) {
                         const $ctrl = this;
                         $ctrl.speciesType = speciesType;
-                        $ctrl.isEditable = isEditable;
                     }],
                 resolve: {
                     speciesType: () => {
                         return angular.copy(entity);
-                    },
-                    isEditable: () => {
-                        return vm.isAdmin;
                     },
                 }
             });

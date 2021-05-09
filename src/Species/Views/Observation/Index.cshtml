@@ -22,7 +22,7 @@
 <script src="~/js/Observation/Index/main.js"></script>
 <script src="~/js/Observation/Index/observation-info.js"></script>
 
-<div ng-app="observationMain">
+<div>
     <div ng-controller="observationMainController as vm">
         <div class="search-container">
             <table>
@@ -109,7 +109,7 @@
                             <input type="date" ng-model="vm.search.toDate" max="{{vm.today}}" />
                         </div>
                     </td>
-                    <td valign="top">
+                    <td valign="top" ng-show="isAuthenticated">
                         <div>
                             Отмеченные мной
                         </div>

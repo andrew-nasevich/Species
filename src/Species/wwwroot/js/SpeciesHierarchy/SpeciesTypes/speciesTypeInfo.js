@@ -1,7 +1,6 @@
 ﻿speciesHierarchy.component('speciesTypeInfo', {
     bindings: {
         speciesType: '=',
-        isEditable: '=',
         $close: '&',
         $dismiss: '&'
     },

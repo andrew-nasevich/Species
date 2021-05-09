@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Species.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class SpeciesHierarchyController : Controller
     {
         public IActionResult Index()

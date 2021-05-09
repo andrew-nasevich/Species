@@ -23,22 +23,20 @@
 <script src="~/js/SpeciesHierarchy/SpeciesTypes/speciesTypes.js"></script>
 <script src="~/js/SpeciesHierarchy/SpeciesTypes/speciesTypeInfo.js"></script>
 
-<div ng-app="speciesHierarchy">
-    <div ng-controller="speciesHierarchyController as vm">
-        <div class="nav-container">
-            <div class="nav-el" ng-class="{ active: vm.state == 'speciesTypes' }" ng-click="vm.goToState('speciesTypes')">
-                Типы видов 
-            </div>
-            <div class="nav-el" ng-class="{ active: vm.state == 'classes' }" ng-click="vm.goToState('classes')">
-                Классы
-            </div>
-            <div class="nav-el" ng-class="{ active: vm.state == 'orders' }" ng-click="vm.goToState('orders')">
-                Отряды
-            </div>
-            <div class="nav-el" ng-class="{ active: vm.state == 'species' }" ng-click="vm.goToState('species')">
-                Виды
-            </div>
+<div ng-controller="speciesHierarchyController as vm">
+    <div class="nav-container">
+        <div class="nav-el" ng-class="{ active: vm.state == 'speciesTypes' }" ng-click="vm.goToState('speciesTypes')">
+            Типы видов 
         </div>
-        <ui-view></ui-view>
+        <div class="nav-el" ng-class="{ active: vm.state == 'classes' }" ng-click="vm.goToState('classes')">
+            Классы
+        </div>
+        <div class="nav-el" ng-class="{ active: vm.state == 'orders' }" ng-click="vm.goToState('orders')">
+            Отряды
+        </div>
+        <div class="nav-el" ng-class="{ active: vm.state == 'species' }" ng-click="vm.goToState('species')">
+            Виды
+        </div>
     </div>
+    <ui-view></ui-view>
 </div>

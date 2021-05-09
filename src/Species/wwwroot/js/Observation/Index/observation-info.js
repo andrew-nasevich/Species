@@ -1,7 +1,6 @@
 ﻿observationMain.component('observationInfo', {
     bindings: {
         observation: '=',
-        currentAccount: '=',
         allSpeciesTypes: '=',
         allClasses: '=',
         allOrders: '=',
@@ -12,7 +11,7 @@
     },
     templateUrl: '/templates/observation/observationInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller(accountFactory) {
+    controller(accountFactory, $rootScope) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -26,13 +25,11 @@
             vm.classes = [...vm.allClasses.filter(c => c.speciesTypeId == vm.selectedSpeciesType[0].id)];
             vm.speciesTypes = vm.allSpeciesTypes;
 
+            accountFactory.getById(vm.observation.accountId).then(account => {
+                vm.account = account;
 
-            accountFactory.getById(vm.observation.accountId).then(r => {
-                vm.account = r;
-
-                vm.isEditable = !!(vm.account.id == vm.currentAccount.id || vm.currentAccount.roles.find(r => r == 'Admin'));
+                vm.isEditable = $rootScope.isAuthenticated && ($rootScope.isAdmin || vm.account.id == $rootScope.account.id);
             });
-
 
             vm.today = new Date();
             vm.maxDate = vm.today.toISOString().substring(0, 10);

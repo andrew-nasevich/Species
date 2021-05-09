@@ -12,14 +12,14 @@
                 <b>Имя типа:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.speciesType.name">
+                <input class="form-control" type="text" ng-disabled="!($root.isAdmin||vm.isNew)" ng-model="vm.speciesType.name">
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-hide="!(vm.isEditable||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
-        <button class="btn btn-danger" type="button" ng-hide="!vm.isEditable||vm.isNew" ng-click="vm.delete()">Удалить</button>
+        <button class="btn btn-success" type="button" ng-hide="!($root.isAdmin||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
+        <button class="btn btn-danger" type="button" ng-hide="!$root.isAdmin||vm.isNew" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>
 </div>

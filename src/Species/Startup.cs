@@ -62,6 +62,8 @@ namespace Species
 
             app.Use(async (context, next) =>
             {
+                await next.Invoke();
+
                 var claims = context.User.Claims.ToArray();
                 var id = claims.FirstOrDefault(c => c.Type == "id");
                 var email = claims.FirstOrDefault(c => c.Type == "email");
@@ -70,8 +72,6 @@ namespace Species
                     context.Response.Cookies.Append("userId", id.Value);
                     context.Response.Cookies.Append("email", email.Value);
                 }
-
-                await next.Invoke();
             });
 
             app.UseEndpoints(endpoints =>

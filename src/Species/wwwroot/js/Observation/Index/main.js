@@ -1,6 +1,6 @@
 ﻿'use strict'
 
-var observationMain = angular.module('observationMain', [
+var observationMain = angular.module('appBody', [
     'angularjs-dropdown-multiselect',
     'observationFactoryModule',
     'speciesTypeFactoryModule',
@@ -10,22 +10,21 @@ var observationMain = angular.module('observationMain', [
     'accountFactoryModule',
     'mapHelper',
     'iconFactoryModule',
-    'ngCookies',
+    'authService',
     'pleasewait',
+    'authorizationModule'
 ]);
 
 observationMain.controller('observationMainController',
-    function observationMainController($q, $cookies, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, accountFactory, mapHelper, iconFactory, $pleasewait, $uibModal) {
+    function observationMainController($q, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, mapHelper, iconFactory, $pleasewait, $uibModal, $rootScope) {
         let vm = this;
 
         $pleasewait.show();
 
         vm.$onInit = () => {
 
-            var id = $cookies.getObject('userId');
             var today = new Date();
             vm.today = vm.getTodayDateString();
-                
 
             vm.search = {
                 showMine: false,
@@ -33,7 +32,6 @@ observationMain.controller('observationMainController',
             };
 
             var promises = {
-                account: accountFactory.getById(id),
                 speciesTypes: speciesTypeFactory.get(),
                 classes: classFactory.get(),
                 orders: orderFactory.get(),
@@ -41,9 +39,7 @@ observationMain.controller('observationMainController',
                 observations: observationFactory.get(),
             };
 
-            $q.all(promises).then(data => {
-                vm.account = data.account;
-
+            $q.all(promises).then(data => {             
                 vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.search.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.search.selectedSpeciesTypes = [...vm.search.speciesTypes];
@@ -116,7 +112,7 @@ observationMain.controller('observationMainController',
         };
 
         vm.onSearch = () => {
-            
+
             var species = vm.search.selectedSpecies;
             var categories = vm.search.selectedCategories;
 
@@ -128,8 +124,8 @@ observationMain.controller('observationMainController',
             observations = observations.filter(o => categories.some(c => c.category == o.species.category));
 
             if (vm.search.showMine) {
-                if (vm.account.id) {
-                    observations = observations.filter(o => o.accountId == vm.account.id);   
+                if ($rootScope.account) {
+                    observations = observations.filter(o => o.accountId == $rootScope.account.id);   
                 }
             }
 
@@ -164,7 +160,6 @@ observationMain.controller('observationMainController',
 
                 template: `<observation-info 
                             observation = "$ctrl.observation"
-                            current-account = "$ctrl.currentAccount"
                             all-species-types = "$ctrl.allSpeciesTypes"
                             all-classes = "$ctrl.allClasses"
                             all-orders = "$ctrl.allOrders"
@@ -173,11 +168,10 @@ observationMain.controller('observationMainController',
                             $close="$close(observation)"
                             $dismiss="$dismiss(reason)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['observation', 'currentAccount', 'allSpeciesTypes', 'allClasses', 'allOrders', 'allSpecies', 'deleteObservation',
-                    function (observation, currentAccount, allSpeciesTypes, allClasses, allOrders, allSpecies, deleteObservation) {
+                controller: ['observation', 'allSpeciesTypes', 'allClasses', 'allOrders', 'allSpecies', 'deleteObservation',
+                    function (observation, allSpeciesTypes, allClasses, allOrders, allSpecies, deleteObservation) {
                         const $ctrl = this;
                         $ctrl.observation = observation;
-                        $ctrl.currentAccount = currentAccount;
                         $ctrl.allSpeciesTypes = allSpeciesTypes;
                         $ctrl.allClasses = allClasses;
                         $ctrl.allOrders = allOrders;
@@ -187,9 +181,6 @@ observationMain.controller('observationMainController',
                 resolve: {
                     observation: () => {
                         return angular.copy(entity);
-                    },
-                    currentAccount: () => {
-                        return angular.copy(vm.account);
                     },
                     allSpeciesTypes: () => {
                         return angular.copy(vm.allSpeciesTypes);
@@ -225,7 +216,6 @@ observationMain.controller('observationMainController',
                     .finally(() => $pleasewait.hide());
             });
         };
-
 
         vm.configMultiselect = () => {
 

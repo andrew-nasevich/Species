@@ -26,13 +26,13 @@
             </td>
         </tr>
     </table>
-    <button id="add-new-button" class="btn btn-success" type="button" ng-if="vm.isAdmin" ng-click="vm.addNew()">Добавить новый класс</button>
+    <button id="add-new-button" class="btn btn-success" type="button" ng-if="$root.isAdmin" ng-click="vm.addNew()">Добавить новый класс</button>
 </div>
 <div>
     <div class="orders" ng-repeat="class in vm.search.classes | filter:vm.search.searchInput">
         <p><b>Тип</b>: {{class.type.name}}</p>
         <p><b>Имя класса</b>: {{class.name}}</p>
         <p><b>Латинское имя</b>: {{class.latinName}}</p>
-        <p><button class="btn btn-warning btn-sm" type="button" ng-if="vm.isAdmin" ng-click="vm.onOpenInfo(class)">Редактировать класс</button></p>
+        <p><button class="btn btn-warning btn-sm" type="button" ng-if="$root.isAdmin" ng-click="vm.onOpenInfo(class)">Редактировать класс</button></p>
     </div>
 </div>

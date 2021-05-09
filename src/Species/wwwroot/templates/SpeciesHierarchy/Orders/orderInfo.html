@@ -11,7 +11,7 @@
             <div class="param-description">
                 <b>Тип отряда:</b>
             </div>
-            <div class="param-value" ng-hide="!(vm.isEditable||vm.isNew)">
+            <div class="param-value" ng-hide="!($root.isAdmin||vm.isNew)">
                 <div ng-dropdown-multiselect=""
                      options="vm.speciesTypes"
                      selected-model="vm.selectedSpeciesType"
@@ -22,14 +22,14 @@
                 </div>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-hide="vm.isEditable" ng-disabled="true" ng-model="vm.selectedSpeciesType[0].label">
+                <input class="form-control" type="text" ng-hide="$root.isAdmin" ng-disabled="true" ng-model="vm.selectedSpeciesType[0].label">
             </div>
         </div>
         <div class="row param">
             <div class="param-description">
                 <b>Класс:</b>
             </div>
-            <div class="param-value" ng-hide="!(vm.isEditable||vm.isNew)">
+            <div class="param-value" ng-hide="!($root.isAdmin||vm.isNew)">
                 <div ng-dropdown-multiselect=""
                      options="vm.classes"
                      selected-model="vm.selectedClass"
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-hide="vm.isEditable" ng-disabled="true" ng-model="vm.selectedClass[0].label">
+                <input class="form-control" type="text" ng-hide="$root.isAdmin" ng-disabled="true" ng-model="vm.selectedClass[0].label">
             </div>
         </div>
         <div class="row param">
@@ -47,7 +47,7 @@
                 <b>Имя отряда:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.order.name">
+                <input class="form-control" type="text" ng-disabled="!($root.isAdmin||vm.isNew)" ng-model="vm.order.name">
             </div>
         </div>
         <div class="row param">
@@ -55,14 +55,14 @@
                 <b>Латинское имя:</b>
             </div>
             <div class="param-value">
-                <input class="form-control" type="text" ng-disabled="!(vm.isEditable||vm.isNew)" ng-model="vm.order.latinName">
+                <input class="form-control" type="text" ng-disabled="!($root.isAdmin||vm.isNew)" ng-model="vm.order.latinName">
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-hide="!(vm.isEditable||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
-        <button class="btn btn-danger" type="button" ng-hide="!vm.isEditable||vm.isNew" ng-click="vm.delete()">Удалить</button>
+        <button class="btn btn-success" type="button" ng-hide="!($root.isAdmin||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
+        <button class="btn btn-danger" type="button" ng-hide="!$root.isAdmin||vm.isNew" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>
 </div>

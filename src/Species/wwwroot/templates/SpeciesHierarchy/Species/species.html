@@ -56,7 +56,7 @@
             </td>
         </tr>
     </table>
-    <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!vm.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>
+    <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!$root.isAdmin" ng-click="vm.addNew()">Добавить новый вид</button>
 </div>
 <div class="species-container">
     <div class="species" ng-repeat="species in vm.search.species | filter:vm.search.searchInput">

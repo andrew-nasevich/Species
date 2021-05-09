@@ -10,44 +10,44 @@
         <div id="login-button" class="auth-button" ng-class="{ active: vm.state == vm.states.login }" ng-click="vm.changeState(vm.states.login)">Вход</div>
         <div id="registration-button" class="auth-button" ng-class="{ active: vm.state == vm.states.registration }" ng-click="vm.changeState(vm.states.registration)">Регистрация</div>
 
-        <form class="form-horizontal" role="form" name="vm.studentForm" novalidate>
-            <div class="form-group auth-line" ng-class="{'has-error': vm.studentForm.Email.$touched && vm.studentForm.Email.$error.required , 'has-success': vm.studentForm.Email.$valid }">
+        <form class="form-horizontal" role="form" name="vm.authForm" novalidate>
+            <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.Email.$touched && vm.authForm.Email.$error.required , 'has-success': vm.authForm.Email.$valid }">
                 <label for="Email" class="col-sm-3 control-label">E-mail</label>
                 <div class="col-sm-6">
                     <input type="text" id="Email" name="Email" class="form-control" ng-model="vm.account.Email" required />
                 </div>
                 <div class="col-sm-3">
-                    <span class="help-block" ng-show="vm.studentForm.Email.$touched && vm.studentForm.Email.$error.required">Пожалуйста, введите E-mail.</span>
+                    <span class="help-block" ng-show="vm.authForm.Email.$touched && vm.authForm.Email.$error.required">Пожалуйста, введите E-mail.</span>
                 </div>
 
             </div>
-            <div class="form-group auth-line" ng-class="{'has-error': vm.studentForm.password.$touched && vm.studentForm.password.$error.required ,  'has-success': vm.studentForm.password.$valid}">
+            <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.password.$touched && vm.authForm.password.$error.required ,  'has-success': vm.authForm.password.$valid}">
                 <label for=" password" class="col-sm-3 control-label">Пароль</label>
                 <div class="col-sm-6">
                     <input type="text" id="password" name="password" class="form-control" ng-model="vm.account.Password" required />
                 </div>
                 <div class="col-sm-3">
-                    <span class="help-block" ng-show="vm.studentForm.password.$touched && vm.studentForm.password.$error.required">Пожалуйста, введите пароль.</span>
+                    <span class="help-block" ng-show="vm.authForm.password.$touched && vm.authForm.password.$error.required">Пожалуйста, введите пароль.</span>
                 </div>
             </div>
 
             <div ng-if="vm.state == vm.states.registration">
-                <div class="form-group auth-line" ng-class="{'has-error': vm.studentForm.name.$touched && vm.studentForm.name.$error.required ,  'has-success': vm.studentForm.name.$valid}">
+                <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.name.$touched && vm.authForm.name.$error.required ,  'has-success': vm.authForm.name.$valid}">
                     <label for="name" class="col-sm-3 control-label">Имя</label>
                     <div class="col-sm-6">
                         <input type="text" id="name" name="name" class="form-control" ng-model="vm.account.Name" required />
                     </div>
                     <div class="col-sm-3">
-                        <span class="help-block" ng-show="vm.studentForm.name.$touched && vm.studentForm.name.$error.required">Пожалуйста, введите имя.</span>
+                        <span class="help-block" ng-show="vm.authForm.name.$touched && vm.authForm.name.$error.required">Пожалуйста, введите имя.</span>
                     </div>
                 </div>
-                <div class="form-group auth-line" ng-class="{'has-error': vm.studentForm.surname.$touched && vm.studentForm.surname.$error.required ,  'has-success': vm.studentForm.surname.$valid}">
+                <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.surname.$touched && vm.authForm.surname.$error.required ,  'has-success': vm.authForm.surname.$valid}">
                     <label for="surname" class="col-sm-3 control-label">Фамилия</label>
                     <div class="col-sm-6">
                         <input type="text" id="surname" name="surname" class="form-control" ng-model="vm.account.Surname" required />
                     </div>
                     <div class="col-sm-3">
-                        <span class="help-block" ng-show="vm.studentForm.surname.$touched && vm.studentForm.surname.$error.required">Пожалуйста, введите имя.</span>
+                        <span class="help-block" ng-show="vm.authForm.surname.$touched && vm.authForm.surname.$error.required">Пожалуйста, введите имя.</span>
                     </div>
                 </div>
             </div>

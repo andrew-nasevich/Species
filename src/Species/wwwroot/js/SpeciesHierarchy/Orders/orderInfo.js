@@ -4,7 +4,6 @@
         allClasses: '=',
         allOrders: '=',
         order: '=',
-        isEditable: '=',
         $close: '&',
         $dismiss: '&'
     },

@@ -51,10 +51,28 @@ namespace Species.ApiControllers
             };
         }
 
+        [HttpGet]
+        [Route("GetCurrentAccount")]
+        public object GetCurrentAccount()
+        {
+            var claims = HttpContext.User.Claims.ToArray();
+            var idClaim = claims.FirstOrDefault(c => c.Type == "id");
+
+            if(idClaim == null)
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(idClaim.Value);
+            var account = _context.Accounts.FirstOrDefault(a => a.Id == id);
+
+            return FormRoles(account);
+        }
+
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterModel account)
+        public async Task<dynamic> Register([FromBody]RegisterModel account)
         {
             if (!ModelState.IsValid)
             {
@@ -87,19 +105,19 @@ namespace Species.ApiControllers
                 _context.SaveChanges();
 
                 await Authenticate(acc);
+
+                return FormRoles(acc);
             }
             catch
             {
                 return BadRequest();
             }
-
-            return Ok();
         }
 
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login(LoginModel account)
+        public async Task<dynamic> Login(LoginModel account)
         {
             if (!ModelState.IsValid)
             {
@@ -114,8 +132,7 @@ namespace Species.ApiControllers
                 return BadRequest("There is no account with such credentials.");
             }
             await Authenticate(acc);
-
-            return Ok();
+            return FormRoles(acc);
         }
 
         [HttpGet]
@@ -124,7 +141,7 @@ namespace Species.ApiControllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Redirect("/Account/Login");
+            return Redirect("/Observation");
         }
 
 
@@ -140,6 +157,20 @@ namespace Species.ApiControllers
             var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             // установка аутентификационных куки
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        private object FormRoles(Account account)
+        {
+            var accountRoles = _context.AccountRoles.Where(r => r.AccountId == account.Id).Select(r => r.RoleId).ToArray();
+            var roles = _context.Roles.Where(r => accountRoles.Contains(r.Id)).Select(r => r.Name).ToArray();
+            return new JsonResult(new
+            {
+                id = account.Id,
+                name = account.Name,
+                surname = account.Surname,
+                email = account.Email,
+                roles
+            });
         }
     }
 }

@@ -3,7 +3,7 @@
 speciesHierarchy.component('orders', {
     templateUrl: '/templates/SpeciesHierarchy/Orders/orders.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($q, $cookies, $uibModal, speciesTypeFactory, classFactory, orderFactory, accountFactory, $pleasewait, ) {
+    controller($q, $uibModal, speciesTypeFactory, classFactory, orderFactory, $pleasewait, ) {
         $pleasewait.show();
         let vm = this;
 
@@ -16,20 +16,13 @@ speciesHierarchy.component('orders', {
         };
 
         vm.$onInit = () => {
-
-            var id = $cookies.getObject('userId');
-
             var promises = {
-                account: accountFactory.getById(id),
                 speciesTypes: speciesTypeFactory.get(),
                 classes: classFactory.get(),
                 orders: orderFactory.get(),
             };
 
             $q.all(promises).then(data => {
-                vm.account = data.account;
-                vm.isAdmin = !!vm.account.roles.find(r => r == 'Admin');
-
                 vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.search.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.search.selectedSpeciesTypes = [...vm.search.speciesTypes];
@@ -122,18 +115,16 @@ speciesHierarchy.component('orders', {
                             all-classes="$ctrl.allClasses"
                             all-orders="$ctrl.allOrders"
                             order="$ctrl.order"                            
-                            is-editable="$ctrl.isEditable"
                             $close=$close(order)
                             $dismiss="$dismiss(result)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['allSpeciesTypes', 'allClasses', 'allOrders', 'order', 'isEditable',
-                    function (allSpeciesTypes, allClasses, allOrders, order, isEditable) {
+                controller: ['allSpeciesTypes', 'allClasses', 'allOrders', 'order',
+                    function (allSpeciesTypes, allClasses, allOrders, order) {
                         const $ctrl = this;
                         $ctrl.allSpeciesTypes = allSpeciesTypes;
                         $ctrl.allClasses = allClasses;
                         $ctrl.allOrders = allOrders;
                         $ctrl.order = order;
-                        $ctrl.isEditable = isEditable;
                     }],
                 resolve: {
                     allSpeciesTypes: () => {
@@ -147,9 +138,6 @@ speciesHierarchy.component('orders', {
                     },
                     order: () => {
                         return angular.copy(entity);
-                    },
-                    isEditable: () => {
-                        return vm.isAdmin;
                     },
                 }
             });

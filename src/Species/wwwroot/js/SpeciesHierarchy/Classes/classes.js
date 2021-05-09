@@ -3,7 +3,7 @@
 speciesHierarchy.component('classes', {
     templateUrl: '/templates/SpeciesHierarchy/Classes/classes.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($q, $cookies, $uibModal, speciesTypeFactory, classFactory, accountFactory, $pleasewait, ) {
+    controller($q, $uibModal, speciesTypeFactory, classFactory, $pleasewait, ) {
         $pleasewait.show();
         let vm = this;
 
@@ -16,19 +16,12 @@ speciesHierarchy.component('classes', {
         };
 
         vm.$onInit = () => {
-
-            var id = $cookies.getObject('userId');
-
             var promises = {
-                account: accountFactory.getById(id),
                 speciesTypes: speciesTypeFactory.get(),
                 classes: classFactory.get(),
             };
 
             $q.all(promises).then(data => {
-                vm.account = data.account;
-                vm.isAdmin = !!vm.account.roles.find(r => r == 'Admin');
-
                 vm.allSpeciesTypes = angular.copy(data.speciesTypes.map(o => { return { label: o.name, ...o } }));
                 vm.search.speciesTypes = angular.copy(vm.allSpeciesTypes);
                 vm.search.selectedSpeciesTypes = [...vm.search.speciesTypes];
@@ -105,17 +98,15 @@ speciesHierarchy.component('classes', {
                             all-species-types="$ctrl.allSpeciesTypes"                            
                             all-classes="$ctrl.allClasses"
                             class="$ctrl.classParam"                            
-                            is-editable="$ctrl.isEditable"
                             $close=$close(result)
                             $dismiss="$dismiss(result)"/>`,
                 controllerAs: '$ctrl',
-                controller: ['allSpeciesTypes', 'allClasses', 'classParam', 'isEditable',
-                    function (allSpeciesTypes, allClasses, classParam, isEditable) {
+                controller: ['allSpeciesTypes', 'allClasses', 'classParam',
+                    function (allSpeciesTypes, allClasses, classParam) {
                         const $ctrl = this;
                         $ctrl.allSpeciesTypes = allSpeciesTypes;
                         $ctrl.allClasses = allClasses;
                         $ctrl.classParam = classParam;
-                        $ctrl.isEditable = isEditable;
                     }],
                 resolve: {
                     allSpeciesTypes: () => {
@@ -126,9 +117,6 @@ speciesHierarchy.component('classes', {
                     },
                     classParam: () => {
                         return angular.copy(entity);
-                    },
-                    isEditable: () => {
-                        return vm.isAdmin;
                     },
                 }
             });

@@ -3,7 +3,6 @@
         allSpeciesTypes: '=',
         allClasses: '=',
         class: '=',
-        isEditable: '=',
         $close: '&',
         $dismiss: '&'
     },

@@ -1,6 +1,6 @@
 ﻿'use strict'
 
-var authorizationModule = angular.module('authorizationModule', ['pleasewait']);
+var authorizationModule = angular.module('authorizationModule', ['pleasewait', 'authService']);
 
 authorizationModule.component('authorization', {
     bindings: {
@@ -9,7 +9,7 @@ authorizationModule.component('authorization', {
     },
     templateUrl: '/templates/authorization/authorization.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($http, $window, $pleasewait) {
+    controller($http, $pleasewait, auth) {
         const vm = this;
 
         const states = {
@@ -27,28 +27,32 @@ authorizationModule.component('authorization', {
         vm.account = {};
 
         vm.onLogin = function () {
-            if (vm.studentForm.$invalid) {
+            if (vm.authForm.$invalid) {
                 alert('Пожалуйста, заполните все поля.');
                 return;
             }
 
-            $pleasewait.show();
-            $http.post('/API/Account/Login', vm.account).then(
-                s => {
-                    $pleasewait.hide();
-                    
-                },
-                e => {
-                    $pleasewait.hide();
-                    console.log(e); alert(e.message);
+            auth.login(vm.account).then(
+                r => {
+                    vm.$close({
+                        account: r.data
+                    });
                 });
         };
-
+        
         vm.onRegister = function () {
-            $http.post('/API/Account/Register', vm.account).then(
-                s => { },
-                e => { console.log(e); alert(e.message); });
-        }
+            if (vm.authForm.$invalid) {
+                alert('Пожалуйста, заполните все поля.');
+                return;
+            }
+
+            auth.register(vm.account).then(
+                r => {
+                    vm.$close({
+                        account: r.data
+                    });
+                });
+        };
 
         vm.close = () => {
             vm.$dismiss({

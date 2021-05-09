@@ -1,6 +1,6 @@
 ﻿'use strict'
 
-var addObservationModule = angular.module('addObservation', [
+var addObservationModule = angular.module('appBody', [
     'angularjs-dropdown-multiselect',
     'observationFactoryModule',
     'speciesTypeFactoryModule',
@@ -9,10 +9,11 @@ var addObservationModule = angular.module('addObservation', [
     'speciesFactoryModule',
     'mapHelper',
     'pleasewait',
+    'authorizationModule'
 ]);
 
 addObservationModule.controller('addObservationController',
-    function addObservationController($q, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, mapHelper, $pleasewait) {
+    function addObservationController($q, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, mapHelper, $pleasewait, $uibModal, $rootScope) {
         let vm = this;
 
         $pleasewait.show();
@@ -57,6 +58,20 @@ addObservationModule.controller('addObservationController',
             mapHelper.registerOnClick(vm.onMapClick);
 
             vm.configMultiselect();
+        };
+
+        vm.onAuthorization = () => {
+            const dialog = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                keyboard: false,
+                size: 'bg',
+
+                template: `<authorization
+                            $close="$close(observation)"
+                            $dismiss="$dismiss(reason)"/>`,
+                controllerAs: '$ctrl'
+            });
         };
 
         vm.onSelectedSpeciesTypeChange = () => {
@@ -105,6 +120,11 @@ addObservationModule.controller('addObservationController',
         };
 
         vm.onAddObservation = () => {
+            if (!$rootScope.isAuthenticated) {
+                alert('Пожалуйста, авторизуйтесь для получения возможности добавления новых наблюдений.');
+                return;
+            }
+
             var species = vm.observation.selectedSpecies[0];
             var latLng = mapHelper.getMarkerlatlng(1);
 
