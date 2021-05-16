@@ -6,7 +6,6 @@ var speciesHierarchy = angular.module('appBody', [
     'classFactoryModule',
     'orderFactoryModule',
     'speciesFactoryModule',
-    'accountFactoryModule',
     'ngCookies',
     'ui.bootstrap',
     'pleasewait',

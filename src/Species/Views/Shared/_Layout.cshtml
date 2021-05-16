@@ -40,10 +40,10 @@
                         <li class="navbar-brand">
                             <a class="nav-link text-dark" href="/info/ProtectionСategories#">Категории охраны</a>
                         </li>
-                        <li class="navbar-brand" ng-if="isAuthenticated">
+                        <li class="navbar-brand auth-navigation" ng-if="isAuthenticated">
                             <a class="nav-link text-dark" ng-click="vm.onLogout()">Выход</a>
                         </li>
-                        <li class="navbar-brand" ng-if="!isAuthenticated">
+                        <li class="navbar-brand auth-navigation" ng-if="!isAuthenticated">
                             <a class="nav-link text-dark" ng-click="vm.onAuthorization()">Вход</a>
                         </li>
                     </ul>

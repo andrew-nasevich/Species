@@ -5,11 +5,11 @@ var iconFactoryModule = angular.module('iconFactoryModule', []);
 iconFactoryModule.factory('iconFactory', function () {
 
     var size = {
-        iconSize: [25, 41], // size of the icon
-        shadowSize: [41, 41], // size of the shadow
-        iconAnchor: [12, 40], // point of the icon which will correspond to marker's location
-        shadowAnchor: [12, 40],  // the same for the shadow
-        tooltipAnchor: [15, -26]// point from which the popup should open relative to the iconAnchor
+        iconSize: [25, 41],
+        shadowSize: [41, 41],
+        iconAnchor: [12, 40],
+        shadowAnchor: [12, 40],
+        tooltipAnchor: [15, -26]
     };
   
     var redIcon = L.icon({

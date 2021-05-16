@@ -24,7 +24,7 @@
             <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.password.$touched && vm.authForm.password.$error.required ,  'has-success': vm.authForm.password.$valid}">
                 <label for=" password" class="col-sm-3 control-label">Пароль</label>
                 <div class="col-sm-6">
-                    <input type="text" id="password" name="password" class="form-control" ng-model="vm.account.Password" required />
+                    <input type="password" id="password" name="password" class="form-control" ng-model="vm.account.Password" required />
                 </div>
                 <div class="col-sm-3">
                     <span class="help-block" ng-show="vm.authForm.password.$touched && vm.authForm.password.$error.required">Пожалуйста, введите пароль.</span>

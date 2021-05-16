@@ -130,7 +130,7 @@ addObservationModule.controller('addObservationController',
 
             var errorText = '';
             if (!species) {
-                errorText += 'Пожалуйста, выберете вид для добавления.';
+                errorText += 'Пожалуйста, выберете вид для добавления наблюдения.';
             }
             if (!latLng) {
                 errorText += 'Пожалуйста, выберете место наблюдения.'

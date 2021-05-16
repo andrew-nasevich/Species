@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Species.Auth;
 using Species.Database;
 
 namespace Species
@@ -33,7 +31,7 @@ namespace Species
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Observation/");
                 });
 
             services.AddDbContext<SpeaciesContext>();
@@ -59,20 +57,6 @@ namespace Species
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.Use(async (context, next) =>
-            {
-                await next.Invoke();
-
-                var claims = context.User.Claims.ToArray();
-                var id = claims.FirstOrDefault(c => c.Type == "id");
-                var email = claims.FirstOrDefault(c => c.Type == "email");
-                if (id != null && email != null)
-                {
-                    context.Response.Cookies.Append("userId", id.Value);
-                    context.Response.Cookies.Append("email", email.Value);
-                }
-            });
 
             app.UseEndpoints(endpoints =>
             {

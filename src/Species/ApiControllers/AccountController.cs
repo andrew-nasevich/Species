@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Species.Auth;
 using Species.Database;
 using Species.Database.Entities;
 using Species.Models;
