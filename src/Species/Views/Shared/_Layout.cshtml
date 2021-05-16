@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Species</title>
+    <title>@ViewData["Title"]</title>
     <link data-require="bootstrap-css@@*" data-semver="3.3.6" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
     
     <link rel="stylesheet" href="~/css/site.css" />
@@ -31,20 +31,23 @@
                 <a class="navbar-brand" href="/Observation/">Карта наблюдений</a>
                 <div class="navbar-collapse">
                     <ul class="navigation-list">
-                        <li class="navbar-brand">
-                            <a class="nav-link text-dark" href="/Observation/AddObservation">Добавить наблюдение</a>
+                        <li>
+                            <a class="nav-link navbar-brand" href="/Observation/AddObservation">Добавить наблюдение</a>
                         </li>
-                        <li class="navbar-brand">
-                            <a class="nav-link text-dark" href="/SpeciesHierarchy#!species">Иерархия видов</a>
+                        <li>
+                            <a class="nav-link navbar-brand" href="/SpeciesHierarchy#!species">Иерархия видов</a>
                         </li>
-                        <li class="navbar-brand">
-                            <a class="nav-link text-dark" href="/info/ProtectionСategories#">Категории охраны</a>
+                        <li>
+                            <a class="nav-link navbar-brand" href="/info/ProtectionСategories">Категории охраны</a>
                         </li>
-                        <li class="navbar-brand auth-navigation" ng-if="isAuthenticated">
-                            <a class="nav-link text-dark" ng-click="vm.onLogout()">Выход</a>
+                        <li class="auth-navigation" ng-if="isAdmin">
+                            <a class="nav-link navbar-brand" href="/AccountRoles/">Роли пользователей</a>
                         </li>
-                        <li class="navbar-brand auth-navigation" ng-if="!isAuthenticated">
-                            <a class="nav-link text-dark" ng-click="vm.onAuthorization()">Вход</a>
+                        <li class="auth-navigation" ng-if="isAuthenticated">
+                            <a class="nav-link navbar-brand" ng-click="vm.onLogout()">Выход</a>
+                        </li>
+                        <li class="auth-navigation" ng-if="!isAuthenticated">
+                            <a class="nav-link navbar-brand" ng-click="vm.onAuthorization()">Вход</a>
                         </li>
                     </ul>
                 </div>

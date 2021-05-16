@@ -1,0 +1,28 @@
+﻿<table>
+    <thead>
+        <tr>
+            <th>
+                Имя
+            </th>
+            <th>
+                Фамилия
+            </th>
+            <th class="roles-checkbox" ng-repeat="role in vm.roles">
+                {{role.viewName}}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="account in vm.accounts">
+            <td>
+                {{account.name}}
+            </td>
+            <td>
+                {{account.surname}}
+            </td>
+            <td class="roles-checkbox" ng-repeat="role in vm.roles">
+                <input type="checkbox" ng-model="account.roles[role.name]" ng-change="vm.onAccountRoleChange(account.id, role.id, account.roles[role.name])"/>
+            </td>
+        </tr>
+    </tbody>
+</table>

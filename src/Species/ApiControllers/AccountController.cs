@@ -26,6 +26,33 @@ namespace Species.ApiControllers
         }
 
         [HttpGet]
+        [Route("GetAccounts")]
+        public object[] GetAccounts()
+        {
+            var accounts = _context.Accounts.ToArray();
+            var accountsIds = accounts.Select(a => a.Id).ToArray();
+
+            var accountsRoles = _context.AccountRoles.Where(r => accountsIds.Contains(r.AccountId)).ToArray();
+
+            var roles = _context.Roles.ToArray();
+
+            return accounts.Select(a => {
+
+                var accountRoles = accountsRoles.Where(ar => ar.AccountId == a.Id).Select(ar => ar.RoleId).ToArray();
+
+                return new
+                {
+                    id = a.Id,
+                    name = a.Name,
+                    surname = a.Surname,
+                    email = a.Email,
+                    roles = roles.Where(r => accountRoles.Contains(r.Id)).Select(r => r.Name).ToArray()
+                };
+            }).ToArray();
+        }
+
+
+        [HttpGet]
         [Route("GetById")]
         public object GetById(int id)
         {
@@ -67,6 +94,38 @@ namespace Species.ApiControllers
             return FormRoles(account);
         }
 
+        [HttpGet]
+        [Route("GetRoles")]
+        public Role[] GetRoles()
+        {
+            return _context.Roles.ToArray();
+        }
+
+
+        [HttpGet]
+        [Route("AddAccountRole")]
+        public IActionResult AddAccountRole(int accountId, int roleId)
+        {
+            _context.AccountRoles.Add(new AccountRole() 
+            { 
+                AccountId = accountId, 
+                RoleId = roleId 
+            });
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("DeleteAccountRole")]
+        public IActionResult DeleteAccountRole(int accountId, int roleId)
+        {
+            var accountRole = _context.AccountRoles.FirstOrDefault(ar => ar.AccountId == accountId && ar.RoleId == roleId);
+            _context.Entry(accountRole).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            _context.SaveChanges();
+
+            return Ok();
+        }
 
         [HttpPost]
         [Route("Register")]
