@@ -94,7 +94,8 @@
 
             vm.config.multiselectSettings = {
                 scrollableHeight: '300px',
-                smartButtonMaxItems: 1
+                smartButtonMaxItems: 1,
+                selectionLimit: 1
             };
         };
     }

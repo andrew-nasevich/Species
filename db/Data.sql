@@ -52,9 +52,7 @@ INSERT INTO Species VALUES('Хвощ большой', 'Equisetum telmateia Ehrh.
  
  select * from Species
 
- INSERT INTO Roles VALUES('Admin')
-
-
+ INSERT INTO Roles VALUES('Admin', 'Администратор')
  /*test data*/	
 
  select * from Species
