@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Species.Models
@@ -29,10 +30,6 @@ namespace Species.Models
         [NotNull]
         [BindRequired]
         public string Description { get; set; }
-
-        [NotNull]
-        [BindRequired]
-        public string Image { get; set; }
 
         [BindRequired]
         public int OrderId { get; set; }

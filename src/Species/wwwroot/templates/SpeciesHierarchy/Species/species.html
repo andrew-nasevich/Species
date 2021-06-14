@@ -61,7 +61,7 @@
 <div class="species-container">
     <div class="species" ng-repeat="species in vm.search.species | filter:vm.search.searchInput">
         <div class="species-image">
-            <img ng-src="/images/{{species.image}}" />
+            <img ng-src="/images/{{species.imageFileName}}" />
         </div>
         <div class="species-description">
             <p><b>Имя вида</b>: {{species.russianName}}</p>

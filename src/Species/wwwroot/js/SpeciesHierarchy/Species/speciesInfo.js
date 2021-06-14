@@ -14,6 +14,7 @@
         const vm = this;
 
         vm.$onInit = () => {
+            vm.file = {};
             vm.isNew = vm.species.id == 0;
 
             vm.selectedOrder = vm.isNew ? [] : [vm.allOrders.find(o => o.id == vm.species.orderId)];
@@ -56,14 +57,23 @@
                 return;
             }
 
+            if (!vm.species.imageFileName) {
+                alert('Пожалуйста, укажите изображение вида.');
+                return;
+            }
+
             if (!vm.species.category || vm.species.category > 4 || vm.species.category < 1) {
                 alert('Пожалуйста, укажите категорию в диапазоне [1..4].');
                 return;
             }
 
+
             vm.species.orderId = vm.selectedOrder[0].id;
             vm.$close({
-                species: vm.species,
+                result: {
+                    species: vm.species,
+                    imageFile: vm.species.imageFile
+                }
             });
         };
 
@@ -101,3 +111,23 @@
         };
     }
 });
+
+speciesHierarchy.directive('imageModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.imageModel);
+            var modelSetter = model.assign;
+
+            var nameSetter = $parse(attrs.imageFileName).assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    var file = element[0].files[0];
+                    modelSetter(scope, file);
+                    nameSetter(scope, file.name);
+                });
+            });
+        }
+    };
+}]);

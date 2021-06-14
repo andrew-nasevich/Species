@@ -78,7 +78,23 @@
         </div>
         <div class="row param">
             <div class="param-description">
-                <b><a  href="/Info/ProtectionCategory">Категория:</a></b>
+                <b>Изображение вида:</b>
+            </div>
+            <div class="param-value">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            Выбрать
+                            <input accept="image/jpeg, .jpg, .webp, .jfif" type="file" image-model="vm.species.imageFile" image-file-name="vm.species.imageFileName">
+                        </span>
+                    </span>
+                    <input readonly="readonly" placeholder="Выберите файл" ng-model="vm.species.imageFileName" class="form-control" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="row param">
+            <div class="param-description">
+                <b><a href="/info/ProtectionСategories">Категория:</a></b>
             </div>
             <div class="param-value">
                 <input class="form-control" type="number" ng-disabled="!($root.isAdmin||vm.isNew)" max="4" min="1" ng-model="vm.species.category">

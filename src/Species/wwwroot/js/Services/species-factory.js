@@ -15,10 +15,19 @@ speciesFactoryModule.factory('speciesFactory', function ($http, $window, $q) {
 
             return deferred.promise;
         },
-        update: function (species) {
+        update: function (species, imageFile) {
             var deferred = $q.defer();
 
-            $http.put(`/api/species/update/`, species).then(responce => {
+            var fd = new FormData();
+            for (var prop in species) {
+                fd.append(prop, species[prop]);
+            }
+            fd.append('imageFile', imageFile);
+
+            $http.put(`/api/species/update/`, fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).then(responce => {
                 deferred.resolve(responce.data);
             }, error => {
                 deferred.reject(`Error: ${error.code}`);
@@ -37,10 +46,19 @@ speciesFactoryModule.factory('speciesFactory', function ($http, $window, $q) {
 
             return deferred.promise;
         },
-        create: function (species) {
+        create: function (species, imageFile) {
             var deferred = $q.defer();
 
-            $http.post(`/api/species/create/`, species).then(responce => {
+            var fd = new FormData();
+            for (var prop in species) {
+                fd.append(prop, species[prop]);
+            }
+            fd.append('imageFile', imageFile); 
+
+            $http.post(`/api/species/create/`, fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).then(responce => {
                 deferred.resolve(responce.data);
             }, error => {
                 deferred.reject(`Error: ${error.code}`);

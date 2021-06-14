@@ -11,7 +11,6 @@ speciesHierarchy.component('species', {
 
         vm.rawSpecies = {
             id: 0,
-            image: 'default.jfif',
             category: 1,
             description: '',
             latinName: ''
@@ -66,14 +65,17 @@ speciesHierarchy.component('species', {
         };
 
         vm.onOpenInfo = (entity) => {
-            var result = vm.openSpeciesInfo(angular.copy(entity), false);
+            var dialog = vm.openSpeciesInfo(angular.copy(entity), false);
 
-            result.then((species) => {
+            dialog.then((result) => {
+                var species = result.species;
+                var imageFile = result.imageFile;
+
                 $pleasewait.show();
                 var index = vm.allSpecies.indexOf(vm.allSpecies.find(s => s.id == species.id));
                 if (index >= 0) {
-                    speciesFactory.update(species).then(() => {
-                        species.convertedCategory = vm.convertCategory(species.category)
+                    speciesFactory.update(species, imageFile).then((species) => {
+                        species.convertedCategory = vm.convertCategory(species.category);
                         vm.allSpecies[index] = angular.copy(species);
 
                         var speciesIndex = vm.search.species.indexOf(vm.search.species.find(s => s.id == species.id));
@@ -91,11 +93,14 @@ speciesHierarchy.component('species', {
 
         vm.addNew = () => {
             var species = angular.copy(vm.rawSpecies);
-            var result = vm.openSpeciesInfo(species, true);
+            var dialog = vm.openSpeciesInfo(species, true);
 
-            result.then((species) => {
+            dialog.then((result) => {
+                var species = result.species;
+                var imageFile = result.imageFile;
+
                 $pleasewait.show();
-                speciesFactory.create(species).then((species) => {
+                speciesFactory.create(species, imageFile).then((species) => {
                     species = { convertedCategory: vm.convertCategory(species.category), ...species };
 
                     if (vm.search.selectedOrders.some(o => o.id == species.orderId)) {
@@ -121,7 +126,7 @@ speciesHierarchy.component('species', {
                             all-orders="$ctrl.allOrders"
                             all-species="$ctrl.allSpecies"
                             species="$ctrl.species"                            
-                            $close=$close(species)
+                            $close=$close(result)
                             $dismiss="$dismiss(result)"/>`,
                 controllerAs: '$ctrl',
                 controller: ['allSpeciesTypes', 'allClasses', 'allOrders', 'allSpecies', 'species',

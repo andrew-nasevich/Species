@@ -42,7 +42,7 @@ CREATE TABLE "Species"
 	"BelarusianName" NVARCHAR(100),
 	"Category" INT NOT NULL,
 	"Description" NVARCHAR(MAX) NOT NULL,
-	"Image" NVARCHAR(100) NOT NULL,
+	"ImageFileName" NVARCHAR(100) NOT NULL,
 	"OrderId" INT FOREIGN KEY REFERENCES "Orders"("Id") ON DELETE CASCADE  NOT NULL
 )
 

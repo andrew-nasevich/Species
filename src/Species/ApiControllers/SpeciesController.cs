@@ -1,4 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Species.Database;
@@ -10,12 +16,15 @@ namespace Species.ApiControllers
     [ApiController]
     public class SpeciesController : ControllerBase
     {
-        public readonly SpeaciesContext _context;
+        private readonly SpeaciesContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
+        private readonly string[] _allowedExtensions = { ".jpg", ".jfif", ".webp" };
 
-        public SpeciesController(SpeaciesContext context)
+        public SpeciesController(SpeaciesContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         [HttpGet]
@@ -26,23 +35,34 @@ namespace Species.ApiControllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("Create")]
-        public IActionResult Create([FromBody]SpeciesModel model)
+        public async Task<IActionResult> Create(IFormCollection data, IFormFile imageFile)
         {
-            if (!ModelState.IsValid)
+            if  (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
+            var extension = Path.GetExtension(imageFile.FileName);
+            if(extension == null || !_allowedExtensions.Contains(extension))
+            {
+                return BadRequest();
+            }
+
+            var fileName = $"{data["LatinName"]}{extension}";
+
+            await SaveFile(imageFile, fileName);
+
             var species = new Database.Entities.Species()
             {
-                RussianName = model.RussianName,
-                LatinName = model.RussianName,
-                OrderId = model.OrderId,
-                BelarusianName = model.BelarusianName,
-                Category = model.Category,
-                Description = model.Description,
-                Image = model.Image,
+                RussianName = data["RussianName"],
+                LatinName = data["LatinName"],
+                OrderId = int.Parse(data["OrderId"]),
+                BelarusianName = data["BelarusianName"],
+                Category = int.Parse(data["Category"]),
+                Description = data["Description"],
+                ImageFileName = fileName,
             };
 
             _context.Species.Add(species);
@@ -53,32 +73,47 @@ namespace Species.ApiControllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("Update")]
-        public IActionResult Update([FromBody]SpeciesModel model)
+        public async Task<IActionResult> Update(IFormCollection data, IFormFile imageFile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var species = _context.Species.FirstOrDefault(s => s.Id == model.Id);
-            if(species == null)
+            var species = _context.Species.FirstOrDefault(s => s.Id == int.Parse(data["Id"]));
+            if (species == null)
             {
                 return BadRequest();
             }
 
-            species.RussianName = model.RussianName;
-            species.LatinName = model.LatinName;
-            species.OrderId = model.OrderId;
-            species.BelarusianName = model.BelarusianName;
-            species.Category = model.Category;
-            species.Description = model.Description;
-            species.Image = model.Image;
+            if (imageFile != null)
+            {
+                var extension = Path.GetExtension(imageFile.FileName);
+                if (extension == null || !_allowedExtensions.Contains(extension))
+                {
+                    return BadRequest();
+                }
+
+                var fileName = $"{data["LatinName"]}{extension}";
+
+                await SaveFile(imageFile, fileName);
+
+                species.ImageFileName = fileName;
+            }
+
+            species.RussianName = data["RussianName"];
+            species.LatinName = data["LatinName"];
+            species.OrderId = int.Parse(data["OrderId"]);
+            species.BelarusianName = data["BelarusianName"];
+            species.Category = int.Parse(data["Category"]);
+            species.Description = data["Description"];
 
             _context.Entry(species).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return Ok();
+            return new JsonResult(species);
         }
 
         [HttpDelete]
@@ -93,6 +128,23 @@ namespace Species.ApiControllers
 
             _context.Entry(species).State = EntityState.Deleted;
             _context.SaveChanges();
+
+            return Ok();
+        }
+
+
+        public async Task<IActionResult> SaveFile(IFormFile file, string fileName)
+        {
+            if (file == null || fileName == null)
+            {
+                throw new ArgumentException("File or file name can't be null.");
+            }
+
+            string path = "/Images/" + fileName;
+            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
 
             return Ok();
         }
