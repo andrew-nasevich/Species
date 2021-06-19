@@ -6,10 +6,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
 using Species.Database;
 using Species.Database.Entities;
 using Species.Models;
+using bCrypt = BCrypt.Net.BCrypt;
 
 namespace Species.ApiControllers
 {
@@ -150,10 +152,11 @@ namespace Species.ApiControllers
                     return Forbid("User with such mail already exists.");
                 }
 
+
                 var acc = new Account
                 {
                     Email = account.Email,
-                    Hash = account.Password, // TODO: Add encripting
+                    Hash = bCrypt.HashPassword(account.Password),
                     Name = account.Name,
                     Surname = account.Surname
                 };
@@ -181,10 +184,9 @@ namespace Species.ApiControllers
                 return BadRequest();
             }
 
-            var hash = account.Password;
-            var acc = _context.Accounts.FirstOrDefault(a => a.Email == account.Email && a.Hash == hash);
+            var acc = _context.Accounts.FirstOrDefault(a => a.Email == account.Email);
 
-            if(acc == null)
+            if (acc == null || !bCrypt.Verify(account.Password, acc.Hash))
             {
                 return BadRequest("There is no account with such credentials.");
             }
