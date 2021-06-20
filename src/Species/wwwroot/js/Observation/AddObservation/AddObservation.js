@@ -9,16 +9,34 @@ var addObservationModule = angular.module('appBody', [
     'speciesFactoryModule',
     'mapHelper',
     'pleasewait',
-    'authorizationModule'
+    'authorizationModule',
+    'dialog'
 ]);
 
 addObservationModule.controller('addObservationController',
-    function addObservationController($q, observationFactory, speciesTypeFactory, classFactory, orderFactory, speciesFactory, mapHelper, $pleasewait, $uibModal, $rootScope) {
+    function addObservationController(
+        $q,
+        observationFactory,
+        speciesTypeFactory,
+        classFactory,
+        orderFactory,
+        speciesFactory,
+        mapHelper,
+        $pleasewait,
+        $uibModal,
+        $rootScope,
+        $dialog) {
         let vm = this;
 
         $pleasewait.show();
 
         vm.$onInit = () => {
+
+            $rootScope.authPromise.then(() => {
+                if (!$rootScope.isAuthenticated) {
+                    $dialog.alert('Пожалуйста, авторизуйтесь для получения возможности добавления новых наблюдений.');
+                }
+            }); 
 
             var today = new Date();
             vm.today = vm.getTodayDateString();
@@ -121,7 +139,7 @@ addObservationModule.controller('addObservationController',
 
         vm.onAddObservation = () => {
             if (!$rootScope.isAuthenticated) {
-                alert('Пожалуйста, авторизуйтесь для получения возможности добавления новых наблюдений.');
+                $dialog.alert('Пожалуйста, авторизуйтесь для получения возможности добавления новых наблюдений.');
                 return;
             }
 
@@ -137,13 +155,13 @@ addObservationModule.controller('addObservationController',
             }
 
             if (errorText) {
-                alert(errorText);
+                $dialog.alert(errorText);
                 return;
             }
 
             observationFactory.add(latLng.lat, latLng.lng, vm.observation.description, vm.observation.date,  species.id)
                 .then(r => {
-                    alert(species.label + ' был добавлен.');
+                    $dialog.alert(species.label + ' был добавлен.');
                 });
         }
 

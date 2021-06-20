@@ -9,7 +9,7 @@
     },
     templateUrl: '/templates/SpeciesHierarchy/Orders/orderInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller() {
+    controller($dialog) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -33,23 +33,25 @@
         };
 
         vm.delete = () => {
-            vm.$dismiss({
-                result: {
-                    reason: 'delete',
-                    entity: vm.order
-                }
+            $dialog.confirm('Вы действительно хотите удалить данный отряд?').then(() => {
+                vm.$dismiss({
+                    result: {
+                        reason: 'delete',
+                        entity: vm.order
+                    }
+                });
             });
         };
 
         vm.save = () => {
 
             if (!vm.selectedClass[0]) {
-                alert('Пожалуйста, выберите тип и класс для данного отряда.');
+                $dialog.alert('Пожалуйста, выберите тип и класс для данного отряда.');
                 return;
             }
 
             if (!vm.order.name) {
-                alert('Пожалуйста, запоните поле названия.');
+                $dialog.alert('Пожалуйста, запоните поле названия.');
                 return;
             }
 

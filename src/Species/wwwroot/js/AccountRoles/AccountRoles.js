@@ -4,6 +4,7 @@ var accountRolesModule = angular.module('appBody', [
     'accountFactoryModule',
     'pleasewait',
     'ui.router',
+    'dialog'
 ]);
 
 accountRolesModule.config(($stateProvider, $urlServiceProvider) => {
@@ -20,7 +21,7 @@ accountRolesModule.config(($stateProvider, $urlServiceProvider) => {
 accountRolesModule.component('accountRoles', {
     templateUrl: '/templates/AccountRoles/accountRoles.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller(accountFactory, $pleasewait, $q, $rootScope) {
+    controller(accountFactory, $pleasewait, $q, $rootScope, $dialog) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -49,7 +50,7 @@ accountRolesModule.component('accountRoles', {
             if ($rootScope.account.id == accountId) {
                 vm.accounts.find(a => a.id == accountId).roles['Admin'] = true;
 
-                alert('Вы не можете забирать права у себя.');
+                $dialog.alert('Вы не можете забирать права у себя.');
                 return;
             }
 

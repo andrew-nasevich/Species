@@ -1,8 +1,8 @@
 ﻿'use strict'
 
-var authModule = angular.module('authService', ['pleasewait', 'ngCookies',]);
+var authModule = angular.module('authService', ['pleasewait', 'dialog']);
 
-authModule.factory('auth', function ($http, $q, $pleasewait, $cookies) {
+authModule.factory('auth', function ($http, $q, $pleasewait) {
     return {
         getAccountById: function (id) {
             var deferred = $q.defer();
@@ -51,7 +51,6 @@ authModule.factory('auth', function ($http, $q, $pleasewait, $cookies) {
                 e => {
                     $pleasewait.hide();
                     console.log(e);
-                    alert(e.data);
                 });
 
             return promise;
@@ -67,7 +66,6 @@ authModule.factory('auth', function ($http, $q, $pleasewait, $cookies) {
                 e => {
                     $pleasewait.hide();
                     console.log(e);
-                    alert(e.data);
                 });
 
             return promise;
@@ -78,7 +76,6 @@ authModule.factory('auth', function ($http, $q, $pleasewait, $cookies) {
                 s => {},
                 e => {
                     console.log(e);
-                    alert(e.data);
                 });
 
             return promise;

@@ -3,7 +3,7 @@
 speciesHierarchy.component('species', {
     templateUrl: '/templates/SpeciesHierarchy/Species/species.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($q, $uibModal, speciesTypeFactory, classFactory, orderFactory, speciesFactory, $pleasewait) {
+    controller($q, $uibModal, speciesTypeFactory, classFactory, orderFactory, speciesFactory, $pleasewait, $dialog) {
         $pleasewait.show();
         let vm = this;
 

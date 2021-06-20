@@ -6,7 +6,7 @@
     },
     templateUrl: '/templates/SpeciesHierarchy/SpeciesTypes/speciesTypeInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller() {
+    controller($dialog) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -24,18 +24,20 @@
         };
 
         vm.delete = () => {
-            vm.$dismiss({
-                result: {
-                    reason: 'delete',
-                    entity: vm.speciesType
-                }
+            $dialog.confirm('Вы действительно хотите удалить данный тип видов?').then(() => {
+                vm.$dismiss({
+                    result: {
+                        reason: 'delete',
+                        entity: vm.speciesType
+                    }
+                });
             });
         };
 
         vm.save = () => {
 
             if (!vm.speciesType.name) {
-                alert('Пожалуйста, запоните поле названия.');
+                $dialog.alert('Пожалуйста, запоните поле названия.');
                 return;
             }
 

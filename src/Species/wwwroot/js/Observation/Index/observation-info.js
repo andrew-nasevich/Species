@@ -55,9 +55,11 @@
         };
 
         vm.delete = () => {
-            vm.deleteObservation({ observation: vm.observation });
-            vm.$dismiss({
-                reason: 'delete',
+            $dialog.confirm('Вы действительно хотите удалить данное наблюдение?').then(() => {
+                vm.deleteObservation({ observation: vm.observation });
+                vm.$dismiss({
+                    reason: 'delete',
+                });
             });
         };
 

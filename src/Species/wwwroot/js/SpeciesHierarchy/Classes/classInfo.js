@@ -8,7 +8,7 @@
     },
     templateUrl: '/templates/SpeciesHierarchy/Classes/classInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller() {
+    controller($dialog) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -29,23 +29,25 @@
         };
 
         vm.delete = () => {
-            vm.$dismiss({
-                result: {
-                    reason: 'delete',
-                    entity: vm.class
-                }
+            $dialog.confirm('Вы действительно хотите удалить данный класс?').then(() => {
+                vm.$dismiss({
+                    result: {
+                        reason: 'delete',
+                        entity: vm.class
+                    }
+                });
             });
         };
 
         vm.save = () => {
 
             if (!vm.selectedSpeciesType[0]) {
-                alert('Пожалуйста, выберите тип для данного класса.');
+                $dialog.alert('Пожалуйста, выберите тип для данного класса.');
                 return;
             }
 
             if (!vm.class.name) {
-                alert('Пожалуйста, запоните поле названия.');
+                $dialog.alert('Пожалуйста, запоните поле названия.');
                 return;
             }
 

@@ -53,11 +53,16 @@ INSERT INTO Species VALUES('Хвощ большой', 'Equisetum telmateia Ehrh.
  select * from Species
 
  INSERT INTO Roles VALUES('Admin', 'Администратор')
+ INSERT INTO Accounts VALUES('a', 'a', 'a', 'a')
+ INSERT INTO AccountRoles VALUES(2, 1)
+ 
+ delete from Accounts
  /*test data*/	
 
- select * from Species
+ select * from AccountRoles
 
- INSERT INTO Accounts VALUES('Андрей', 'Насевич', 'nasevichandrey@mail.ru', '123')
+ 
  select * from Accounts
+ go
  INSERT INTO Observations VALUES(54.199362, 27.846251, GETDATE(), 'Здесь живет одно жывотное', 12, 1)
  INSERT INTO Observations VALUES(55.199362, 26.846251, GETDATE(), 'Хвощ', 15, 1)

@@ -1,4 +1,4 @@
-﻿var pleasewait = angular.module('pleasewait', ['ngSanitize', 'ui.bootstrap']);
+﻿var pleasewait = angular.module('pleasewait', ['ui.bootstrap']);
 
 pleasewait.factory('$pleasewait', [
         '$rootScope', '$uibModal', '$timeout', function ($rootScope, $uibModal, $timeout) {

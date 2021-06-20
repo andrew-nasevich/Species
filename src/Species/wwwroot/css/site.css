@@ -122,3 +122,7 @@ body {
 .auth-navigation {
     margin-right: -20px;
 }
+
+.modal-header {
+    background-color: #c6f0b3
+}

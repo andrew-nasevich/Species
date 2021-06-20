@@ -10,6 +10,7 @@ var speciesHierarchy = angular.module('appBody', [
     'ui.bootstrap',
     'pleasewait',
     'ui.router',
+    'dialog'
 ]);
 
 speciesHierarchy.controller('speciesHierarchyController', function ($location, $state) {

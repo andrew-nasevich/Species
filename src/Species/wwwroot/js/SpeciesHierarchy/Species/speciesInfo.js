@@ -10,7 +10,7 @@
     },
     templateUrl: '/templates/SpeciesHierarchy/Species/speciesInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($rootScope) {
+    controller($dialog) {
         const vm = this;
 
         vm.$onInit = () => {
@@ -37,33 +37,35 @@
         };
 
         vm.delete = () => {
-            vm.$dismiss({
-                result: {
-                    reason: 'delete',
-                    entity: vm.species
-                }
+            $dialog.confirm('Вы действительно хотите удалить данный вид?').then(() => {
+                vm.$dismiss({
+                    result: {
+                        reason: 'delete',
+                        entity: vm.species
+                    }
+                });
             });
         };
 
         vm.save = () => {
 
             if (!vm.selectedOrder[0]) {
-                alert('Пожалуйста, выберите тип, класс и отряд для данного вида.');
+                $dialog.alert('Пожалуйста, выберите тип, класс и отряд для данного вида.');
                 return;
             }
 
             if (!vm.species.russianName) {
-                alert('Пожалуйста, заполните поле вида.');
+                $dialog.alert('Пожалуйста, заполните поле вида.');
                 return;
             }
 
             if (!vm.species.imageFileName) {
-                alert('Пожалуйста, укажите изображение вида.');
+                $dialog.alert('Пожалуйста, укажите изображение вида.');
                 return;
             }
 
             if (!vm.species.category || vm.species.category > 4 || vm.species.category < 1) {
-                alert('Пожалуйста, укажите категорию в диапазоне [1..4].');
+                $dialog.alert('Пожалуйста, укажите категорию в диапазоне [1..4].');
                 return;
             }
 

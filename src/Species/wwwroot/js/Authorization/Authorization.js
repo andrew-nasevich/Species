@@ -1,6 +1,6 @@
 ﻿'use strict'
 
-var authorizationModule = angular.module('authorizationModule', ['pleasewait', 'authService']);
+var authorizationModule = angular.module('authorizationModule', ['authService', 'dialog']);
 
 authorizationModule.component('authorization', {
     bindings: {
@@ -9,7 +9,7 @@ authorizationModule.component('authorization', {
     },
     templateUrl: '/templates/authorization/authorization.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller($http, $pleasewait, auth) {
+    controller(auth, $dialog) {
         const vm = this;
 
         const states = {
@@ -28,7 +28,7 @@ authorizationModule.component('authorization', {
 
         vm.onLogin = function () {
             if (vm.authForm.$invalid) {
-                alert('Пожалуйста, заполните все поля.');
+                $dialog.alert('Пожалуйста, заполните все поля.');
                 return;
             }
 
@@ -37,12 +37,15 @@ authorizationModule.component('authorization', {
                     vm.$close({
                         account: r.data
                     });
+                },
+                e => {
+                    $dialog.alert('Неверный e-email или пароль.');
                 });
         };
         
         vm.onRegister = function () {
             if (vm.authForm.$invalid) {
-                alert('Пожалуйста, заполните все поля.');
+                $dialog.alert('Пожалуйста, заполните все поля.');
                 return;
             }
 
@@ -51,6 +54,9 @@ authorizationModule.component('authorization', {
                     vm.$close({
                         account: r.data
                     });
+                },
+                e => {
+                    $dialog.alert('Пользователь с таким e-email уже существует. Пожалуйста, выберите другой e-mail.');
                 });
         };
 

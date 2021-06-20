@@ -6,15 +6,18 @@ var app = angular.module('app', [
     'pleasewait',
     'authService',
     'authorizationModule',
-    'appBody']);
+    'appBody',
+    'dialog']);
 
 app.controller('appController',
-    function ($uibModal, $pleasewait, auth, $rootScope) {
+    function ($uibModal, $pleasewait, auth, $rootScope, $dialog) {
         let vm = this;
 
         vm.$onInit = () => {
             $pleasewait.show();
-            auth.getCurrentAccount().then(account => {
+            $rootScope.authPromise = auth.getCurrentAccount();
+
+            $rootScope.authPromise.then(account => {
                 $rootScope.isAuthenticated = account != null;
                 $rootScope.isAdmin = $rootScope.isAuthenticated && !!account.roles.find(r => r == 'Admin');
                 $rootScope.account = account;
@@ -52,7 +55,7 @@ app.controller('appController',
 
                 $pleasewait.hide();
 
-                alert('Выход успешно выполнен.');
+                $dialog.alert('Выход выполнен успешно.');
             });
         };
     }
