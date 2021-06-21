@@ -11,7 +11,7 @@
     },
     templateUrl: '/templates/observation/observationInfo.html?v=' + new Date().getTime(),
     controllerAs: 'vm',
-    controller(accountFactory, $rootScope) {
+    controller(accountFactory, $rootScope, $dialog) {
         const vm = this;
 
         vm.$onInit = () => {

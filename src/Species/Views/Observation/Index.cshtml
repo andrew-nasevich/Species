@@ -25,55 +25,67 @@
 <div>
     <div ng-controller="observationMainController as vm">
         <div class="search-container">
-            <table>
-                <tr>
-                    <td valign="top">
+            <ul>
+                <li class="search-el">
+                    <div>
                         <div>
-                            <div>
-                                Типы видов
-                            </div>
-                            <div ng-dropdown-multiselect=""
-                                 options="vm.search.speciesTypes"
-                                 selected-model="vm.search.selectedSpeciesTypes"
-                                 checkboxes="true"
-                                 extra-settings="vm.config.smallMultiselect"
-                                 translation-texts="vm.config.multiselectTranslation"
-                                 events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
-                            </div>
+                            Промежуток наблюдения
                         </div>
-                    </td>
-
-                    <td valign="top">
+                        <div class="date-range">
+                            <span>От:</span>
+                            <input type="date" ng-model="vm.search.fromDate" max="{{vm.today}}" />
+                            <span>До:</span>
+                            <input type="date" ng-model="vm.search.toDate" max="{{vm.today}}" />
+                        </div>
+                    </div>
+                </li>
+                <li class="search-el">
+                    <div>
                         <div>
-                            <div>
-                                Классы
-                            </div>
-                            <div ng-dropdown-multiselect=""
-                                 options="vm.search.classes"
-                                 selected-model="vm.search.selectedClasses"
-                                 checkboxes="true"
-                                 extra-settings="vm.config.multiselectSettings"
-                                 translation-texts="vm.config.multiselectTranslation"
-                                 events="{onSelectionChanged: vm.onSelectedClassesChange}">
-                            </div>
+                            Типы видов
                         </div>
-                    </td>
-                    <td valign="top">
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.speciesTypes"
+                             selected-model="vm.search.selectedSpeciesTypes"
+                             checkboxes="true"
+                             extra-settings="vm.config.smallMultiselect"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
+                        </div>
+                    </div>
+                </li>
+                <li class="search-el">
+                    <div>
                         <div>
-                            <div>
-                                Отряды
-                            </div>
-                            <div ng-dropdown-multiselect=""
-                                 options="vm.search.orders"
-                                 selected-model="vm.search.selectedOrders"
-                                 checkboxes="true"
-                                 extra-settings="vm.config.multiselectSettings"
-                                 translation-texts="vm.config.multiselectTranslation"
-                                 events="{onSelectionChanged: vm.onSelectedOrdersChange}">
-                            </div>
+                            Классы
                         </div>
-                    </td>
-                    <td valign="top">
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.classes"
+                             selected-model="vm.search.selectedClasses"
+                             checkboxes="true"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedClassesChange}">
+                        </div>
+                    </div>
+                </li>
+                <li class="search-el">
+                    <div>
+                        <div>
+                            Отряды
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.search.orders"
+                             selected-model="vm.search.selectedOrders"
+                             checkboxes="true"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedOrdersChange}">
+                        </div>
+                    </div>
+                </li>
+                <li class="search-el">
+                    <div>
                         <div>
                             Виды
                         </div>
@@ -84,8 +96,10 @@
                              extra-settings="vm.config.multiselectSettings"
                              translation-texts="vm.config.multiselectTranslation">
                         </div>
-                    </td>
-                    <td valign="top">
+                    </div>
+                </li>
+                <li class="search-el">
+                    <div>
                         <div>
                             Категории
                         </div>
@@ -97,31 +111,23 @@
                              translation-texts="vm.config.multiselectTranslation"
                              events="{onSelectionChanged: vm.onSelectedCategoriesChange}">
                         </div>
-                    </td>
-                    <td valign="top">
+                    </div>
+                </li>
+                <li class="search-el" ng-show="isAuthenticated">
+                    <div id="check-by-me">
                         <div>
-                            Промежуток наблюдения
+                            Созданные мной
                         </div>
-                        <div class="date-range">
-                            <span>От:</span>
-                            <input type="date" ng-model="vm.search.fromDate" max="{{vm.today}}" />
-                            <span>До:</span>
-                            <input type="date" ng-model="vm.search.toDate" max="{{vm.today}}" />
-                        </div>
-                    </td>
-                    <td valign="top" ng-show="isAuthenticated">
                         <div>
-                            Отмеченные мной
+                            <input type="checkbox" ng-model="vm.search.showMine" />
                         </div>
-                        <input id="check-by-me" type="checkbox" ng-model="vm.search.showMine" />
-                    </td>
-                </tr>
-            </table>
-            <button id="search-button" class="btn btn-primary" type="button" ng-click="vm.onSearch()">Поиcк</button>
+                    </div>
+                </li>
+                <li class="search-el">
+                    <button id="search-button" class="btn btn-primary" type="button" ng-click="vm.onSearch()">Поиcк</button>
+                </li>
+            </ul>
         </div>
-        
-
         <div id="mapid" style="height: 580px;"></div>
-
     </div>
 </div>

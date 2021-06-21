@@ -28,14 +28,47 @@
 }
 
 #auth-modal-body {
-    height: 300px;
+    height: 180px;
     position: relative;
 }
 
-.auth-line{
+.registrationState {
+    height: 290px !important; 
+}
+
+.auth-line {
     height: 40px;
 }
 
 .form-horizontal{
     padding-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    #registration-button {
+        float: none;
+        margin: auto;
+        display: block;
+    }
+
+    #login-button {
+        margin: auto;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 800px) {
+    .form-group {
+        height: 75px;
+    }
+
+    #auth-modal-body {
+        height: 280px;
+    }
+
+    .registrationState {
+        height: 460px !important;
+    }
 }

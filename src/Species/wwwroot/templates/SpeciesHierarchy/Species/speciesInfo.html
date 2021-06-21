@@ -81,14 +81,14 @@
                 <b>Изображение вида:</b>
             </div>
             <div class="param-value">
-                <div class="input-group">
+                <div class="input-group" ng-disabled="!($root.isAdmin||vm.isNew)">
                     <span class="input-group-btn">
                         <span class="btn btn-default btn-file">
                             Выбрать
-                            <input accept="image/jpeg, .jpg, .webp, .jfif" type="file" image-model="vm.species.imageFile" image-file-name="vm.species.imageFileName">
+                            <input ng-disabled="!($root.isAdmin||vm.isNew)" accept="image/jpeg, .jpg, .webp, .jfif" type="file" image-model="vm.species.imageFile" image-file-name="vm.species.imageFileName">
                         </span>
                     </span>
-                    <input readonly="readonly" placeholder="Выберите файл" ng-model="vm.species.imageFileName" class="form-control" type="text">
+                    <input ng-disabled="!($root.isAdmin||vm.isNew)" readonly="readonly" placeholder="Выберите файл" ng-model="vm.species.imageFileName" class="form-control" type="text">
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-hide="!($root.isAdmin||vm.isNew)" ng-click="vm.save()">Сохранить {{!vm.isNew ? 'изменения':''}}</button>
+        <button class="btn btn-success" type="button" ng-hide="!($root.isAdmin||vm.isNew)" ng-click="vm.save()">{{!vm.isNew ? 'Сохранить':'Добавить'}}</button>
         <button class="btn btn-danger" type="button" ng-hide="!$root.isAdmin||vm.isNew" ng-click="vm.delete()">Удалить</button>
         <button class="btn btn-warning" ng-click="vm.close()">Закрыть</button>
     </div>

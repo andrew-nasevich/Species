@@ -29,9 +29,13 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" href="/Observation/">Карта наблюдений</a>
-                <div class="navbar-collapse">
-                    <ul class="navigation-list">
+                
+                
+                <ul class="navigation-list">
+                    <li id="observations-navigation">
+                        <a class="nav-link navbar-brand" href="/Observation/">Карта наблюдений</a>
+                    </li>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                         <li>
                             <a class="nav-link navbar-brand" href="/Observation/AddObservation">Добавление наблюдений</a>
                         </li>
@@ -41,7 +45,7 @@
                         <li>
                             <a class="nav-link navbar-brand" href="/info/ProtectionСategories">Категории охраны</a>
                         </li>
-                        <li class="auth-navigation" ng-if="isAdmin">
+                        <li ng-if="isAdmin">
                             <a class="nav-link navbar-brand" href="/AccountRoles/">Роли пользователей</a>
                         </li>
                         <li class="auth-navigation" ng-if="isAuthenticated">
@@ -50,8 +54,13 @@
                         <li class="auth-navigation" ng-if="!isAuthenticated">
                             <a class="nav-link navbar-brand" ng-click="vm.onAuthorization()">Вход</a>
                         </li>
-                    </ul>
-                </div>
+                    </div>
+                </ul>
+                
+                <button id="nav-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
         </nav>
     </header>

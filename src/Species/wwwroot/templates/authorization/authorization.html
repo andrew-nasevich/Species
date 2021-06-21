@@ -6,10 +6,12 @@
         <h4>Пожалуйста, авторизуйтесь</h4>
     </div>
 
-    <div id="auth-modal-body" class="modal-body">
-        <div id="login-button" class="auth-button" ng-class="{ active: vm.state == vm.states.login }" ng-click="vm.changeState(vm.states.login)">Вход</div>
-        <div id="registration-button" class="auth-button" ng-class="{ active: vm.state == vm.states.registration }" ng-click="vm.changeState(vm.states.registration)">Регистрация</div>
-
+    <div id="auth-modal-body" class="modal-body" ng-class="{ registrationState: vm.state == vm.states.registration }" >
+        <div>
+            <div id="login-button" class="auth-button" ng-class="{ active: vm.state == vm.states.login }" ng-click="vm.changeState(vm.states.login)">Вход</div>
+            <div id="registration-button" class="auth-button" ng-class="{ active: vm.state == vm.states.registration }" ng-click="vm.changeState(vm.states.registration)">Регистрация</div>
+        </div>
+        
         <form class="form-horizontal" role="form" name="vm.authForm" novalidate>
             <div class="form-group auth-line" ng-class="{'has-error': vm.authForm.Email.$touched && vm.authForm.Email.$error.required , 'has-success': vm.authForm.Email.$valid }">
                 <label for="Email" class="col-sm-3 control-label">E-mail</label>

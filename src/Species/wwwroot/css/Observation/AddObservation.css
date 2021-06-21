@@ -1,4 +1,4 @@
-﻿.observation-description {
+﻿#observation-description {
     width: 454px;
 }
 
@@ -9,6 +9,43 @@
     margin-bottom: 10px;
 }
 
-#add-button-container{
-    padding-top:20px;
+.search-container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.search-el {
+    display: inline;
+    vertical-align: top;
+}
+
+.search-el{
+    margin-right: 13px;
+}
+
+
+.search-el > div {
+    display: inline-block;
+}
+
+#add-button {
+    position: absolute;
+    right: 0px;
+    top: 20px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .search-el > div {
+        padding-bottom: 15px;
+    }
+
+    #add-button {
+        position: relative !important;
+        right: 0px !important;
+    }
+
+    #observation-description {
+        width: 215px;
+    }
 }

@@ -1,5 +1,6 @@
 ﻿/*SpeciesType*/
 
+
 Insert into SpeciesTypes Values('Животные','')
 Insert into SpeciesTypes Values('Растения','')
 
@@ -24,6 +25,9 @@ Insert into Orders Values('Плауны', 'LYCOPODIALES','', 4)
 Insert into Orders Values('Полушники', 'ISOЁTALES','', 5)
 Insert into Orders Values('Хвощи', 'EQUISETALES','', 6)
 
+Insert into Orders Values('Бокоплавы', 'AMPHIPODA','', 3)
+
+
 select * from Orders
 
 /*Species*/
@@ -38,6 +42,8 @@ INSERT INTO Species VALUES('Озерная эвритемора', 'Eurytemora la
 INSERT INTO Species VALUES('Реликтовая мизида', 'Mysis relicta Loven', 'Рэлiктавая мiзiда', 4,
 'По внешнему виду напоминает маленьких креветок. Тело вытянуто в длину, глаза на стебельках, голова и грудь покрыты хитиновым карапаксом, брюшко тонкое и заканчивается хвостовым веером, состоящим из пластинок тельсона, по краям которого расположены двуветвистые уроподы. Общая длина тела рачка 8 -16 мм.','Mysis relicta Loven.jpg', 3)
  
+
+
  /*Растения*/
  
 INSERT INTO Species VALUES('Ликоподиелла заливаемая', 'Lycopodiella inundata (L.) Holub', 'Лiкападыела залiўная', 4,

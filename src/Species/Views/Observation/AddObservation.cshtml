@@ -22,9 +22,9 @@
 
 <div>
     <div ng-controller="addObservationController as vm">
-        <table class="search-container">
-            <tr>
-                <td valign="top">
+        <div class="search-container">
+            <ul>
+                <li class="search-el">
                     <div>
                         <div>
                             Типы видов
@@ -37,9 +37,8 @@
                              events="{onSelectionChanged: vm.onSelectedSpeciesTypeChange}">
                         </div>
                     </div>
-                </td>
-
-                <td valign="top">
+                </li>
+                <li class="search-el">
                     <div>
                         <div>
                             Классы
@@ -52,8 +51,8 @@
                              events="{onSelectionChanged: vm.onSelectedClassChange}">
                         </div>
                     </div>
-                </td>
-                <td valign="top">
+                </li>
+                <li class="search-el">
                     <div>
                         <div>
                             Отряды
@@ -66,44 +65,48 @@
                              events="{onSelectionChanged: vm.onSelectedOrderChange}">
                         </div>
                     </div>
-                </td>
-                <td valign="top">
+                </li>
+                <li class="search-el">
                     <div>
-                        Виды
+                        <div>
+                            Виды
+                        </div>
+                        <div ng-dropdown-multiselect=""
+                             options="vm.observation.species"
+                             selected-model="vm.observation.selectedSpecies"
+                             extra-settings="vm.config.multiselectSettings"
+                             translation-texts="vm.config.multiselectTranslation"
+                             events="{onSelectionChanged: vm.onSelectedSpeciesChange}">
+                        </div>
                     </div>
-                    <div ng-dropdown-multiselect=""
-                         options="vm.observation.species"
-                         selected-model="vm.observation.selectedSpecies"
-                         extra-settings="vm.config.multiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation"
-                         events="{onSelectionChanged: vm.onSelectedSpeciesChange}">
-                    </div>
-                </td>
-                <td valign="top">
+                </li>
+                <li class="search-el">
                     <div>
-                        Дата наблюдения
+                        <div>
+                            Описание
+                        </div>
+                        <div>
+                            <textarea id="observation-description" ng-model="vm.observation.description"></textarea>
+                        </div>
                     </div>
-                    <div class="date-range">
-                        <input type="date" ng-model="vm.observation.date" max="{{vm.today}}" />
-                    </div>
-                </td>
-                <td valign="top">
+                </li>
+                <li class="search-el">
                     <div>
-                        Описание
+                        <div>
+                            Дата наблюдения
+                        </div>
+                        <div class="date-range">
+                            <input type="date" ng-model="vm.observation.date" max="{{vm.today}}" />
+                        </div>
                     </div>
-
+                </li>
+                <li class="search-el">
                     <div>
-                        <textarea class="observation-description" ng-model="vm.observation.description"></textarea>
+                        <button id="add-button" class="btn btn-primary" type="button" ng-click="vm.onAddObservation()">Добавить</button>
                     </div>
-                </td>
-
-                <td id="add-button-container" valign="top">
-                    <button class="btn btn-primary" type="button" ng-click="vm.onAddObservation()">Добавить</button>
-                </td>
-            </tr>
-        </table>
-
+                </li>
+            </ul>
+        </div>
         <div id="mapid" style="height: 560px;"></div>
-
     </div>
 </div>

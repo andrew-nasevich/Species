@@ -1,47 +1,51 @@
 ﻿<div class="search-container">
-    <table>
-        <tr>
-            <td valign="top">
+    <ul>
+        <li class="search-el">
+            <div>
                 <div>
-                    <div>
-                        Типы видов
-                    </div>
-                    <div ng-dropdown-multiselect=""
-                         options="vm.search.speciesTypes"
-                         selected-model="vm.search.selectedSpeciesTypes"
-                         checkboxes="true"
-                         extra-settings="vm.config.speciesTypesMultiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation"
-                         events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
-                    </div>
+                    Типы видов
                 </div>
-            </td>
-            <td valign="top">
+                <div ng-dropdown-multiselect=""
+                     options="vm.search.speciesTypes"
+                     selected-model="vm.search.selectedSpeciesTypes"
+                     checkboxes="true"
+                     extra-settings="vm.config.speciesTypesMultiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedSpeciesTypesChange}">
+                </div>
+            </div>
+        </li>
+        <li class="search-el">
+            <div>
                 <div>
-                    <div>
-                        Классы
-                    </div>
-                    <div ng-dropdown-multiselect=""
-                         options="vm.search.classes"
-                         selected-model="vm.search.selectedClasses"
-                         checkboxes="true"
-                         extra-settings="vm.config.multiselectSettings"
-                         translation-texts="vm.config.multiselectTranslation"
-                         events="{onSelectionChanged: vm.onSelectedClassesChange}">
-                    </div>
+                    Классы
                 </div>
-            </td>
-            <td valign="top">
+                <div ng-dropdown-multiselect=""
+                     options="vm.search.classes"
+                     selected-model="vm.search.selectedClasses"
+                     checkboxes="true"
+                     extra-settings="vm.config.multiselectSettings"
+                     translation-texts="vm.config.multiselectTranslation"
+                     events="{onSelectionChanged: vm.onSelectedClassesChange}">
+                </div>
+            </div>
+        </li>
+        <li class="search-el">
+            <div>
                 <div>
                     Поиск
                 </div>
                 <div class="search-name">
                     <input type="text" ng-model="vm.search.searchInput" />
                 </div>
-            </td>
-        </tr>
-    </table>
-    <button id="add-new-button" class="btn btn-success" type="button" ng-if="$root.isAdmin" ng-click="vm.addNew()">Добавить новый отряд</button>
+            </div>
+        </li>
+        <li class="search-el">
+            <div>
+                <button id="add-new-button" class="btn btn-success" type="button" ng-hide="!$root.isAdmin" ng-click="vm.addNew()">Добавить отряд</button>
+            </div>
+        </li>
+    </ul>
 </div>
 <div>
     <div class="orders" ng-repeat="order in vm.search.orders | filter:vm.search.searchInput">
